@@ -109,6 +109,20 @@ January 1-31, 2026
 - Coverage: Urban areas of listed Saudi cities
 - Coordinates are randomly distributed around city centers with Gaussian offset (std=0.08 degrees)
 
+### Hexagon Verification
+
+All H3 hexagon IDs are real and decode to actual Saudi Arabia coordinates:
+
+| City | Hexagon ID | Decoded Lat | Decoded Lon | Status |
+|------|------------|-------------|-------------|--------|
+| Jeddah | 8953a955817ffff | 21.4854 | 39.2528 | ✓ Valid |
+| Riyadh | 89537369303ffff | 24.7365 | 46.6364 | ✓ Valid |
+| Khamis Mushait | 8952021b473ffff | 18.3096 | 42.6805 | ✓ Valid |
+| Medina | 8953110e1cfffff | 24.5460 | 39.5549 | ✓ Valid |
+| Taif | 89523447477ffff | 21.2768 | 40.4023 | ✓ Valid |
+
+Hexagons can be plotted on a map and will display realistic Saudi locations matching their assigned cities.
+
 ## Saudi Telco Market Context
 
 | Provider | Market Share |
