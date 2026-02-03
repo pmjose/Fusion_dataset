@@ -1527,21 +1527,158 @@ with tab_pricing:
     </div>
     """)
     
-    col1, col2, col3, col4 = st.columns(4)
+    st.html("""
+    <style>
+        .dimensions-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        @media (max-width: 900px) {
+            .dimensions-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 500px) {
+            .dimensions-grid { grid-template-columns: 1fr; }
+        }
+        .dimension-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease-out backwards;
+            transition: all 0.3s ease;
+        }
+        .dimension-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(30, 58, 95, 0.12);
+            border-color: #0891B2;
+        }
+        .dimension-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            border-radius: 16px 16px 0 0;
+        }
+        .dimension-card.geo::before { background: linear-gradient(90deg, #1E3A5F, #0891B2); }
+        .dimension-card.fresh::before { background: linear-gradient(90deg, #10B981, #34D399); }
+        .dimension-card.volume::before { background: linear-gradient(90deg, #8B5CF6, #A78BFA); }
+        .dimension-card.history::before { background: linear-gradient(90deg, #D4AF37, #F59E0B); }
+        
+        .dimension-header {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .dimension-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+        .dimension-card.geo .dimension-icon { background: linear-gradient(135deg, #1E3A5F, #0891B2); }
+        .dimension-card.fresh .dimension-icon { background: linear-gradient(135deg, #10B981, #34D399); }
+        .dimension-card.volume .dimension-icon { background: linear-gradient(135deg, #8B5CF6, #A78BFA); }
+        .dimension-card.history .dimension-icon { background: linear-gradient(135deg, #D4AF37, #F59E0B); }
+        
+        .dimension-name {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #1E3A5F;
+        }
+        .dimension-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .dimension-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #475569;
+            transition: all 0.2s ease;
+        }
+        .dimension-item:hover {
+            background: #f0fdfa;
+            color: #0891B2;
+            transform: translateX(4px);
+        }
+        .dimension-item .item-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .dimension-card.geo .item-dot { background: #0891B2; }
+        .dimension-card.fresh .item-dot { background: #10B981; }
+        .dimension-card.volume .item-dot { background: #8B5CF6; }
+        .dimension-card.history .item-dot { background: #D4AF37; }
+    </style>
     
-    dimensions = [
-        {"icon": "🌍", "name": "Geography", "items": ["City-level", "National", "Regional (GCC)"]},
-        {"icon": "⏰", "name": "Freshness", "items": ["Real-time", "Daily", "Weekly", "Monthly"]},
-        {"icon": "📦", "name": "Volume", "items": ["Record count", "Query limits", "User seats"]},
-        {"icon": "📜", "name": "History", "items": ["30 days", "1 year", "3+ years archive"]}
-    ]
-    
-    for col, dim in zip([col1, col2, col3, col4], dimensions):
-        with col:
-            with st.container(border=True):
-                st.markdown(f"**{dim['icon']} {dim['name']}**")
-                for item in dim['items']:
-                    st.caption(f"• {item}")
+    <div class="dimensions-grid">
+        <div class="dimension-card geo" style="animation-delay: 0.1s;">
+            <div class="dimension-header">
+                <div class="dimension-icon">🌍</div>
+                <span class="dimension-name">Geography</span>
+            </div>
+            <div class="dimension-items">
+                <div class="dimension-item"><span class="item-dot"></span>City-level</div>
+                <div class="dimension-item"><span class="item-dot"></span>National (KSA)</div>
+                <div class="dimension-item"><span class="item-dot"></span>Regional (GCC)</div>
+                <div class="dimension-item"><span class="item-dot"></span>Custom zones</div>
+            </div>
+        </div>
+        <div class="dimension-card fresh" style="animation-delay: 0.2s;">
+            <div class="dimension-header">
+                <div class="dimension-icon">⚡</div>
+                <span class="dimension-name">Freshness</span>
+            </div>
+            <div class="dimension-items">
+                <div class="dimension-item"><span class="item-dot"></span>Real-time</div>
+                <div class="dimension-item"><span class="item-dot"></span>Hourly</div>
+                <div class="dimension-item"><span class="item-dot"></span>Daily</div>
+                <div class="dimension-item"><span class="item-dot"></span>Weekly / Monthly</div>
+            </div>
+        </div>
+        <div class="dimension-card volume" style="animation-delay: 0.3s;">
+            <div class="dimension-header">
+                <div class="dimension-icon">📊</div>
+                <span class="dimension-name">Volume</span>
+            </div>
+            <div class="dimension-items">
+                <div class="dimension-item"><span class="item-dot"></span>Record count</div>
+                <div class="dimension-item"><span class="item-dot"></span>Query limits</div>
+                <div class="dimension-item"><span class="item-dot"></span>API calls/month</div>
+                <div class="dimension-item"><span class="item-dot"></span>User seats</div>
+            </div>
+        </div>
+        <div class="dimension-card history" style="animation-delay: 0.4s;">
+            <div class="dimension-header">
+                <div class="dimension-icon">📅</div>
+                <span class="dimension-name">History</span>
+            </div>
+            <div class="dimension-items">
+                <div class="dimension-item"><span class="item-dot"></span>30 days rolling</div>
+                <div class="dimension-item"><span class="item-dot"></span>1 year archive</div>
+                <div class="dimension-item"><span class="item-dot"></span>3+ years deep</div>
+                <div class="dimension-item"><span class="item-dot"></span>Custom range</div>
+            </div>
+        </div>
+    </div>
+    """)
 
 # =============================================================================
 # TAB 5: DATA DISTRIBUTION
