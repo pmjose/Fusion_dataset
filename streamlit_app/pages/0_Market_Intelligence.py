@@ -911,33 +911,103 @@ with tab_demand:
     </div>
     """)
     
-    col1, col2, col3 = st.columns(3)
+    st.html("""
+    <style>
+        @keyframes numberPop {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .market-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 768px) {
+            .market-stats-grid { grid-template-columns: 1fr; }
+        }
+        .market-stat-card {
+            border-radius: 16px;
+            padding: 1.75rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out backwards;
+        }
+        .market-stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        .market-stat-card.blue {
+            background: linear-gradient(135deg, #1E3A5F 0%, #0891B2 100%);
+        }
+        .market-stat-card.teal {
+            background: linear-gradient(135deg, #0891B2 0%, #10B981 100%);
+        }
+        .market-stat-card.gold {
+            background: linear-gradient(135deg, #D4AF37 0%, #F59E0B 100%);
+        }
+        .market-stat-card .stat-value {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: white;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+            animation: numberPop 0.8s ease-out backwards;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .market-stat-card .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.9);
+            margin-top: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .market-stat-card .stat-source {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.6);
+            margin-top: 0.75rem;
+            position: relative;
+            z-index: 1;
+            font-style: italic;
+        }
+    </style>
     
-    with col1:
-        st.html("""
-        <div class="stat-highlight">
-            <p class="value">~$5.3B</p>
-            <p class="label">Global Market 2024</p>
+    <div class="market-stats-grid">
+        <div class="market-stat-card blue" style="animation-delay: 0.1s;">
+            <p class="stat-value" style="animation-delay: 0.3s;">~$5.3B</p>
+            <p class="stat-label">Global Market 2024</p>
+            <p class="stat-source">Precedence Research, 2024</p>
         </div>
-        """)
-    
-    with col2:
-        st.html("""
-        <div class="stat-highlight" style="background: linear-gradient(135deg, #0891B2 0%, #10B981 100%);">
-            <p class="value">$14.9B</p>
-            <p class="label">Projected by 2029</p>
+        <div class="market-stat-card teal" style="animation-delay: 0.2s;">
+            <p class="stat-value" style="animation-delay: 0.4s;">$14.9B</p>
+            <p class="stat-label">Projected by 2029</p>
+            <p class="stat-source">Market Research Future</p>
         </div>
-        """)
-    
-    with col3:
-        st.html("""
-        <div class="stat-highlight" style="background: linear-gradient(135deg, #D4AF37 0%, #F59E0B 100%);">
-            <p class="value">~24%</p>
-            <p class="label">CAGR Growth Rate</p>
+        <div class="market-stat-card gold" style="animation-delay: 0.3s;">
+            <p class="stat-value" style="animation-delay: 0.5s;">~24%</p>
+            <p class="stat-label">CAGR Growth Rate</p>
+            <p class="stat-source">Industry Consensus</p>
         </div>
-        """)
-    
-    st.caption("Source: Industry analyst reports on global data monetization in telecom")
+    </div>
+    """)
     
     st.html("""
     <div class="key-insight">
@@ -980,6 +1050,7 @@ with tab_demand:
         )
         
         st.altair_chart(market_chart + points, use_container_width=True)
+        st.caption("Sources: Precedence Research, Market Research Future, Mordor Intelligence — Telecom Data Monetization Market Reports 2024")
     
     st.html("""
     <div class="section-header">
