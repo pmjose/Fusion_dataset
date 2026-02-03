@@ -708,6 +708,121 @@ with tab_trends:
         prediction, and infrastructure planning.</p>
     </div>
     """)
+    
+    # TM Forum Section
+    st.html("""
+    <div class="section-header">
+        <h3>📚 TM Forum Industry Guidance</h3>
+        <div class="section-line"></div>
+    </div>
+    """)
+    
+    st.markdown("""
+    **TM Forum**, the global industry association for digital business, provides comprehensive guidance 
+    on telco data monetization through its Open Digital Framework and research publications.
+    """)
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        with st.container(border=True):
+            st.markdown("**📘 IG1138: External Data Monetization Guide**")
+            st.markdown("""
+            TM Forum's flagship guide for CSP data monetization covers:
+            
+            - **Regulations & Compliance** — Privacy requirements by jurisdiction
+            - **Privacy Techniques** — Anonymization, aggregation, differential privacy
+            - **10 Monetization Use Cases** across Health, Transportation, Finance/Fraud, 
+              Advertising, Site Planning, and Tourism
+            - **Revenue Conversion** — Moving from data assets to commercial products
+            """)
+            st.caption("Source: TM Forum IG1138 R15.5.1")
+        
+        with st.container(border=True):
+            st.markdown("**🔄 ODA Monetization Engine**")
+            st.markdown("""
+            TM Forum's Open Digital Architecture (ODA) provides a standards-based platform to:
+            
+            - **Unify fragmented data** across legacy and modern systems
+            - **Apply governance & automation** frameworks consistently
+            - **Convert data assets** into revenue-generating services
+            - **Enable secure data movement** via TM Forum-certified APIs 
+              (TMF620, TMF622, TMF638-642)
+            """)
+            st.caption("Source: TM Forum ODA Catalyst, 2024")
+    
+    with col2:
+        with st.container(border=True):
+            st.markdown("**🏪 Digital Marketplace Model**")
+            st.markdown("""
+            TM Forum research highlights **digital marketplaces** as the primary channel 
+            for data monetization:
+            
+            - **Self-service discovery** — Partners find and subscribe to data products
+            - **Micro-segmentation** — Target specific demographics geographically
+            - **5G data explosion** — Mobile data usage projected to reach 56GB/smartphone by 2029
+            - **IoT scale** — 55.7 billion IoT devices estimated by 2025
+            """)
+            st.caption("Source: TM Forum Inform, 'How telcos can monetize data through digital marketplaces'")
+        
+        with st.container(border=True):
+            st.markdown("**⚠️ The Monetization Gap**")
+            st.markdown("""
+            TM Forum research identifies a critical challenge:
+            
+            > *"While CSPs possess vast data assets and have invested heavily in big data platforms, 
+            most haven't achieved tangible ROI."*
+            
+            **Key barriers:** Legacy IT silos, fragmented data, lack of governance, 
+            and inability to package data as consumable products.
+            
+            **Solution:** Move from static data collection to **dynamic intelligence exchange** 
+            using governed, API-accessible data products.
+            """)
+            st.caption("Source: TM Forum IG1138")
+    
+    st.html("""
+    <div class="key-insight">
+        <p>💡 <strong>TM Forum Recommendation:</strong> CSPs should pursue <strong>external data monetization</strong> 
+        (selling insights to third parties) alongside internal use cases to significantly increase revenue. 
+        The shift is from being <strong>data custodians</strong> to <strong>digital service orchestrators</strong>.</p>
+    </div>
+    """)
+    
+    # TM Forum Use Cases
+    st.html("""
+    <div class="section-header">
+        <h3>🎯 TM Forum Use Case Framework</h3>
+        <div class="section-line"></div>
+    </div>
+    """)
+    
+    tmf_use_cases = pd.DataFrame({
+        'Vertical': ['🏥 Health', '🚗 Transportation', '🏦 Finance/Fraud', '📣 Advertising', '📍 Site Planning', '✈️ Tourism'],
+        'Data Products': [
+            'Population health patterns, mobility for outbreak tracking',
+            'Traffic flow, commuter patterns, route optimization',
+            'Fraud detection signals, credit risk scoring, geo-behavior',
+            'Audience segments, campaign measurement, attribution',
+            'Footfall analytics, catchment analysis, location scoring',
+            'Visitor flows, origin-destination, seasonal patterns'
+        ],
+        'Privacy Model': ['Aggregated', 'Aggregated', 'Scored/Anonymized', 'Cohort-based', 'Aggregated', 'Aggregated']
+    })
+    
+    with st.container(border=True):
+        st.dataframe(
+            tmf_use_cases,
+            use_container_width=True,
+            hide_index=True,
+            column_config={
+                "Vertical": st.column_config.TextColumn("Industry Vertical", width="medium"),
+                "Data Products": st.column_config.TextColumn("Example Data Products", width="large"),
+                "Privacy Model": st.column_config.TextColumn("Privacy Model", width="medium")
+            }
+        )
+    
+    st.caption("Source: TM Forum IG1138 — Introductory Guide to External Data Monetization")
 
 # =============================================================================
 # TAB 3: MARKET DEMAND
