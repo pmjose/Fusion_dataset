@@ -92,19 +92,15 @@ st.html("""
 </style>
 """)
 
-col_logo, col_title = st.columns([1, 4])
-with col_logo:
-    st.image("logo.jpg", width=120)
-with col_title:
-    st.html("""
-    <div style="padding-top: 0.5rem;">
-        <h1 style="color: #1E3A5F; margin: 0; font-size: 2.2rem;">Fusion</h1>
-        <p style="color: #64748b; margin: 0.2rem 0 0.5rem 0;">Saudi Arabia's Premier Mobility Intelligence Platform</p>
-        <span style="background: #1E3A5F; color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.75rem; margin-right: 0.3rem;">STC</span>
-        <span style="background: #0891B2; color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.75rem; margin-right: 0.3rem;">Mobily</span>
-        <span style="background: #D4AF37; color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.75rem;">Zain</span>
-    </div>
-    """)
+st.html("""
+<div style="padding-top: 0.5rem;">
+    <h1 style="color: #1E3A5F; margin: 0; font-size: 2.2rem;">Fusion</h1>
+    <p style="color: #64748b; margin: 0.2rem 0 0.5rem 0;">Saudi Arabia's Premier Mobility Intelligence Platform</p>
+    <span style="background: #1E3A5F; color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.75rem; margin-right: 0.3rem;">STC</span>
+    <span style="background: #0891B2; color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.75rem; margin-right: 0.3rem;">Mobily</span>
+    <span style="background: #D4AF37; color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.75rem;">Zain</span>
+</div>
+""")
 
 st.markdown("""
 Aggregating anonymized mobility data from Saudi Arabia's three major 
