@@ -31,10 +31,6 @@ st.html("""
         from { opacity: 0; transform: scale(0.5); }
         to { opacity: 1; transform: scale(1); }
     }
-    @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
-    }
     
     .page-header {
         background: linear-gradient(135deg, #1E3A5F 0%, #0891B2 50%, #1E3A5F 100%);
@@ -80,14 +76,40 @@ st.html("""
         background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
         border: 1px solid #e2e8f0;
         border-radius: 16px;
-        padding: 2rem;
-        margin-bottom: 1.5rem;
+        padding: 1.75rem;
+        margin-bottom: 1rem;
         animation: fadeInUp 0.6s ease-out;
         transition: all 0.3s ease;
     }
     .intro-card:hover {
         box-shadow: 0 10px 40px rgba(30, 58, 95, 0.1);
         transform: translateY(-2px);
+    }
+    
+    .question-card {
+        background: white;
+        border-left: 4px solid #0891B2;
+        border-radius: 0 12px 12px 0;
+        padding: 1rem 1.25rem;
+        margin-bottom: 0.75rem;
+        animation: fadeInUp 0.5s ease-out backwards;
+        transition: all 0.3s ease;
+    }
+    .question-card:hover {
+        background: #f8fafc;
+        border-left-color: #1E3A5F;
+    }
+    .question-card .q-title {
+        color: #1E3A5F;
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin: 0 0 0.3rem 0;
+    }
+    .question-card .q-desc {
+        color: #64748b;
+        font-size: 0.85rem;
+        margin: 0;
+        line-height: 1.5;
     }
     
     .stat-highlight {
@@ -104,60 +126,125 @@ st.html("""
         box-shadow: 0 15px 40px rgba(30, 58, 95, 0.3);
     }
     .stat-highlight .value {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
         font-weight: 800;
         margin: 0;
     }
     .stat-highlight .label {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         opacity: 0.9;
         margin-top: 0.3rem;
     }
     
-    .trend-card {
+    .shift-card {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 1.5rem;
+        height: 100%;
+        animation: fadeInUp 0.6s ease-out backwards;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .shift-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #1E3A5F, #0891B2);
+    }
+    .shift-card:hover {
+        border-color: #0891B2;
+        box-shadow: 0 10px 30px rgba(30, 58, 95, 0.12);
+        transform: translateY(-3px);
+    }
+    .shift-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, #1E3A5F, #0891B2);
+        color: white;
+        border-radius: 50%;
+        font-weight: 700;
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+    }
+    .shift-title {
+        color: #1E3A5F;
+        font-weight: 700;
+        font-size: 1.05rem;
+        margin-bottom: 0.5rem;
+    }
+    .shift-desc {
+        color: #64748b;
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    .shift-example {
+        background: #f8fafc;
+        border-radius: 8px;
+        padding: 0.75rem;
+        margin-top: 0.75rem;
+        font-size: 0.8rem;
+        color: #64748b;
+        border-left: 3px solid #D4AF37;
+    }
+    
+    .buyer-card {
         background: white;
         border: 1px solid #e2e8f0;
         border-radius: 12px;
         padding: 1.25rem;
-        animation: fadeInUp 0.6s ease-out backwards;
+        animation: fadeInUp 0.5s ease-out backwards;
         transition: all 0.3s ease;
     }
-    .trend-card:hover {
+    .buyer-card:hover {
         border-color: #0891B2;
         box-shadow: 0 8px 25px rgba(30, 58, 95, 0.1);
     }
+    .buyer-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .buyer-title {
+        color: #1E3A5F;
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 0.3rem;
+    }
+    .buyer-uses {
+        color: #64748b;
+        font-size: 0.8rem;
+        line-height: 1.5;
+    }
     
-    .pricing-tier {
+    .pricing-model {
         background: white;
         border: 2px solid #e2e8f0;
         border-radius: 16px;
         padding: 1.5rem;
-        text-align: center;
+        text-align: left;
         transition: all 0.3s ease;
         animation: fadeInUp 0.6s ease-out backwards;
-        position: relative;
-        overflow: hidden;
+        height: 100%;
     }
-    .pricing-tier:hover {
+    .pricing-model:hover {
         border-color: #0891B2;
         transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(30, 58, 95, 0.15);
+        box-shadow: 0 15px 40px rgba(30, 58, 95, 0.12);
     }
-    .pricing-tier.featured {
+    .pricing-model.recommended {
         border-color: #0891B2;
         background: linear-gradient(180deg, #f0fdfa 0%, #ffffff 100%);
     }
-    .pricing-tier.featured::before {
-        content: 'POPULAR';
-        position: absolute;
-        top: 12px;
-        right: -30px;
-        background: #0891B2;
-        color: white;
-        padding: 0.25rem 2rem;
-        font-size: 0.7rem;
-        font-weight: 600;
-        transform: rotate(45deg);
+    .pricing-icon {
+        font-size: 1.8rem;
+        margin-bottom: 0.75rem;
     }
     .pricing-name {
         font-size: 1.1rem;
@@ -165,38 +252,31 @@ st.html("""
         color: #1E3A5F;
         margin-bottom: 0.5rem;
     }
-    .pricing-price {
-        font-size: 2rem;
-        font-weight: 800;
-        color: #0891B2;
-        margin: 0.5rem 0;
+    .pricing-desc {
+        color: #64748b;
+        font-size: 0.85rem;
+        line-height: 1.5;
+        margin-bottom: 1rem;
     }
-    .pricing-price span {
-        font-size: 0.9rem;
-        font-weight: 400;
+    .pricing-details {
+        background: #f8fafc;
+        border-radius: 8px;
+        padding: 0.75rem;
+        font-size: 0.8rem;
         color: #64748b;
     }
-    .pricing-features {
-        text-align: left;
-        margin-top: 1rem;
-        padding-top: 1rem;
-        border-top: 1px solid #e2e8f0;
-    }
-    .pricing-feature {
-        color: #64748b;
-        font-size: 0.9rem;
-        padding: 0.4rem 0;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    .pricing-feature::before {
-        content: '✓';
-        color: #10B981;
+    .pricing-tag {
+        display: inline-block;
+        background: #0891B2;
+        color: white;
+        padding: 0.2rem 0.6rem;
+        border-radius: 12px;
+        font-size: 0.7rem;
         font-weight: 600;
+        margin-bottom: 0.75rem;
     }
     
-    .distribution-card {
+    .distribution-option {
         background: white;
         border: 1px solid #e2e8f0;
         border-radius: 16px;
@@ -205,31 +285,31 @@ st.html("""
         transition: all 0.3s ease;
         height: 100%;
     }
-    .distribution-card:hover {
+    .distribution-option:hover {
         border-color: #0891B2;
         box-shadow: 0 10px 30px rgba(30, 58, 95, 0.1);
         transform: translateY(-3px);
     }
     .distribution-icon {
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         background: linear-gradient(135deg, #1E3A5F, #0891B2);
-        border-radius: 14px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.8rem;
+        font-size: 1.5rem;
         margin-bottom: 1rem;
     }
     .distribution-title {
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 700;
         color: #1E3A5F;
         margin-bottom: 0.5rem;
     }
     .distribution-desc {
         color: #64748b;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         line-height: 1.6;
     }
     .distribution-tag {
@@ -242,6 +322,10 @@ st.html("""
         font-weight: 600;
         margin-top: 1rem;
     }
+    .distribution-tag.warning {
+        background: #fef3c7;
+        color: #92400e;
+    }
     
     .key-insight {
         background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%);
@@ -253,15 +337,45 @@ st.html("""
     .key-insight p {
         color: #92400e;
         margin: 0;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         line-height: 1.5;
     }
     
-    .source-citation {
+    .ksa-highlight {
+        background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        border-left: 4px solid #10B981;
+        border-radius: 0 12px 12px 0;
+        padding: 1rem 1.25rem;
+        margin: 1rem 0;
+    }
+    .ksa-highlight p {
+        color: #065f46;
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+    
+    .source-ref {
         color: #94a3b8;
         font-size: 0.75rem;
         font-style: italic;
         margin-top: 0.5rem;
+    }
+    
+    .position-box {
+        background: linear-gradient(135deg, #1E3A5F 0%, #0891B2 100%);
+        border-radius: 12px;
+        padding: 1.25rem;
+        color: white;
+        margin-top: 1rem;
+    }
+    .position-box p {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    .position-box strong {
+        color: #D4AF37;
     }
 </style>
 """)
@@ -287,7 +401,39 @@ tab_intro, tab_trends, tab_demand, tab_pricing, tab_distribution = st.tabs([
 with tab_intro:
     st.html("""
     <div class="section-header">
-        <h3>🚀 The Telco Data Monetization Opportunity</h3>
+        <h3>📌 About This Dashboard</h3>
+        <div class="section-line"></div>
+    </div>
+    """)
+    
+    st.markdown("""
+    This Market Intelligence dashboard addresses **key strategic questions from Fusion** about telco data 
+    monetization. Each tab provides research, market data, and actionable insights to support Fusion's 
+    data product strategy.
+    """)
+    
+    st.html("""
+    <div class="question-card" style="animation-delay: 0.1s;">
+        <p class="q-title">📈 What is the telco data product trend?</p>
+        <p class="q-desc">Three major shifts: from raw data to privacy-safe insights, from one-off deals to marketplaces, and AI-native use on governed products.</p>
+    </div>
+    <div class="question-card" style="animation-delay: 0.2s;">
+        <p class="q-title">🎯 What is the market demand for telco data products?</p>
+        <p class="q-desc">Multi-billion dollar market with strong demand from public sector, retail, transport, financial services, and advertising verticals.</p>
+    </div>
+    <div class="question-card" style="animation-delay: 0.3s;">
+        <p class="q-title">💰 Is there a reference pricing model?</p>
+        <p class="q-desc">A pricing toolbox: subscription/recurring licenses, usage-based/API-metered, flat licenses, freemium tiers, and outcome/revenue-share models.</p>
+    </div>
+    <div class="question-card" style="animation-delay: 0.4s;">
+        <p class="q-title">🌐 How to expose data to consumers without a Snowflake account?</p>
+        <p class="q-desc">Multiple options: Reader accounts, "Powered-by Fusion" portals, REST APIs, Clean Rooms, and file exports—all with Snowflake as the governed backend.</p>
+    </div>
+    """)
+    
+    st.html("""
+    <div class="section-header">
+        <h3>🇸🇦 Saudi Arabia Context: Vision 2030 & National Data Strategy</h3>
         <div class="section-line"></div>
     </div>
     """)
@@ -297,70 +443,73 @@ with tab_intro:
     with col1:
         st.html("""
         <div class="intro-card">
-            <h4 style="color: #1E3A5F; margin-top: 0;">Why Telco Data?</h4>
-            <p style="color: #64748b; line-height: 1.8;">
-                Telecommunications companies sit on one of the most valuable data assets in the digital economy: 
-                <strong>real-time, privacy-compliant mobility intelligence</strong>. With billions of devices 
-                connecting daily, telcos capture anonymized movement patterns, demographic insights, and 
-                behavioral signals that power critical business decisions across industries.
+            <h4 style="color: #1E3A5F; margin-top: 0;">SDAIA & National Strategy for Data & AI</h4>
+            <p style="color: #64748b; line-height: 1.7; margin-bottom: 1rem;">
+                The Saudi Data & AI Authority (SDAIA) drives the Kingdom's data agenda. Approved by King Salman 
+                in July 2020, the National Strategy for Data & AI follows a phased approach:
             </p>
-            <p style="color: #64748b; line-height: 1.8; margin-bottom: 0;">
-                <strong>Fusion</strong> aggregates data from Saudi Arabia's three major telco providers—STC, Mobily, 
-                and Zain—creating a comprehensive view of mobility patterns across the Kingdom. This unified 
-                dataset enables unprecedented insights for retail, government, tourism, and transportation sectors.
-            </p>
+            <ul style="color: #64748b; line-height: 1.8; margin: 0; padding-left: 1.25rem;">
+                <li><strong>2021 (National Enabler)</strong> — Address urgent national needs aligned with Vision 2030</li>
+                <li><strong>2025 (Specialist)</strong> — Build foundations for competitive advantage in key domains</li>
+                <li><strong>2030 (Industry Leader)</strong> — Compete internationally as a leading data & AI economy</li>
+            </ul>
+            <p class="source-ref">Source: sdaia.gov.sa</p>
         </div>
         """)
         
         st.html("""
-        <div class="key-insight">
-            <p>💡 <strong>Key Insight:</strong> Telco data monetization is projected to become a $15B+ 
-            global market by 2028, with mobility and location intelligence leading the growth.</p>
+        <div class="ksa-highlight">
+            <p>🇸🇦 <strong>Vision 2030 Integration:</strong> Of the 96 goals in Saudi Vision 2030, 
+            <strong>66 direct and indirect goals</strong> are related to data and AI. SDAIA has established 
+            440+ data-sharing services in the Digital Data Marketplace and integrated 370+ government systems 
+            in the National Data Catalog.</p>
         </div>
         """)
     
     with col2:
         st.html("""
         <div class="stat-highlight" style="margin-bottom: 1rem;">
-            <p class="value">$15B+</p>
-            <p class="label">Global Market by 2028</p>
+            <p class="value">Top 15</p>
+            <p class="label">AI Global Ranking Target</p>
         </div>
         """)
         st.html("""
         <div class="stat-highlight" style="background: linear-gradient(135deg, #0891B2 0%, #10B981 100%); margin-bottom: 1rem;">
-            <p class="value">25%</p>
-            <p class="label">Annual Growth Rate</p>
+            <p class="value">20,000+</p>
+            <p class="label">Data & AI Specialists Goal</p>
         </div>
         """)
         st.html("""
         <div class="stat-highlight" style="background: linear-gradient(135deg, #D4AF37 0%, #F59E0B 100%);">
-            <p class="value">4.2M+</p>
-            <p class="label">Fusion Records</p>
+            <p class="value">440+</p>
+            <p class="label">Data Sharing Services</p>
         </div>
         """)
     
     st.html("""
     <div class="section-header">
-        <h3>🎯 Target Industries</h3>
+        <h3>🏗️ Giga-Projects & Smart City Opportunity</h3>
         <div class="section-line"></div>
     </div>
     """)
     
     col1, col2, col3, col4 = st.columns(4)
     
-    industries = [
-        {"icon": "🏪", "name": "Retail & Commercial", "use": "Site selection, competitive analysis, foot traffic"},
-        {"icon": "🏛️", "name": "Government", "use": "Urban planning, infrastructure, smart cities"},
-        {"icon": "✈️", "name": "Tourism", "use": "Visitor flows, destination analytics, seasonality"},
-        {"icon": "🚌", "name": "Transportation", "use": "Route optimization, commuter patterns, peak hours"}
+    giga_projects = [
+        {"icon": "🌆", "name": "NEOM", "desc": "Cognitive city spanning 26,500 km², partnered with SDAIA for AI research"},
+        {"icon": "🏙️", "name": "THE LINE", "desc": "Zero-carbon city requiring real-time mobility and density analytics"},
+        {"icon": "🏭", "name": "Oxagon", "desc": "Industrial hub 'Powering Data' with advanced logistics needs"},
+        {"icon": "🎿", "name": "Trojena", "desc": "Mountain tourism destination requiring visitor flow analytics"}
     ]
     
-    for col, ind in zip([col1, col2, col3, col4], industries):
+    for col, proj in zip([col1, col2, col3, col4], giga_projects):
         with col:
             with st.container(border=True):
-                st.markdown(f"### {ind['icon']}")
-                st.markdown(f"**{ind['name']}**")
-                st.caption(ind['use'])
+                st.markdown(f"### {proj['icon']}")
+                st.markdown(f"**{proj['name']}**")
+                st.caption(proj['desc'])
+    
+    st.caption("Source: neom.com, pif.gov.sa")
 
 # =============================================================================
 # TAB 2: TELCO DATA PRODUCT TRENDS
@@ -368,128 +517,138 @@ with tab_intro:
 with tab_trends:
     st.html("""
     <div class="section-header">
-        <h3>📊 Global Telco Data Product Evolution</h3>
+        <h3>🔄 Three Big Shifts in Telco Data Products</h3>
         <div class="section-line"></div>
     </div>
     """)
     
-    # Market Growth Chart
-    market_data = pd.DataFrame({
-        'Year': [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028],
-        'Market Size ($B)': [4.2, 5.1, 6.3, 7.8, 9.5, 11.2, 12.8, 14.1, 15.5],
-        'Type': ['Historical'] * 5 + ['Projected'] * 4
-    })
-    
-    col1, col2 = st.columns([2, 1])
+    col1, col2, col3 = st.columns(3)
     
     with col1:
-        with st.container(border=True):
-            st.markdown("**Global Telco Data Monetization Market Size**")
-            
-            market_chart = alt.Chart(market_data).mark_area(
-                line={'color': FUSION_BLUE, 'strokeWidth': 3},
-                color=alt.Gradient(
-                    gradient='linear',
-                    stops=[
-                        alt.GradientStop(color='rgba(30, 58, 95, 0.4)', offset=0),
-                        alt.GradientStop(color='rgba(30, 58, 95, 0.05)', offset=1)
-                    ],
-                    x1=1, x2=1, y1=1, y2=0
-                )
-            ).encode(
-                x=alt.X('Year:O', axis=alt.Axis(title='Year', labelAngle=0)),
-                y=alt.Y('Market Size ($B):Q', axis=alt.Axis(title='Market Size ($ Billion)', grid=True, gridOpacity=0.3)),
-                tooltip=[
-                    alt.Tooltip('Year:O', title='Year'),
-                    alt.Tooltip('Market Size ($B):Q', title='Market Size', format='$.1f'),
-                    alt.Tooltip('Type:N', title='Status')
-                ]
-            ).properties(height=350)
-            
-            # Add points
-            points = alt.Chart(market_data).mark_circle(size=80, color=FUSION_TEAL).encode(
-                x='Year:O',
-                y='Market Size ($B):Q'
-            )
-            
-            st.altair_chart(market_chart + points, use_container_width=True)
-            st.caption("Source: Industry analyst reports, 2024")
+        st.html("""
+        <div class="shift-card" style="animation-delay: 0.1s;">
+            <div class="shift-number">1</div>
+            <div class="shift-title">From Raw Data to Privacy-Safe Insight Products</div>
+            <div class="shift-desc">
+                Operators are moving away from selling raw CDR/location feeds toward curated, anonymized 
+                insight products: mobility & footfall, network quality, IoT/5G telemetry, fraud/risk signals, 
+                customer intent, and more.
+            </div>
+            <div class="shift-example">
+                <strong>Example:</strong> "Digital nervous system" products for cities—real-time density, 
+                surge prediction, and recommended actions for transport, energy, and public safety packaged 
+                as data products, not raw network logs.
+            </div>
+        </div>
+        """)
     
     with col2:
         st.html("""
-        <div class="trend-card" style="animation-delay: 0.1s; margin-bottom: 1rem;">
-            <h4 style="color: #1E3A5F; margin: 0 0 0.5rem 0; font-size: 1rem;">📱 Mobility Data</h4>
-            <p style="color: #64748b; font-size: 0.85rem; margin: 0; line-height: 1.5;">
-                Leading segment with 40% market share. High demand for foot traffic and movement patterns.
-            </p>
+        <div class="shift-card" style="animation-delay: 0.2s;">
+            <div class="shift-number">2</div>
+            <div class="shift-title">From One-Off Deals to Marketplaces & Platforms</div>
+            <div class="shift-desc">
+                Telcos increasingly publish their data products through data marketplaces and clean rooms, 
+                so partners (cities, retailers, banks, advertisers) can subscribe to governed feeds and run 
+                their own analytics without ever seeing raw subscriber identifiers.
+            </div>
+            <div class="shift-example">
+                <strong>Key principle:</strong> "This is not about selling raw telco data, it's about a 
+                trusted collaboration platform for insights."
+            </div>
         </div>
         """)
+    
+    with col3:
         st.html("""
-        <div class="trend-card" style="animation-delay: 0.2s; margin-bottom: 1rem;">
-            <h4 style="color: #1E3A5F; margin: 0 0 0.5rem 0; font-size: 1rem;">👥 Demographic Insights</h4>
-            <p style="color: #64748b; font-size: 0.85rem; margin: 0; line-height: 1.5;">
-                Growing 30% YoY. Age, nationality, and behavioral segmentation driving value.
-            </p>
-        </div>
-        """)
-        st.html("""
-        <div class="trend-card" style="animation-delay: 0.3s;">
-            <h4 style="color: #1E3A5F; margin: 0 0 0.5rem 0; font-size: 1rem;">📍 Location Intelligence</h4>
-            <p style="color: #64748b; font-size: 0.85rem; margin: 0; line-height: 1.5;">
-                H3 hexagon-based analytics emerging as industry standard for spatial analysis.
-            </p>
+        <div class="shift-card" style="animation-delay: 0.3s;">
+            <div class="shift-number">3</div>
+            <div class="shift-title">AI-Native / Agentic Use on Governed Products</div>
+            <div class="shift-desc">
+                The next wave is AI/agent-assist on top of these data products: call-center intent detection, 
+                agent assist, network ops copilots—all using the same governed products with masking and 
+                row-level policies.
+            </div>
+            <div class="shift-example">
+                <strong>The pattern:</strong> Build reusable, policy-attached telco data products once; 
+                reuse them across dashboards, AI, and partner use cases.
+            </div>
         </div>
         """)
     
     st.html("""
+    <div class="position-box">
+        <p><strong>Position Fusion as:</strong> "We want to build a catalog of governed telco data products 
+        (mobility, network, CX, IoT) that can power AI and analytics for government and ecosystem partners."</p>
+    </div>
+    """)
+    
+    st.html("""
     <div class="section-header">
-        <h3>🔥 Key Product Trends in 2026</h3>
+        <h3>📊 Data Product Categories</h3>
         <div class="section-line"></div>
     </div>
     """)
     
-    trends_data = pd.DataFrame({
-        'Trend': ['Real-time Analytics', 'Privacy-First Design', 'AI/ML Integration', 'Cross-Industry Bundles', 'Self-Service Platforms'],
-        'Adoption': [85, 92, 78, 65, 88],
-        'Growth': ['+35%', '+45%', '+52%', '+28%', '+40%']
+    products_data = pd.DataFrame({
+        'Product Category': ['Mobility & Footfall', 'Network Quality', 'IoT / 5G Telemetry', 'Fraud & Risk Signals', 'Customer Intent', 'Audience Segments'],
+        'Maturity': [95, 80, 70, 75, 65, 85],
+        'Privacy Model': ['Aggregated', 'Aggregated', 'Device-level (anonymized)', 'Scored', 'Inferred', 'Cohort-based']
     })
     
-    col1, col2 = st.columns([1, 1])
+    col1, col2 = st.columns([3, 2])
     
     with col1:
         with st.container(border=True):
-            st.markdown("**Trend Adoption Rate Among Telcos**")
+            st.markdown("**Product Category Maturity**")
             
-            trend_chart = alt.Chart(trends_data).mark_bar(
+            products_chart = alt.Chart(products_data).mark_bar(
                 cornerRadiusTopRight=8,
                 cornerRadiusBottomRight=8
             ).encode(
-                x=alt.X('Adoption:Q', axis=alt.Axis(title='Adoption Rate (%)', grid=True, gridOpacity=0.3), scale=alt.Scale(domain=[0, 100])),
-                y=alt.Y('Trend:N', axis=alt.Axis(title=None), sort='-x'),
-                color=alt.Color('Adoption:Q', scale=alt.Scale(scheme='teals'), legend=None),
+                x=alt.X('Maturity:Q', 
+                       axis=alt.Axis(title='Market Maturity %', grid=True, gridOpacity=0.3),
+                       scale=alt.Scale(domain=[0, 100])),
+                y=alt.Y('Product Category:N', 
+                       axis=alt.Axis(title=None),
+                       sort='-x'),
+                color=alt.Color('Maturity:Q', 
+                               scale=alt.Scale(domain=[60, 100], range=[FUSION_BLUE, FUSION_TEAL]),
+                               legend=None),
                 tooltip=[
-                    alt.Tooltip('Trend:N', title='Trend'),
-                    alt.Tooltip('Adoption:Q', title='Adoption', format='.0f'),
-                    alt.Tooltip('Growth:N', title='YoY Growth')
+                    alt.Tooltip('Product Category:N', title='Category'),
+                    alt.Tooltip('Maturity:Q', title='Maturity %'),
+                    alt.Tooltip('Privacy Model:N', title='Privacy Model')
                 ]
             ).properties(height=280)
             
-            st.altair_chart(trend_chart, use_container_width=True)
+            st.altair_chart(products_chart, use_container_width=True)
     
     with col2:
         with st.container(border=True):
-            st.markdown("**YoY Growth by Trend**")
+            st.markdown("**Privacy Models by Product**")
             st.dataframe(
-                trends_data,
+                products_data[['Product Category', 'Privacy Model']],
                 use_container_width=True,
                 hide_index=True,
-                height=280,
-                column_config={
-                    "Trend": st.column_config.TextColumn("Trend", width="large"),
-                    "Adoption": st.column_config.ProgressColumn("Adoption %", format="%d%%", min_value=0, max_value=100),
-                    "Growth": st.column_config.TextColumn("YoY Growth", width="small")
-                }
+                height=280
             )
+    
+    st.html("""
+    <div class="section-header">
+        <h3>🇸🇦 KSA Alignment</h3>
+        <div class="section-line"></div>
+    </div>
+    """)
+    
+    st.html("""
+    <div class="ksa-highlight">
+        <p>🇸🇦 <strong>Saudi Opportunity:</strong> The SDAIA-NEOM partnership (September 2024) explicitly 
+        targets AI and data innovation for cognitive city development. Fusion's mobility, network, and 
+        CX data products directly align with giga-project needs for real-time density analytics, surge 
+        prediction, and infrastructure planning.</p>
+    </div>
+    """)
 
 # =============================================================================
 # TAB 3: MARKET DEMAND
@@ -497,101 +656,163 @@ with tab_trends:
 with tab_demand:
     st.html("""
     <div class="section-header">
-        <h3>🎯 Who's Buying Telco Data Products?</h3>
+        <h3>📊 Market Size & Growth</h3>
         <div class="section-line"></div>
     </div>
     """)
     
-    # Industry demand data
-    demand_data = pd.DataFrame({
-        'Industry': ['Retail & E-commerce', 'Real Estate', 'Government', 'Financial Services', 'Tourism & Hospitality', 'Transportation', 'Healthcare', 'Advertising'],
-        'Demand Score': [92, 88, 85, 78, 82, 75, 65, 70],
-        'Spend ($M)': [2.8, 2.4, 2.1, 1.9, 1.7, 1.5, 1.2, 1.4]
-    })
-    
-    col1, col2 = st.columns([3, 2])
+    col1, col2, col3 = st.columns(3)
     
     with col1:
-        with st.container(border=True):
-            st.markdown("**Industry Demand for Telco Data Products**")
-            
-            demand_chart = alt.Chart(demand_data).mark_bar(
-                cornerRadiusTopLeft=8,
-                cornerRadiusTopRight=8
-            ).encode(
-                x=alt.X('Industry:N', axis=alt.Axis(title=None, labelAngle=-45), sort='-y'),
-                y=alt.Y('Demand Score:Q', axis=alt.Axis(title='Demand Score (0-100)', grid=True, gridOpacity=0.3)),
-                color=alt.Color('Demand Score:Q', 
-                               scale=alt.Scale(domain=[60, 95], range=[FUSION_BLUE, FUSION_TEAL]),
-                               legend=None),
-                tooltip=[
-                    alt.Tooltip('Industry:N', title='Industry'),
-                    alt.Tooltip('Demand Score:Q', title='Demand Score'),
-                    alt.Tooltip('Spend ($M):Q', title='Avg Annual Spend', format='$,.1f')
-                ]
-            ).properties(height=350)
-            
-            st.altair_chart(demand_chart, use_container_width=True)
+        st.html("""
+        <div class="stat-highlight">
+            <p class="value">~$5.3B</p>
+            <p class="label">Global Market 2024</p>
+        </div>
+        """)
     
     with col2:
         st.html("""
-        <div class="stat-highlight" style="margin-bottom: 1rem;">
-            <p class="value">92%</p>
-            <p class="label">Retail Demand Score</p>
+        <div class="stat-highlight" style="background: linear-gradient(135deg, #0891B2 0%, #10B981 100%);">
+            <p class="value">$14.9B</p>
+            <p class="label">Projected by 2029</p>
         </div>
         """)
+    
+    with col3:
         st.html("""
-        <div class="stat-highlight" style="background: linear-gradient(135deg, #0891B2 0%, #10B981 100%); margin-bottom: 1rem;">
-            <p class="value">$2.8M</p>
-            <p class="label">Avg Retail Annual Spend</p>
+        <div class="stat-highlight" style="background: linear-gradient(135deg, #D4AF37 0%, #F59E0B 100%);">
+            <p class="value">~24%</p>
+            <p class="label">CAGR Growth Rate</p>
         </div>
         """)
+    
+    st.caption("Source: Industry analyst reports on global data monetization in telecom")
+    
+    st.html("""
+    <div class="key-insight">
+        <p>💡 <strong>Message:</strong> "This is now a multi-billion-dollar, high-growth segment, not an experiment."</p>
+    </div>
+    """)
+    
+    # Market growth chart
+    market_data = pd.DataFrame({
+        'Year': [2024, 2025, 2026, 2027, 2028, 2029],
+        'Market Size ($B)': [5.3, 6.6, 8.2, 10.2, 12.5, 14.9],
+        'Type': ['Actual'] + ['Projected'] * 5
+    })
+    
+    with st.container(border=True):
+        st.markdown("**Global Telco Data Monetization Market Trajectory**")
         
+        market_chart = alt.Chart(market_data).mark_area(
+            line={'color': FUSION_BLUE, 'strokeWidth': 3},
+            color=alt.Gradient(
+                gradient='linear',
+                stops=[
+                    alt.GradientStop(color='rgba(30, 58, 95, 0.4)', offset=0),
+                    alt.GradientStop(color='rgba(30, 58, 95, 0.05)', offset=1)
+                ],
+                x1=1, x2=1, y1=1, y2=0
+            )
+        ).encode(
+            x=alt.X('Year:O', axis=alt.Axis(title='Year', labelAngle=0)),
+            y=alt.Y('Market Size ($B):Q', axis=alt.Axis(title='Market Size ($ Billion)', grid=True, gridOpacity=0.3)),
+            tooltip=[
+                alt.Tooltip('Year:O', title='Year'),
+                alt.Tooltip('Market Size ($B):Q', title='Market Size', format='$,.1f')
+            ]
+        ).properties(height=300)
+        
+        points = alt.Chart(market_data).mark_circle(size=100, color=FUSION_TEAL).encode(
+            x='Year:O',
+            y='Market Size ($B):Q'
+        )
+        
+        st.altair_chart(market_chart + points, use_container_width=True)
+    
+    st.html("""
+    <div class="section-header">
+        <h3>🎯 Who is Buying What?</h3>
+        <div class="section-line"></div>
+    </div>
+    """)
+    
+    st.markdown("Based on global telco examples and market patterns:")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
         st.html("""
-        <div class="key-insight">
-            <p>💡 <strong>Saudi Market:</strong> Vision 2030 initiatives are driving unprecedented 
-            demand for mobility data in urban planning, tourism, and retail sectors.</p>
+        <div class="buyer-card" style="animation-delay: 0.1s; margin-bottom: 1rem;">
+            <div class="buyer-icon">🏛️</div>
+            <div class="buyer-title">Public Sector / Smart Cities / Giga-Projects</div>
+            <div class="buyer-uses">Mobility & footfall insights, surge prediction, tourism flows, 
+            event management, infrastructure planning. <strong>Very relevant to KSA cities & giga-projects.</strong></div>
+        </div>
+        """)
+        st.html("""
+        <div class="buyer-card" style="animation-delay: 0.4s;">
+            <div class="buyer-icon">🏦</div>
+            <div class="buyer-title">Financial Services & Insurance</div>
+            <div class="buyer-uses">Fraud/risk scoring, geo-behavior signals as features in underwriting 
+            and collections models.</div>
+        </div>
+        """)
+    
+    with col2:
+        st.html("""
+        <div class="buyer-card" style="animation-delay: 0.2s; margin-bottom: 1rem;">
+            <div class="buyer-icon">🏪</div>
+            <div class="buyer-title">Retail / Real Estate / OOH</div>
+            <div class="buyer-uses">Geospatial footfall, dwell time, catchment analysis to choose store 
+            locations, malls, outdoor advertising screens.</div>
+        </div>
+        """)
+        st.html("""
+        <div class="buyer-card" style="animation-delay: 0.5s;">
+            <div class="buyer-icon">📣</div>
+            <div class="buyer-title">Advertising & Martech</div>
+            <div class="buyer-uses">Privacy-safe audience segments and measurement (B2B2X with agencies 
+            and brands).</div>
+        </div>
+        """)
+    
+    with col3:
+        st.html("""
+        <div class="buyer-card" style="animation-delay: 0.3s; margin-bottom: 1rem;">
+            <div class="buyer-icon">🚌</div>
+            <div class="buyer-title">Transport & Logistics</div>
+            <div class="buyer-uses">Corridor demand, route optimization, airport/rail station capacity 
+            planning.</div>
         </div>
         """)
     
     st.html("""
     <div class="section-header">
-        <h3>📊 Use Case Demand Analysis</h3>
+        <h3>📱 How They Prefer to Consume</h3>
         <div class="section-line"></div>
     </div>
     """)
     
-    use_cases = pd.DataFrame({
-        'Use Case': ['Site Selection', 'Foot Traffic Analysis', 'Customer Segmentation', 'Urban Planning', 'Tourism Analytics', 'Competitive Intelligence', 'Route Optimization', 'Event Impact Analysis'],
-        'Priority': ['High', 'High', 'High', 'Medium', 'High', 'Medium', 'Medium', 'Low'],
-        'Buyers': [85, 92, 78, 65, 72, 68, 55, 45]
-    })
+    st.html("""
+    <div class="intro-card">
+        <p style="color: #64748b; line-height: 1.7; margin: 0;">
+            TM Forum and market research show telcos moving to <strong>digital marketplaces and platforms</strong> 
+            where enterprises can self-service discover, subscribe, and integrate telco data products rather 
+            than bespoke one-offs. The shift is from custom integrations to standardized, governed data products 
+            with clear APIs and SLAs.
+        </p>
+    </div>
+    """)
     
-    col1, col2, col3, col4 = st.columns(4)
-    
-    with col1:
-        with st.container(border=True):
-            st.markdown("**🏪 Site Selection**")
-            st.metric("Buyer Interest", "85%", "+12% YoY")
-            st.caption("Retail chains, restaurants, banks selecting optimal locations")
-    
-    with col2:
-        with st.container(border=True):
-            st.markdown("**👣 Foot Traffic**")
-            st.metric("Buyer Interest", "92%", "+18% YoY")
-            st.caption("Most requested use case across all industries")
-    
-    with col3:
-        with st.container(border=True):
-            st.markdown("**👥 Segmentation**")
-            st.metric("Buyer Interest", "78%", "+22% YoY")
-            st.caption("Demographics, behavior patterns, customer profiling")
-    
-    with col4:
-        with st.container(border=True):
-            st.markdown("**✈️ Tourism**")
-            st.metric("Buyer Interest", "72%", "+35% YoY")
-            st.caption("Fastest growing segment, especially in Saudi Arabia")
+    st.html("""
+    <div class="position-box">
+        <p><strong>For Fusion:</strong> "We see strong demand from governments, banks, and retailers for exactly 
+        the kinds of mobility, network and identity-adjacent signals Fusion already has—as long as we deliver 
+        them as <strong>governed products, not raw feeds</strong>."</p>
+    </div>
+    """)
 
 # =============================================================================
 # TAB 4: PRICING MODELS
@@ -599,127 +820,133 @@ with tab_demand:
 with tab_pricing:
     st.html("""
     <div class="section-header">
-        <h3>💰 Reference Pricing Models for Telco Data Products</h3>
+        <h3>🧰 The Pricing Toolbox</h3>
         <div class="section-line"></div>
     </div>
     """)
     
     st.markdown("""
-    Telco data products are typically priced using one or more of these models. The right model depends on 
-    your data's uniqueness, refresh frequency, and target customer segment.
+    There's no single global tariff sheet, but there are clear patterns. Here's the pricing toolbox 
+    telcos use for data products:
     """)
     
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
     
     with col1:
         st.html("""
-        <div class="pricing-tier">
-            <div class="pricing-name">Subscription</div>
-            <div class="pricing-price">$5-50K<span>/month</span></div>
-            <p style="color: #64748b; font-size: 0.85rem;">Recurring access to data feeds</p>
-            <div class="pricing-features">
-                <div class="pricing-feature">Monthly/quarterly refresh</div>
-                <div class="pricing-feature">API or file delivery</div>
-                <div class="pricing-feature">Standard SLAs</div>
-                <div class="pricing-feature">Volume-based tiers</div>
+        <div class="pricing-model recommended" style="animation-delay: 0.1s; margin-bottom: 1rem;">
+            <div class="pricing-tag">MOST COMMON</div>
+            <div class="pricing-icon">🔄</div>
+            <div class="pricing-name">Subscription / Recurring Licenses</div>
+            <div class="pricing-desc">
+                Monthly/annual subscription per data product + geography + freshness 
+                (e.g., Riyadh daily mobility insights, KSA-wide weekly, GCC regional).
+            </div>
+            <div class="pricing-details">
+                Often tiered by volume, history window, SLA, and number of users/use-cases. 
+                Core revenue stream for real-time and historical insight feeds.
+            </div>
+        </div>
+        """)
+        
+        st.html("""
+        <div class="pricing-model" style="animation-delay: 0.3s; margin-bottom: 1rem;">
+            <div class="pricing-icon">📁</div>
+            <div class="pricing-name">Flat Licenses for Static/Historical Data</div>
+            <div class="pricing-desc">
+                One-off or annual license for historic archives (e.g., 3 years of aggregated mobility).
+            </div>
+            <div class="pricing-details">
+                Often used for consulting, strategy projects, and model training. Lower recurring 
+                revenue but good for market entry.
+            </div>
+        </div>
+        """)
+        
+        st.html("""
+        <div class="pricing-model" style="animation-delay: 0.5s;">
+            <div class="pricing-icon">🎯</div>
+            <div class="pricing-name">Outcome / Revenue-Share Models</div>
+            <div class="pricing-desc">
+                For advertising, insurance, or retail uplift, some telcos use rev-share or 
+                success-based fees with partners.
+            </div>
+            <div class="pricing-details">
+                Especially for "Powered-by-[Telco]" white-label platforms and APIs. Aligns 
+                incentives but requires strong measurement.
             </div>
         </div>
         """)
     
     with col2:
         st.html("""
-        <div class="pricing-tier featured">
-            <div class="pricing-name">Usage-Based</div>
-            <div class="pricing-price">$0.01-0.10<span>/query</span></div>
-            <p style="color: #64748b; font-size: 0.85rem;">Pay-per-use consumption model</p>
-            <div class="pricing-features">
-                <div class="pricing-feature">Real-time or near real-time</div>
-                <div class="pricing-feature">Snowflake Data Cloud</div>
-                <div class="pricing-feature">Compute costs passed through</div>
-                <div class="pricing-feature">Scalable with demand</div>
+        <div class="pricing-model recommended" style="animation-delay: 0.2s; margin-bottom: 1rem;">
+            <div class="pricing-tag">SCALABLE</div>
+            <div class="pricing-icon">📊</div>
+            <div class="pricing-name">Usage-Based / API-Metered</div>
+            <div class="pricing-desc">
+                Pay-per-API call, per 1k queries, or per 1k records scored (for prediction services).
+            </div>
+            <div class="pricing-details">
+                Market studies highlight license fee, pay-per-use, and subscription as the main 
+                commercial models. Great for developer adoption and variable workloads.
             </div>
         </div>
         """)
-    
-    with col3:
+        
         st.html("""
-        <div class="pricing-tier">
-            <div class="pricing-name">Enterprise License</div>
-            <div class="pricing-price">$100-500K<span>/year</span></div>
-            <p style="color: #64748b; font-size: 0.85rem;">Unlimited access agreements</p>
-            <div class="pricing-features">
-                <div class="pricing-feature">Full dataset access</div>
-                <div class="pricing-feature">Custom integrations</div>
-                <div class="pricing-feature">Dedicated support</div>
-                <div class="pricing-feature">Co-marketing rights</div>
+        <div class="pricing-model" style="animation-delay: 0.4s;">
+            <div class="pricing-icon">🎁</div>
+            <div class="pricing-name">Freemium / Trial Tiers via Marketplaces</div>
+            <div class="pricing-desc">
+                Provide sample/low-granularity datasets for free; charge for higher resolution, 
+                more history, or custom segments.
+            </div>
+            <div class="pricing-details">
+                Trials, paid POCs, and usage-based experiments are standard practice for data 
+                products. Reduces friction for new customers.
             </div>
         </div>
         """)
     
     st.html("""
     <div class="section-header">
-        <h3>📈 Pricing Benchmarks by Data Type</h3>
+        <h3>💡 Pricing Recommendation for Fusion</h3>
         <div class="section-line"></div>
     </div>
     """)
     
-    pricing_data = pd.DataFrame({
-        'Data Type': ['Raw Mobility', 'Aggregated Insights', 'Real-time Feeds', 'Historical Archives', 'Custom Reports'],
-        'Low ($K/mo)': [5, 10, 25, 2, 15],
-        'Mid ($K/mo)': [15, 25, 50, 8, 35],
-        'High ($K/mo)': [50, 75, 150, 25, 100]
-    })
+    st.html("""
+    <div class="position-box">
+        <p><strong>Recommended approach:</strong> "Globally we see subscription for core data products, 
+        usage-based for APIs and predictions, and rev-share where we co-create services with partners. 
+        We'd recommend starting simple (<strong>tiered subscription + usage-based API</strong>) and then 
+        adding outcome-based pricing where we have strong partners like banks or ad platforms."</p>
+    </div>
+    """)
     
-    col1, col2 = st.columns([2, 1])
+    st.html("""
+    <div class="section-header">
+        <h3>📋 Pricing Dimensions</h3>
+        <div class="section-line"></div>
+    </div>
+    """)
     
-    with col1:
-        with st.container(border=True):
-            st.markdown("**Monthly Pricing Ranges by Data Type**")
-            
-            # Reshape for Altair
-            pricing_melted = pricing_data.melt(
-                id_vars=['Data Type'],
-                value_vars=['Low ($K/mo)', 'Mid ($K/mo)', 'High ($K/mo)'],
-                var_name='Tier',
-                value_name='Price'
-            )
-            
-            pricing_chart = alt.Chart(pricing_melted).mark_bar(
-                cornerRadiusTopLeft=4,
-                cornerRadiusTopRight=4
-            ).encode(
-                x=alt.X('Data Type:N', axis=alt.Axis(title=None, labelAngle=-45)),
-                y=alt.Y('Price:Q', axis=alt.Axis(title='Price ($K/month)', grid=True, gridOpacity=0.3)),
-                color=alt.Color('Tier:N', 
-                               scale=alt.Scale(domain=['Low ($K/mo)', 'Mid ($K/mo)', 'High ($K/mo)'],
-                                              range=['#94a3b8', FUSION_TEAL, FUSION_BLUE]),
-                               legend=alt.Legend(title='Tier', orient='bottom')),
-                xOffset='Tier:N',
-                tooltip=[
-                    alt.Tooltip('Data Type:N', title='Data Type'),
-                    alt.Tooltip('Tier:N', title='Tier'),
-                    alt.Tooltip('Price:Q', title='Price ($K/mo)', format=',.0f')
-                ]
-            ).properties(height=320)
-            
-            st.altair_chart(pricing_chart, use_container_width=True)
+    col1, col2, col3, col4 = st.columns(4)
     
-    with col2:
-        st.html("""
-        <div class="key-insight">
-            <p>💡 <strong>Pricing Tip:</strong> Start with aggregated insights at mid-tier pricing. 
-            Premium pricing applies when data is exclusive, real-time, or covers unique geographies.</p>
-        </div>
-        """)
-        
-        with st.container(border=True):
-            st.markdown("**Price Multipliers**")
-            st.markdown("""
-            - **Exclusivity**: 2-3x premium
-            - **Real-time**: 3-5x vs batch
-            - **Saudi/GCC**: 1.5x global avg
-            - **Custom enrichment**: +25-50%
-            """)
+    dimensions = [
+        {"icon": "🌍", "name": "Geography", "items": ["City-level", "National", "Regional (GCC)"]},
+        {"icon": "⏰", "name": "Freshness", "items": ["Real-time", "Daily", "Weekly", "Monthly"]},
+        {"icon": "📦", "name": "Volume", "items": ["Record count", "Query limits", "User seats"]},
+        {"icon": "📜", "name": "History", "items": ["30 days", "1 year", "3+ years archive"]}
+    ]
+    
+    for col, dim in zip([col1, col2, col3, col4], dimensions):
+        with col:
+            with st.container(border=True):
+                st.markdown(f"**{dim['icon']} {dim['name']}**")
+                for item in dim['items']:
+                    st.caption(f"• {item}")
 
 # =============================================================================
 # TAB 5: DATA DISTRIBUTION
@@ -727,95 +954,82 @@ with tab_pricing:
 with tab_distribution:
     st.html("""
     <div class="section-header">
-        <h3>🌐 Reaching Customers Without Snowflake Accounts</h3>
+        <h3>🌐 Reaching Consumers Without a Snowflake Account</h3>
         <div class="section-line"></div>
     </div>
     """)
     
     st.markdown("""
-    While Snowflake Data Sharing provides the most seamless experience for Snowflake customers, 
-    there are multiple ways to expose telco data products to a broader audience.
+    All options use **Snowflake as Fusion's platform** but abstract it from the end consumer. 
+    Here's the menu of distribution options:
     """)
     
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
     
     with col1:
         st.html("""
-        <div class="distribution-card" style="animation-delay: 0.1s;">
-            <div class="distribution-icon">🏪</div>
-            <div class="distribution-title">Snowflake Marketplace</div>
+        <div class="distribution-option" style="animation-delay: 0.1s; margin-bottom: 1rem;">
+            <div class="distribution-icon">👤</div>
+            <div class="distribution-title">Reader-Style Access</div>
             <div class="distribution-desc">
-                List your data product on Snowflake Marketplace for discovery by 10,000+ organizations. 
-                Supports both free trials and paid listings. Customers get instant access without data movement.
+                Fusion hosts the data in Snowflake and provisions governed, read-only endpoints for 
+                agencies or enterprises. The consumer doesn't need their own Snowflake contract; 
+                Fusion controls the account, roles, policies, and pays for compute.
             </div>
-            <div class="distribution-tag">Recommended for Snowflake Users</div>
+            <div class="distribution-tag">Best for: Government entities who want dashboards/SQL</div>
         </div>
         """)
-    
-    with col2:
+        
         st.html("""
-        <div class="distribution-card" style="animation-delay: 0.2s;">
+        <div class="distribution-option" style="animation-delay: 0.3s; margin-bottom: 1rem;">
             <div class="distribution-icon">🔌</div>
-            <div class="distribution-title">REST API</div>
+            <div class="distribution-title">APIs and Services on Top of Snowflake</div>
             <div class="distribution-desc">
-                Expose data via Snowflake's REST API or external API gateway. Customers query data 
-                programmatically without needing a Snowflake account. Ideal for real-time integrations.
+                Expose REST/GraphQL APIs for queries like "give me today's footfall by district" or 
+                "score this list of locations", implemented via services that query Snowflake. 
+                API usage (pay-per-call) is a core revenue stream.
             </div>
-            <div class="distribution-tag">Best for Developers</div>
+            <div class="distribution-tag">Best for: Developers and system integrations</div>
         </div>
         """)
-    
-    with col3:
+        
         st.html("""
-        <div class="distribution-card" style="animation-delay: 0.3s;">
-            <div class="distribution-icon">📱</div>
-            <div class="distribution-title">Streamlit Apps</div>
+        <div class="distribution-option" style="animation-delay: 0.5s;">
+            <div class="distribution-icon">📁</div>
+            <div class="distribution-title">Files / Object-Store Exports</div>
             <div class="distribution-desc">
-                Build interactive web apps (like this one!) that let customers explore, visualize, and 
-                export data without any technical setup. Hosted on Snowflake with built-in security.
+                If a specific agency can only consume files (CSV/Parquet in S3/Blob), Fusion can 
+                schedule governed exports from Snowflake. This is the least powerful option 
+                (no live data, harder to govern/audit).
             </div>
-            <div class="distribution-tag">Best for Self-Service</div>
-        </div>
-        """)
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.html("""
-        <div class="distribution-card" style="animation-delay: 0.4s;">
-            <div class="distribution-icon">📊</div>
-            <div class="distribution-title">BI Tool Connectors</div>
-            <div class="distribution-desc">
-                Connect Power BI, Tableau, or Looker directly to Snowflake. Customers use familiar tools 
-                while you maintain data governance. Native connectors available for all major platforms.
-            </div>
-            <div class="distribution-tag">Enterprise Friendly</div>
+            <div class="distribution-tag warning">Fallback option — limited governance</div>
         </div>
         """)
     
     with col2:
         st.html("""
-        <div class="distribution-card" style="animation-delay: 0.5s;">
-            <div class="distribution-icon">📦</div>
-            <div class="distribution-title">Data Exports</div>
+        <div class="distribution-option" style="animation-delay: 0.2s; margin-bottom: 1rem;">
+            <div class="distribution-icon">📱</div>
+            <div class="distribution-title">"Powered-by Fusion" Applications & Portals</div>
             <div class="distribution-desc">
-                Generate CSV, Parquet, or JSON exports for customers who prefer file-based delivery. 
-                Can be automated via Snowflake tasks and delivered to cloud storage (S3, GCS, Azure).
+                Build web or mobile apps (e.g., city operations dashboard, tourism insights portal, 
+                government analytics cockpit) where Snowflake is the backend and the user only sees 
+                Fusion's UI. For KSA, this could be a "Fusion Data Exchange Portal" with SSO.
             </div>
-            <div class="distribution-tag">Universal Compatibility</div>
+            <div class="distribution-tag">Best for: Business users and ministries</div>
         </div>
         """)
-    
-    with col3:
+        
         st.html("""
-        <div class="distribution-card" style="animation-delay: 0.6s;">
-            <div class="distribution-icon">🔄</div>
-            <div class="distribution-title">Reader Accounts</div>
+        <div class="distribution-option" style="animation-delay: 0.4s;">
+            <div class="distribution-icon">🔒</div>
+            <div class="distribution-title">Clean Rooms for Joint Analysis</div>
             <div class="distribution-desc">
-                Create managed Snowflake Reader Accounts for non-Snowflake customers. They get full 
-                Snowflake query capabilities with costs billed to your account. Best for high-value clients.
+                Use Snowflake Clean Rooms so government agencies can run approved queries that join 
+                their data with Fusion's, without ever exchanging raw PII. Access can be via their 
+                tools or a simple front-end; governed products with row/masking policies attached.
             </div>
-            <div class="distribution-tag">Full Snowflake Experience</div>
+            <div class="distribution-tag">Best for: Privacy-sensitive joint analytics</div>
         </div>
         """)
     
@@ -827,12 +1041,12 @@ with tab_distribution:
     """)
     
     comparison_data = pd.DataFrame({
-        'Method': ['Snowflake Marketplace', 'REST API', 'Streamlit Apps', 'BI Connectors', 'Data Exports', 'Reader Accounts'],
-        'Setup Effort': ['Low', 'Medium', 'Low', 'Low', 'Low', 'Medium'],
-        'Customer Tech Required': ['Snowflake', 'Any', 'Browser', 'BI Tool', 'Any', 'Browser'],
-        'Real-time': ['✓', '✓', '✓', '✓', '✗', '✓'],
-        'Governance': ['High', 'High', 'High', 'Medium', 'Low', 'High'],
-        'Best For': ['Snowflake users', 'Developers', 'Business users', 'Analysts', 'Legacy systems', 'Premium clients']
+        'Method': ['Reader-Style Access', 'Powered-by Fusion Portals', 'REST/GraphQL APIs', 'Clean Rooms', 'File Exports'],
+        'Consumer Needs': ['Browser only', 'Browser + SSO', 'Developer skills', 'Analyst skills', 'File handling'],
+        'Live Data': ['✓', '✓', '✓', '✓', '✗'],
+        'Governance': ['High', 'High', 'High', 'Very High', 'Low'],
+        'Fusion Control': ['Full', 'Full', 'Full', 'Shared', 'Limited'],
+        'Best For': ['Govt dashboards', 'Ministry portals', 'System integration', 'Joint analytics', 'Legacy systems']
     })
     
     with st.container(border=True):
@@ -842,18 +1056,27 @@ with tab_distribution:
             hide_index=True,
             column_config={
                 "Method": st.column_config.TextColumn("Distribution Method", width="large"),
-                "Setup Effort": st.column_config.TextColumn("Setup Effort"),
-                "Customer Tech Required": st.column_config.TextColumn("Customer Needs"),
-                "Real-time": st.column_config.TextColumn("Real-time"),
+                "Consumer Needs": st.column_config.TextColumn("Consumer Needs"),
+                "Live Data": st.column_config.TextColumn("Live Data"),
                 "Governance": st.column_config.TextColumn("Governance"),
+                "Fusion Control": st.column_config.TextColumn("Fusion Control"),
                 "Best For": st.column_config.TextColumn("Best For", width="medium")
             }
         )
     
     st.html("""
     <div class="key-insight">
-        <p>💡 <strong>Recommendation:</strong> For maximum reach, combine Snowflake Marketplace (for data-savvy customers), 
-        Streamlit Apps (for self-service exploration), and REST APIs (for developer integrations). 
-        This covers 90%+ of potential customer segments.</p>
+        <p>💡 <strong>Recommendation:</strong> For maximum reach, combine <strong>Powered-by Fusion Portals</strong> 
+        (for government self-service), <strong>REST APIs</strong> (for developer integrations), and 
+        <strong>Clean Rooms</strong> (for privacy-sensitive joint analytics with ministries). 
+        This covers 90%+ of potential KSA customer segments while maintaining full data governance.</p>
+    </div>
+    """)
+    
+    st.html("""
+    <div class="position-box">
+        <p><strong>For KSA Government:</strong> Position as a "Fusion Data Exchange Portal" with SSO, 
+        where each ministry only sees the products they're entitled to. Snowflake stays invisible; 
+        Fusion delivers the governed insights through a trusted, branded experience.</p>
     </div>
     """)
