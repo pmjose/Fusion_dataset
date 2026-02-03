@@ -2,19 +2,177 @@ import streamlit as st
 import pandas as pd
 import pydeck as pdk
 import h3
+import random
 from snowflake.snowpark.context import get_active_session
+from utils.styles import render_common_styles, render_page_header
 
-st.set_page_config(page_title="Map Visualization | Fusion", page_icon="logo.jpg", layout="wide")
+st.set_page_config(page_title="Map Visualization | Fusion", page_icon=":material/map:", layout="wide")
 
 st.logo("logo.jpg")
+render_common_styles()
+render_page_header("Map Visualization", "H3 hexagon visualization of foot traffic density")
 
 if 'show_anomalies' not in st.session_state:
     st.session_state.show_anomalies = False
+if 'selected_city' not in st.session_state:
+    st.session_state.selected_city = "Riyadh"
+if 'show_flow_arcs' not in st.session_state:
+    st.session_state.show_flow_arcs = False
+if 'show_hotspots' not in st.session_state:
+    st.session_state.show_hotspots = False
+if 'show_pois' not in st.session_state:
+    st.session_state.show_pois = True
+if 'show_demographics' not in st.session_state:
+    st.session_state.show_demographics = False
+
+CITY_CENTERS = {
+    "Riyadh": {"lat": 24.7136, "lon": 46.6753},
+    "Jeddah": {"lat": 21.4858, "lon": 39.1925},
+    "Mecca": {"lat": 21.3891, "lon": 39.8579},
+    "Medina": {"lat": 24.5247, "lon": 39.5692},
+    "Dammam": {"lat": 26.4207, "lon": 50.0888},
+    "Khobar": {"lat": 26.2172, "lon": 50.1971},
+    "Tabuk": {"lat": 28.3838, "lon": 36.5550},
+    "Abha": {"lat": 18.2164, "lon": 42.5053},
+    "Buraidah": {"lat": 26.3260, "lon": 43.9750},
+    "Khamis Mushait": {"lat": 18.3093, "lon": 42.7294},
+    "Hofuf": {"lat": 25.3648, "lon": 49.5870},
+    "Taif": {"lat": 21.4373, "lon": 40.5127},
+    "Najran": {"lat": 17.4933, "lon": 44.1277}
+}
+
+AGE_GROUPS = ["18-24", "25-34", "35-44", "45-54", "55+"]
+GENDERS = ["Male", "Female"]
+NATIONALITIES = ["Saudi", "Indian", "Egyptian", "Filipino", "Pakistani", "Bangladeshi", "Sudanese", "Syrian", "Yemeni", "Jordanian", "Other"]
+
+DEMOGRAPHIC_COLORS = {
+    "18-24": [65, 105, 225, 200],
+    "25-34": [30, 144, 255, 200],
+    "35-44": [0, 191, 255, 200],
+    "45-54": [135, 206, 250, 200],
+    "55+": [176, 224, 230, 200],
+    "Male": [8, 145, 178, 200],
+    "Female": [219, 112, 147, 200],
+    "Saudi": [0, 128, 0, 200],
+    "Indian": [255, 153, 51, 200],
+    "Egyptian": [206, 17, 38, 200],
+    "Filipino": [0, 56, 168, 200],
+    "Pakistani": [1, 65, 23, 200],
+    "Bangladeshi": [0, 106, 78, 200],
+    "Sudanese": [210, 16, 52, 200],
+    "Syrian": [206, 17, 38, 200],
+    "Yemeni": [206, 17, 38, 200],
+    "Jordanian": [0, 122, 61, 200],
+    "Other": [128, 128, 128, 200],
+}
+
+POI_DATA = {
+    "Riyadh": [
+        {"name": "King Khalid Int'l Airport", "lat": 24.9576, "lon": 46.6988, "type": "airport", "icon": "✈️"},
+        {"name": "Riyadh Park Mall", "lat": 24.7728, "lon": 46.6992, "type": "mall", "icon": "🛍️"},
+        {"name": "Kingdom Centre", "lat": 24.7114, "lon": 46.6744, "type": "mall", "icon": "🏢"},
+        {"name": "King Fahd Stadium", "lat": 24.7892, "lon": 46.8395, "type": "stadium", "icon": "🏟️"},
+        {"name": "Riyadh Gallery Mall", "lat": 24.6913, "lon": 46.6750, "type": "mall", "icon": "🛍️"},
+        {"name": "Al Faisaliah Tower", "lat": 24.6904, "lon": 46.6853, "type": "landmark", "icon": "🏛️"},
+    ],
+    "Jeddah": [
+        {"name": "King Abdulaziz Int'l Airport", "lat": 21.6796, "lon": 39.1566, "type": "airport", "icon": "✈️"},
+        {"name": "Red Sea Mall", "lat": 21.6194, "lon": 39.1092, "type": "mall", "icon": "🛍️"},
+        {"name": "King Abdullah Sports City", "lat": 21.7509, "lon": 39.1575, "type": "stadium", "icon": "🏟️"},
+        {"name": "Jeddah Corniche", "lat": 21.5433, "lon": 39.1036, "type": "landmark", "icon": "🌊"},
+        {"name": "Mall of Arabia", "lat": 21.6311, "lon": 39.1256, "type": "mall", "icon": "🛍️"},
+    ],
+    "Mecca": [
+        {"name": "Masjid al-Haram", "lat": 21.4225, "lon": 39.8262, "type": "landmark", "icon": "🕋"},
+        {"name": "Abraj Al-Bait", "lat": 21.4189, "lon": 39.8264, "type": "landmark", "icon": "🏢"},
+        {"name": "Makkah Mall", "lat": 21.4067, "lon": 39.8378, "type": "mall", "icon": "🛍️"},
+    ],
+    "Medina": [
+        {"name": "Prince Mohammad Int'l Airport", "lat": 24.5534, "lon": 39.7050, "type": "airport", "icon": "✈️"},
+        {"name": "Al-Masjid an-Nabawi", "lat": 24.4686, "lon": 39.6112, "type": "landmark", "icon": "🕌"},
+        {"name": "Noor Mall", "lat": 24.4714, "lon": 39.5833, "type": "mall", "icon": "🛍️"},
+    ],
+    "Dammam": [
+        {"name": "King Fahd Int'l Airport", "lat": 26.4712, "lon": 49.7979, "type": "airport", "icon": "✈️"},
+        {"name": "Dammam Mall", "lat": 26.4344, "lon": 50.1033, "type": "mall", "icon": "🛍️"},
+        {"name": "Prince Mohammed Stadium", "lat": 26.4333, "lon": 50.0667, "type": "stadium", "icon": "🏟️"},
+    ],
+}
+
+def get_pois_for_city(city):
+    if city in POI_DATA:
+        return pd.DataFrame(POI_DATA[city])
+    return pd.DataFrame()
+
+def generate_flow_arcs(hex_df, city, num_arcs=15, seed=42):
+    if len(hex_df) < 10:
+        return pd.DataFrame()
+    
+    random.seed(seed)
+    
+    top_hexes = hex_df.nlargest(20, 'TRAFFIC_COUNT').reset_index(drop=True)
+    arcs = []
+    n = len(top_hexes)
+    
+    for i in range(num_arcs):
+        src_idx = random.randint(0, n - 1)
+        tgt_idx = random.randint(0, n - 1)
+        source = top_hexes.iloc[src_idx]
+        target = top_hexes.iloc[tgt_idx]
+        
+        if source['HEXAGON_ID'] != target['HEXAGON_ID']:
+            flow_volume = random.randint(500, 5000)
+            arcs.append({
+                'source_lat': source['lat'],
+                'source_lon': source['lon'],
+                'target_lat': target['lat'],
+                'target_lon': target['lon'],
+                'flow_volume': flow_volume,
+                'source_name': f"Zone {source['HEXAGON_ID'][:8]}",
+                'target_name': f"Zone {target['HEXAGON_ID'][:8]}",
+            })
+    
+    if city in POI_DATA and len(top_hexes) > 0:
+        pois = POI_DATA[city]
+        for j, poi in enumerate(pois[:3]):
+            src_idx = random.randint(0, n - 1)
+            source = top_hexes.iloc[src_idx]
+            flow_volume = random.randint(1000, 8000)
+            arcs.append({
+                'source_lat': source['lat'],
+                'source_lon': source['lon'],
+                'target_lat': poi['lat'],
+                'target_lon': poi['lon'],
+                'flow_volume': flow_volume,
+                'source_name': f"Zone {source['HEXAGON_ID'][:8]}",
+                'target_name': poi['name'],
+            })
+    
+    return pd.DataFrame(arcs)
+
+def generate_hotspots(hex_df, num_hotspots=8, seed=42):
+    if len(hex_df) < num_hotspots:
+        return pd.DataFrame()
+    
+    random.seed(seed)
+    top_hexes = hex_df.nlargest(num_hotspots * 2, 'TRAFFIC_COUNT').sample(num_hotspots, random_state=seed)
+    
+    hotspots = []
+    for _, row in top_hexes.iterrows():
+        intensity = row['normalized']
+        hotspots.append({
+            'lat': row['lat'],
+            'lon': row['lon'],
+            'intensity': intensity,
+            'traffic': row['TRAFFIC_COUNT'],
+            'radius': 200 + (intensity * 400),
+            'inner_radius': 100 + (intensity * 200),
+        })
+    
+    return pd.DataFrame(hotspots)
 
 def detect_anomalies(df):
-    """Detect anomalies based on statistical thresholds - returns anomaly df with reasons"""
     anomalies = []
-    
     traffic_mean = df['TRAFFIC_COUNT'].mean()
     traffic_std = df['TRAFFIC_COUNT'].std()
     dwell_mean = df['AVG_DWELL'].mean()
@@ -71,229 +229,13 @@ def detect_anomalies(df):
     
     return pd.DataFrame(anomalies) if anomalies else pd.DataFrame()
 
-st.html("""
-<style>
-    /* SIDEBAR STYLING */
-    @keyframes sidebarFadeIn {
-        from { opacity: 0; transform: translateX(-10px); }
-        to { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes glowPulse {
-        0%, 100% { box-shadow: 0 4px 15px rgba(8, 145, 178, 0.2); }
-        50% { box-shadow: 0 4px 25px rgba(8, 145, 178, 0.4); }
-    }
-    @keyframes navItemSlide {
-        from { opacity: 0; transform: translateX(-20px); }
-        to { opacity: 1; transform: translateX(0); }
-    }
-    
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%) !important;
-        border-right: 1px solid rgba(8, 145, 178, 0.2) !important;
-    }
-    [data-testid="stSidebar"] * {
-        color: #ffffff !important;
-    }
-    [data-testid="stSidebar"]::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: radial-gradient(ellipse at top left, rgba(8, 145, 178, 0.08) 0%, transparent 50%),
-                    radial-gradient(ellipse at bottom right, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
-        pointer-events: none;
-        z-index: 0;
-    }
-    [data-testid="stSidebar"] > div:first-child { position: relative; z-index: 1; }
-    [data-testid="stSidebar"] [data-testid="stLogo"] { animation: sidebarFadeIn 0.5s ease-out; }
-    [data-testid="stSidebar"] [data-testid="stLogo"] img {
-        border-radius: 12px !important;
-        padding: 8px !important;
-        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
-        transition: all 0.3s ease !important;
-        animation: glowPulse 3s ease-in-out infinite;
-    }
-    [data-testid="stSidebar"] [data-testid="stLogo"] img:hover {
-        transform: scale(1.05);
-        box-shadow: 0 8px 30px rgba(8, 145, 178, 0.4), 0 0 0 2px rgba(8, 145, 178, 0.3) !important;
-    }
-    [data-testid="stSidebar"] a {
-        color: #ffffff !important;
-        font-weight: 500 !important;
-        padding: 0.75rem 1rem !important;
-        border-radius: 10px !important;
-        margin: 0.25rem 0.5rem !important;
-        transition: all 0.3s ease !important;
-        position: relative;
-        overflow: hidden;
-        animation: navItemSlide 0.4s ease-out backwards;
-    }
-    [data-testid="stSidebar"] a:nth-child(1) { animation-delay: 0.1s; }
-    [data-testid="stSidebar"] a:nth-child(2) { animation-delay: 0.15s; }
-    [data-testid="stSidebar"] a:nth-child(3) { animation-delay: 0.2s; }
-    [data-testid="stSidebar"] a:nth-child(4) { animation-delay: 0.25s; }
-    [data-testid="stSidebar"] a:nth-child(5) { animation-delay: 0.3s; }
-    [data-testid="stSidebar"] a:nth-child(6) { animation-delay: 0.35s; }
-    [data-testid="stSidebar"] a::before {
-        content: '';
-        position: absolute;
-        left: 0; top: 0;
-        height: 100%; width: 0;
-        background: linear-gradient(90deg, rgba(8, 145, 178, 0.3), transparent);
-        transition: width 0.3s ease;
-        border-radius: 10px;
-    }
-    [data-testid="stSidebar"] a:hover {
-        background: linear-gradient(135deg, rgba(8, 145, 178, 0.2) 0%, rgba(30, 58, 95, 0.3) 100%) !important;
-        color: #ffffff !important;
-        transform: translateX(4px);
-    }
-    [data-testid="stSidebar"] a:hover::before {
-        width: 4px;
-        background: linear-gradient(180deg, #0891B2, #D4AF37);
-    }
-    [data-testid="stSidebar"] a[aria-current="page"] {
-        background: linear-gradient(135deg, rgba(8, 145, 178, 0.25) 0%, rgba(30, 58, 95, 0.4) 100%) !important;
-        color: #ffffff !important;
-        border-left: 3px solid #0891B2 !important;
-    }
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] .stMarkdown p { color: #cbd5e1 !important; }
-    [data-testid="stSidebar"] h1,
-    [data-testid="stSidebar"] h2,
-    [data-testid="stSidebar"] h3 { color: #f1f5f9 !important; font-weight: 600 !important; }
-    [data-testid="stSidebar"] hr { border-color: rgba(8, 145, 178, 0.2) !important; margin: 1rem 0 !important; }
-    [data-testid="stSidebar"] .stSelectbox > div > div,
-    [data-testid="stSidebar"] .stMultiSelect > div > div {
-        background: rgba(15, 23, 42, 0.8) !important;
-        border: 1px solid rgba(8, 145, 178, 0.3) !important;
-        border-radius: 8px !important;
-        color: #e2e8f0 !important;
-        transition: all 0.3s ease !important;
-    }
-    [data-testid="stSidebar"] .stSelectbox > div > div:hover,
-    [data-testid="stSidebar"] .stMultiSelect > div > div:hover {
-        border-color: #0891B2 !important;
-        box-shadow: 0 0 0 2px rgba(8, 145, 178, 0.15) !important;
-    }
-    [data-testid="stSidebar"] .stCaption { color: #64748b !important; font-size: 0.75rem !important; }
-    
-    /* PAGE STYLING */
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes gradientFlow {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-    @keyframes pulseGlow {
-        0%, 100% { box-shadow: 0 10px 40px rgba(30, 58, 95, 0.25); }
-        50% { box-shadow: 0 10px 60px rgba(8, 145, 178, 0.35); }
-    }
-    
-    .page-header {
-        background: linear-gradient(135deg, #1E3A5F 0%, #0891B2 50%, #1E3A5F 100%);
-        background-size: 200% 200%;
-        animation: gradientFlow 8s ease infinite, fadeInUp 0.6s ease-out;
-        padding: 2rem 2.5rem;
-        border-radius: 16px;
-        margin-bottom: 2rem;
-        color: white;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 10px 40px rgba(30, 58, 95, 0.25);
-    }
-    .page-header::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M20 20h20v20H20V20zM0 0h20v20H0V0z'/%3E%3C/g%3E%3C/svg%3E");
-    }
-    .page-header h1 { margin: 0; font-size: 2rem; font-weight: 700; position: relative; z-index: 1; }
-    .page-header p { margin: 0.5rem 0 0 0; opacity: 0.9; font-size: 1rem; position: relative; z-index: 1; }
-    
-    .map-container {
-        animation: fadeInUp 0.6s ease-out 0.2s backwards;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 10px 40px rgba(30, 58, 95, 0.15);
-        border: 1px solid #e2e8f0;
-    }
-    
-    .control-panel {
-        background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 1rem;
-        margin-bottom: 1rem;
-    }
-    
-    .legend-container {
-        animation: fadeInUp 0.6s ease-out 0.3s backwards;
-        background: white;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 1rem;
-        margin-top: 1rem;
-    }
-    .legend-title {
-        color: #1E3A5F;
-        font-weight: 600;
-        font-size: 0.9rem;
-        margin-bottom: 0.75rem;
-    }
-    .legend-gradient {
-        height: 12px;
-        border-radius: 6px;
-        margin-bottom: 0.5rem;
-    }
-    .legend-labels {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.75rem;
-        color: #64748b;
-    }
-</style>
-""")
-
-st.html("""
-<div class="page-header">
-    <h1>Map Visualization</h1>
-    <p>H3 hexagon visualization of foot traffic density</p>
-</div>
-""")
-
-CITY_CENTERS = {
-    "Riyadh": {"lat": 24.7136, "lon": 46.6753},
-    "Jeddah": {"lat": 21.4858, "lon": 39.1925},
-    "Mecca": {"lat": 21.3891, "lon": 39.8579},
-    "Medina": {"lat": 24.5247, "lon": 39.5692},
-    "Dammam": {"lat": 26.4207, "lon": 50.0888},
-    "Khobar": {"lat": 26.2172, "lon": 50.1971},
-    "Tabuk": {"lat": 28.3838, "lon": 36.5550},
-    "Abha": {"lat": 18.2164, "lon": 42.5053},
-    "Buraidah": {"lat": 26.3260, "lon": 43.9750},
-    "Khamis Mushait": {"lat": 18.3093, "lon": 42.7294},
-    "Hofuf": {"lat": 25.3648, "lon": 49.5870},
-    "Taif": {"lat": 21.4373, "lon": 40.5127},
-    "Najran": {"lat": 17.4933, "lon": 44.1277}
-}
-
 @st.cache_data(ttl=600)
 def get_hexagon_data(city, hour):
     session = get_active_session()
-    
     where_clauses = [f"HOUR = {hour}"]
     if city != "All Cities":
         where_clauses.append(f"SUBSCRIBER_HOME_CITY = '{city}'")
-    
     where_sql = " AND ".join(where_clauses)
-    
     query = f"""
         SELECT HEXAGON_ID, 
                COUNT(*) as TRAFFIC_COUNT,
@@ -303,6 +245,36 @@ def get_hexagon_data(city, hour):
         GROUP BY HEXAGON_ID
         ORDER BY TRAFFIC_COUNT DESC
         LIMIT 5000
+    """
+    return session.sql(query).to_pandas()
+
+@st.cache_data(ttl=600)
+def get_combined_demographic_data(city, hour, ages, genders, nationalities):
+    session = get_active_session()
+    where_clauses = [f"HOUR = {hour}"]
+    if city != "All Cities":
+        where_clauses.append(f"SUBSCRIBER_HOME_CITY = '{city}'")
+    
+    if ages:
+        age_list = ",".join([f"'{a}'" for a in ages])
+        where_clauses.append(f"AGE_GROUP IN ({age_list})")
+    if genders:
+        gender_list = ",".join([f"'{g}'" for g in genders])
+        where_clauses.append(f"GENDER IN ({gender_list})")
+    if nationalities:
+        nat_list = ",".join([f"'{n}'" for n in nationalities])
+        where_clauses.append(f"NATIONALITY IN ({nat_list})")
+    
+    where_sql = " AND ".join(where_clauses)
+    query = f"""
+        SELECT HEXAGON_ID, 
+               COUNT(*) as TRAFFIC_COUNT,
+               AVG(AVG_STAYING_DURATION_MIN) as AVG_DWELL
+        FROM FUSION_TELCO.MOBILITY_DATA.TELCO_MOBILITY_DATA
+        WHERE {where_sql}
+        GROUP BY HEXAGON_ID
+        ORDER BY TRAFFIC_COUNT DESC
+        LIMIT 3000
     """
     return session.sql(query).to_pandas()
 
@@ -317,53 +289,132 @@ def h3_to_lat_lon(h3_index):
         except Exception:
             return None, None
 
+st.markdown("#### :material/location_on: Quick City Jump")
+city_cols = st.columns(7)
+quick_cities = ["Riyadh", "Jeddah", "Mecca", "Medina", "Dammam", "Abha", "Tabuk"]
+for i, city in enumerate(quick_cities):
+    with city_cols[i]:
+        if st.button(city, use_container_width=True, type="secondary" if city != st.session_state.selected_city else "primary"):
+            st.session_state.selected_city = city
+
 with st.sidebar:
-    st.html("""
-    <div style="color: #1E3A5F; font-weight: 600; font-size: 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-        <span style="font-size: 1.2rem;">🗺️</span> Map Controls
-    </div>
-    """)
+    st.subheader(":material/tune: Map Controls", anchor=False)
     
     selected_city = st.selectbox(
-        "Focus city",
+        "Focus City",
         options=["All Cities"] + list(CITY_CENTERS.keys()),
-        index=1
+        index=list(["All Cities"] + list(CITY_CENTERS.keys())).index(st.session_state.selected_city) if st.session_state.selected_city in CITY_CENTERS else 0
     )
+    if selected_city != st.session_state.selected_city and selected_city != "All Cities":
+        st.session_state.selected_city = selected_city
     
     selected_hour = st.slider(
-        "Hour of day",
+        "Hour of Day",
         min_value=0,
         max_value=23,
         value=12,
-        help="Filter data by hour of the day"
+        help="Filter data by hour"
     )
     
     time_label = "AM" if selected_hour < 12 else "PM"
     display_hour = selected_hour if selected_hour <= 12 else selected_hour - 12
     if display_hour == 0:
         display_hour = 12
-    st.caption(f"Currently showing: **{display_hour}:00 {time_label}**")
+    st.caption(f"Showing: **{display_hour}:00 {time_label}**")
     
     st.divider()
     
     color_scale = st.selectbox(
-        "Color scale",
+        "Color By",
         options=["Traffic Density", "Dwell Time"],
         index=0
     )
     
     st.divider()
     
-    st.html("""
-    <div style="color: #DC2626; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-        <span>🔍</span> Anomaly Detection
-    </div>
-    """)
+    st.subheader(":material/group: Demographics", anchor=False)
     
+    show_demographics = st.toggle(
+        "Enable Demographic Layers",
+        value=st.session_state.show_demographics,
+        help="Show population segments on the map"
+    )
+    if show_demographics != st.session_state.show_demographics:
+        st.session_state.show_demographics = show_demographics
+    
+    selected_ages = []
+    selected_genders = []
+    selected_nationalities = []
+    
+    if st.session_state.show_demographics:
+        st.caption("Select segments to overlay on map:")
+        
+        selected_ages = st.multiselect(
+            "Age Groups",
+            options=AGE_GROUPS,
+            default=[],
+            help="Select age groups to display"
+        )
+        
+        selected_genders = st.multiselect(
+            "Gender",
+            options=GENDERS,
+            default=[],
+            help="Select genders to display"
+        )
+        
+        selected_nationalities = st.multiselect(
+            "Nationality",
+            options=NATIONALITIES,
+            default=[],
+            help="Select nationalities to display"
+        )
+        
+        filter_parts = []
+        if selected_ages:
+            filter_parts.append(f"{len(selected_ages)} age(s)")
+        if selected_genders:
+            filter_parts.append(f"{len(selected_genders)} gender(s)")
+        if selected_nationalities:
+            filter_parts.append(f"{len(selected_nationalities)} nationality(ies)")
+        if filter_parts:
+            st.caption(f"Filtering: {' + '.join(filter_parts)}")
+    
+    st.divider()
+    
+    st.subheader(":material/layers: Visual Layers", anchor=False)
+    
+    show_pois = st.toggle(
+        "📍 Points of Interest",
+        value=st.session_state.show_pois,
+        help="Show airports, malls, stadiums"
+    )
+    if show_pois != st.session_state.show_pois:
+        st.session_state.show_pois = show_pois
+    
+    show_flow_arcs = st.toggle(
+        "🌊 Flow Arcs",
+        value=st.session_state.show_flow_arcs,
+        help="Show movement patterns between zones"
+    )
+    if show_flow_arcs != st.session_state.show_flow_arcs:
+        st.session_state.show_flow_arcs = show_flow_arcs
+    
+    show_hotspots = st.toggle(
+        "🔥 Pulsing Hotspots",
+        value=st.session_state.show_hotspots,
+        help="Highlight high-traffic areas with pulse effect"
+    )
+    if show_hotspots != st.session_state.show_hotspots:
+        st.session_state.show_hotspots = show_hotspots
+    
+    st.divider()
+    
+    st.subheader(":material/warning: Anomaly Detection", anchor=False)
     show_anomalies = st.toggle(
-        "Show Anomalies",
+        "Highlight Anomalies",
         value=st.session_state.show_anomalies,
-        help="Highlight unusual traffic patterns in red"
+        help="Show unusual traffic patterns in red"
     )
     
     if show_anomalies != st.session_state.show_anomalies:
@@ -371,10 +422,12 @@ with st.sidebar:
         st.rerun()
     
     if st.session_state.show_anomalies:
-        st.caption("🚨 Red hexagons indicate anomalous patterns")
+        st.caption(":material/error: Red hexagons = anomalies")
+
+current_city = st.session_state.selected_city if st.session_state.selected_city in CITY_CENTERS else selected_city
 
 with st.spinner("Loading hexagon data..."):
-    hex_df = get_hexagon_data(selected_city, selected_hour)
+    hex_df = get_hexagon_data(current_city, selected_hour)
 
 if len(hex_df) > 0:
     coords = hex_df['HEXAGON_ID'].apply(h3_to_lat_lon)
@@ -404,8 +457,8 @@ if len(hex_df) > 0:
         legend_label_low = "Short Dwell"
         legend_label_high = "Long Dwell"
     
-    if selected_city != "All Cities" and selected_city in CITY_CENTERS:
-        center = CITY_CENTERS[selected_city]
+    if current_city != "All Cities" and current_city in CITY_CENTERS:
+        center = CITY_CENTERS[current_city]
         view_lat, view_lon = center["lat"], center["lon"]
         zoom = 11
     else:
@@ -413,23 +466,69 @@ if len(hex_df) > 0:
         view_lon = hex_df['lon'].mean()
         zoom = 6
     
-    layer = pdk.Layer(
-        "H3HexagonLayer",
-        hex_df,
-        pickable=True,
-        stroked=True,
-        filled=True,
-        extruded=False,
-        get_hexagon="HEXAGON_ID",
-        get_fill_color=["color_r", "color_g", "color_b", "opacity"],
-        get_line_color=[30, 58, 95, 100],
-        line_width_min_pixels=1
-    )
+    layers = []
+    demographic_layers_info = []
     
-    layers = [layer]
+    has_demographics = st.session_state.show_demographics and (selected_ages or selected_genders or selected_nationalities)
+    
+    if not has_demographics:
+        layer = pdk.Layer(
+            "H3HexagonLayer",
+            hex_df,
+            pickable=True,
+            stroked=True,
+            filled=True,
+            extruded=False,
+            get_hexagon="HEXAGON_ID",
+            get_fill_color=["color_r", "color_g", "color_b", "opacity"],
+            get_line_color=[30, 58, 95, 100],
+            line_width_min_pixels=1
+        )
+        layers.append(layer)
+    
+    if has_demographics:
+        demo_df = get_combined_demographic_data(current_city, selected_hour, selected_ages, selected_genders, selected_nationalities)
+        if len(demo_df) > 0:
+            coords = demo_df['HEXAGON_ID'].apply(h3_to_lat_lon)
+            demo_df['lat'] = coords.apply(lambda x: x[0])
+            demo_df['lon'] = coords.apply(lambda x: x[1])
+            demo_df = demo_df.dropna(subset=['lat', 'lon'])
+            
+            max_traffic = demo_df['TRAFFIC_COUNT'].max()
+            demo_df['normalized'] = demo_df['TRAFFIC_COUNT'] / max_traffic
+            demo_df['color_r'] = (demo_df['normalized'] * 212 + (1 - demo_df['normalized']) * 8).astype(int)
+            demo_df['color_g'] = (demo_df['normalized'] * 175 + (1 - demo_df['normalized']) * 145).astype(int)
+            demo_df['color_b'] = (demo_df['normalized'] * 55 + (1 - demo_df['normalized']) * 178).astype(int)
+            demo_df['opacity'] = (demo_df['normalized'] * 200 + 55).astype(int)
+            
+            filter_label_parts = []
+            if selected_ages:
+                filter_label_parts.append(", ".join(selected_ages))
+            if selected_genders:
+                filter_label_parts.append(", ".join(selected_genders))
+            if selected_nationalities:
+                filter_label_parts.append(", ".join(selected_nationalities))
+            filter_label = " + ".join(filter_label_parts)
+            demo_df['demographic'] = filter_label
+            
+            demo_layer = pdk.Layer(
+                "H3HexagonLayer",
+                demo_df,
+                pickable=True,
+                stroked=True,
+                filled=True,
+                extruded=False,
+                get_hexagon="HEXAGON_ID",
+                get_fill_color=["color_r", "color_g", "color_b", "opacity"],
+                get_line_color=[255, 255, 255, 150],
+                line_width_min_pixels=1
+            )
+            layers.append(demo_layer)
+            demographic_layers_info.append({"name": filter_label, "color": "linear-gradient(90deg, #0891B2, #D4AF37)", "count": len(demo_df), "traffic": demo_df['TRAFFIC_COUNT'].sum()})
+    
     anomaly_df = pd.DataFrame()
     
-    if st.session_state.show_anomalies:
+    if st.session_state.show_anomalies and not has_demographics:
         anomaly_df = detect_anomalies(hex_df)
         if len(anomaly_df) > 0:
             anomaly_df['color_r'] = 220
@@ -451,70 +550,234 @@ if len(hex_df) > 0:
             )
             layers.append(anomaly_layer)
     
-    view_state = pdk.ViewState(
-        latitude=view_lat,
-        longitude=view_lon,
-        zoom=zoom,
-        pitch=0
-    )
+    if st.session_state.show_flow_arcs:
+        if has_demographics and 'demo_df' in dir() and len(demo_df) > 0:
+            arc_df = generate_flow_arcs(demo_df, current_city)
+            arc_source_color = [212, 175, 55, 200]
+            arc_target_color = [8, 145, 178, 200]
+        else:
+            arc_df = generate_flow_arcs(hex_df, current_city)
+            arc_source_color = [8, 145, 178, 200]
+            arc_target_color = [212, 175, 55, 200]
+        
+        if len(arc_df) > 0:
+            arc_df['width'] = (arc_df['flow_volume'] / arc_df['flow_volume'].max() * 8 + 2).astype(int)
+            
+            arc_layer = pdk.Layer(
+                "ArcLayer",
+                arc_df,
+                pickable=True,
+                get_source_position=["source_lon", "source_lat"],
+                get_target_position=["target_lon", "target_lat"],
+                get_source_color=arc_source_color,
+                get_target_color=arc_target_color,
+                get_width="width",
+                get_height=0.3,
+                great_circle=True,
+            )
+            layers.append(arc_layer)
+    
+    if st.session_state.show_hotspots:
+        if has_demographics and 'demo_df' in dir() and len(demo_df) > 0:
+            hotspot_df = generate_hotspots(demo_df)
+        else:
+            hotspot_df = generate_hotspots(hex_df)
+        
+        if len(hotspot_df) > 0:
+            hotspot_outer = pdk.Layer(
+                "ScatterplotLayer",
+                hotspot_df,
+                pickable=False,
+                opacity=0.3,
+                stroked=False,
+                filled=True,
+                get_position=["lon", "lat"],
+                get_fill_color=[212, 175, 55, 80],
+                get_radius="radius",
+                radius_min_pixels=20,
+                radius_max_pixels=100,
+            )
+            
+            hotspot_inner = pdk.Layer(
+                "ScatterplotLayer",
+                hotspot_df,
+                pickable=True,
+                opacity=0.7,
+                stroked=False,
+                filled=True,
+                get_position=["lon", "lat"],
+                get_fill_color=[220, 80, 40, 180],
+                get_radius="inner_radius",
+                radius_min_pixels=10,
+                radius_max_pixels=50,
+            )
+            
+            hotspot_core = pdk.Layer(
+                "ScatterplotLayer",
+                hotspot_df,
+                pickable=False,
+                opacity=1,
+                stroked=False,
+                filled=True,
+                get_position=["lon", "lat"],
+                get_fill_color=[255, 255, 255, 200],
+                get_radius=50,
+                radius_min_pixels=5,
+                radius_max_pixels=15,
+            )
+            
+            layers.extend([hotspot_outer, hotspot_inner, hotspot_core])
+    
+    if st.session_state.show_pois and current_city != "All Cities":
+        poi_df = get_pois_for_city(current_city)
+        if len(poi_df) > 0:
+            poi_df['color'] = poi_df['type'].apply(lambda t: {
+                'airport': [30, 144, 255, 220],
+                'mall': [255, 140, 0, 220],
+                'stadium': [50, 205, 50, 220],
+                'landmark': [148, 0, 211, 220],
+            }.get(t, [100, 100, 100, 200]))
+            
+            poi_layer = pdk.Layer(
+                "ScatterplotLayer",
+                poi_df,
+                pickable=True,
+                opacity=0.9,
+                stroked=True,
+                filled=True,
+                get_position=["lon", "lat"],
+                get_fill_color="color",
+                get_line_color=[255, 255, 255, 255],
+                get_radius=300,
+                radius_min_pixels=12,
+                radius_max_pixels=30,
+                line_width_min_pixels=2,
+            )
+            layers.append(poi_layer)
+            
+            text_layer = pdk.Layer(
+                "TextLayer",
+                poi_df,
+                pickable=False,
+                get_position=["lon", "lat"],
+                get_text="icon",
+                get_size=20,
+                get_color=[255, 255, 255, 255],
+                get_alignment_baseline="'center'",
+            )
+            layers.append(text_layer)
+    
+    view_state = pdk.ViewState(latitude=view_lat, longitude=view_lon, zoom=zoom, pitch=0)
     
     deck = pdk.Deck(
         layers=layers,
         initial_view_state=view_state,
         tooltip={
-            "html": "<b>Traffic:</b> {TRAFFIC_COUNT}<br/><b>Avg Dwell:</b> {AVG_DWELL:.1f} min",
+            "html": "<b>Traffic:</b> {TRAFFIC_COUNT}<br/><b>Avg Dwell:</b> {AVG_DWELL:.1f} min<br/><b>{demographic}</b>",
             "style": {"backgroundColor": "#1E3A5F", "color": "white", "borderRadius": "8px", "padding": "8px"}
         }
     )
     
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric("Hexagons Displayed", f"{len(hex_df):,}", border=True)
-    with col2:
+    active_layers = []
+    if has_demographics:
+        active_layers.append(f"👥 {len(demographic_layers_info)} Demographics")
+    if st.session_state.show_pois and current_city != "All Cities":
+        active_layers.append("📍 POIs")
+    if st.session_state.show_flow_arcs and not has_demographics:
+        active_layers.append("🌊 Flows")
+    if st.session_state.show_hotspots and not has_demographics:
+        active_layers.append("🔥 Hotspots")
+    if st.session_state.show_anomalies and not has_demographics:
+        active_layers.append("⚠️ Anomalies")
+    
+    with st.container(horizontal=True):
+        st.metric("Hexagons", f"{len(hex_df):,}", border=True)
         st.metric("Total Traffic", f"{hex_df['TRAFFIC_COUNT'].sum():,}", border=True)
-    with col3:
-        if st.session_state.show_anomalies and len(anomaly_df) > 0:
-            st.metric("Anomalies Detected", f"{len(anomaly_df)}", delta="⚠️", delta_color="inverse", border=True)
+        st.metric("Avg Dwell", f"{hex_df['AVG_DWELL'].mean():.1f} min", border=True)
+        if active_layers:
+            st.metric("Active Layers", " ".join(active_layers[:2]), border=True)
         else:
-            st.metric("Avg Dwell Time", f"{hex_df['AVG_DWELL'].mean():.1f} min", border=True)
+            st.metric("Peak Hex", f"{hex_df['TRAFFIC_COUNT'].max():,}", border=True)
     
     with st.container(border=True):
         st.pydeck_chart(deck, use_container_width=True, height=550)
     
-    st.html(f"""
-    <div class="legend-container">
-        <div class="legend-title">Color Legend</div>
-        <div class="legend-gradient" style="background: {legend_colors};"></div>
-        <div class="legend-labels">
-            <span>{legend_label_low}</span>
-            <span>{legend_label_high}</span>
-        </div>
-    </div>
-    """)
-    
-    if st.session_state.show_anomalies and len(anomaly_df) > 0:
-        st.html("""
-        <div style="margin-top: 1.5rem; padding: 1rem; background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%); border: 1px solid #FECACA; border-radius: 12px;">
-            <div style="color: #DC2626; font-weight: 600; font-size: 1rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
-                <span>🚨</span> Anomaly Analysis
-            </div>
+    if has_demographics and demographic_layers_info:
+        legend_items = " &nbsp;&nbsp; ".join([
+            f'<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:{d["color"]};margin-right:4px;"></span>{d["name"]}'
+            for d in demographic_layers_info
+        ])
+        st.html(f"""
+        <div style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.75rem 1rem;">
+            <div style="font-weight: 600; font-size: 0.85rem; color: #1E3A5F; margin-bottom: 0.5rem;">Demographic Layers</div>
+            <div style="font-size: 0.8rem; color: #334155;">{legend_items}</div>
         </div>
         """)
         
-        severity_icons = {3: "🔴", 2: "🟠", 1: "🟡"}
-        
-        for idx, row in anomaly_df.iterrows():
-            severity_icon = severity_icons.get(row['severity'], "⚪")
-            with st.expander(f"{severity_icon} {row['anomaly_type']} - Hex {row['HEXAGON_ID'][:12]}...", expanded=idx < 3):
-                col_a, col_b = st.columns(2)
-                with col_a:
-                    st.metric("Traffic Count", f"{row['TRAFFIC_COUNT']:,.0f}")
-                with col_b:
-                    st.metric("Avg Dwell", f"{row['AVG_DWELL']:.1f} min")
-                st.caption(f"📍 Location: {row['lat']:.4f}, {row['lon']:.4f}")
-                st.info(row['reasons'], icon="ℹ️")
+        with st.expander(":material/group: **Demographic Breakdown** - Traffic by segment", expanded=True):
+            demo_cols = st.columns(len(demographic_layers_info))
+            for i, demo in enumerate(demographic_layers_info):
+                with demo_cols[i]:
+                    st.markdown(f"<div style='text-align:center;'><span style='display:inline-block;width:16px;height:16px;border-radius:50%;background:{demo['color']};'></span></div>", unsafe_allow_html=True)
+                    st.metric(demo['name'], f"{demo['traffic']:,}", f"{demo['count']} hexagons", border=True)
+    else:
+        col_legend, col_info = st.columns([2, 1])
+        with col_legend:
+            st.html(f"""
+            <div style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.75rem 1rem;">
+                <div style="font-weight: 600; font-size: 0.85rem; color: #1E3A5F; margin-bottom: 0.5rem;">Color Legend</div>
+                <div style="height: 10px; border-radius: 5px; background: {legend_colors}; margin-bottom: 0.3rem;"></div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #64748b;">
+                    <span>{legend_label_low}</span>
+                    <span>{legend_label_high}</span>
+                </div>
+            </div>
+            """)
+        with col_info:
+            if st.session_state.show_pois or st.session_state.show_flow_arcs or st.session_state.show_hotspots:
+                st.html("""
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.5rem 0.75rem; font-size: 0.75rem;">
+                    <span style="color: #1E90FF;">●</span> Airport &nbsp;
+                    <span style="color: #FF8C00;">●</span> Mall &nbsp;
+                    <span style="color: #32CD32;">●</span> Stadium &nbsp;
+                    <span style="color: #9400D3;">●</span> Landmark
+                </div>
+                """)
+            else:
+                st.caption("H3 Resolution 9 hexagons (~174m edge). Zoom to explore.")
     
-    st.caption("H3 Resolution 9 hexagons (~174m edge length). Zoom and pan to explore different areas.")
+    if st.session_state.show_flow_arcs and not has_demographics:
+        with st.expander(":material/trending_up: **Flow Arc Details** - Movement patterns between zones", expanded=False):
+            arc_df = generate_flow_arcs(hex_df, current_city)
+            if len(arc_df) > 0:
+                st.dataframe(
+                    arc_df[['source_name', 'target_name', 'flow_volume']].rename(columns={
+                        'source_name': 'Origin',
+                        'target_name': 'Destination', 
+                        'flow_volume': 'Flow Volume'
+                    }),
+                    use_container_width=True,
+                    hide_index=True
+                )
     
+    if st.session_state.show_anomalies and len(anomaly_df) > 0 and not has_demographics:
+        with st.expander(f":material/warning: **{len(anomaly_df)} Anomalies Detected** - Click to expand", expanded=False):
+            severity_icons = {3: "🔴", 2: "🟠", 1: "🟡"}
+            
+            for idx, row in anomaly_df.head(5).iterrows():
+                severity_icon = severity_icons.get(row['severity'], "⚪")
+                with st.container(border=True):
+                    col1, col2, col3 = st.columns([2, 1, 1])
+                    with col1:
+                        st.markdown(f"**{severity_icon} {row['anomaly_type']}**")
+                        st.caption(f"Hex: `{row['HEXAGON_ID'][:16]}...`")
+                    with col2:
+                        st.metric("Traffic", f"{row['TRAFFIC_COUNT']:,.0f}")
+                    with col3:
+                        st.metric("Dwell", f"{row['AVG_DWELL']:.1f} min")
+                    st.caption(row['reasons'])
+            
+            if len(anomaly_df) > 5:
+                st.info(f"Showing top 5 of {len(anomaly_df)} anomalies")
 else:
-    st.warning("No data available for the selected filters. Try adjusting the city or hour.", icon="⚠️")
+    st.warning("No data available for the selected filters. Try adjusting the city or hour.", icon=":material/warning:")

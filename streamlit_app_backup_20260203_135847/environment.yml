@@ -1,0 +1,9 @@
+name: fusion_app
+channels:
+  - snowflake
+dependencies:
+  - streamlit
+  - snowflake-snowpark-python
+  - pandas
+  - pydeck
+  - h3-py

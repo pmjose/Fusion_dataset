@@ -1,4 +1,5 @@
 import streamlit as st
+from utils.styles import render_common_styles, FUSION_COLORS
 
 st.set_page_config(
     page_title="Fusion - Saudi Mobility Intelligence",
@@ -8,146 +9,187 @@ st.set_page_config(
 )
 
 st.logo("logo.jpg")
-
-FUSION_BLUE = "#1E3A5F"
-FUSION_TEAL = "#0891B2"
-FUSION_GOLD = "#D4AF37"
+render_common_styles()
 
 st.html("""
 <style>
-    /* =========================================
-       SIDEBAR STYLING
-       ========================================= */
-    
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%) !important;
-        border-right: 1px solid rgba(8, 145, 178, 0.2) !important;
+    .hero-section {
+        background: linear-gradient(135deg, #1E3A5F 0%, #0891B2 50%, #1E3A5F 100%);
+        background-size: 200% 200%;
+        animation: heroGradient 8s ease infinite;
+        padding: 2.5rem;
+        border-radius: 16px;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
     }
-    
-    [data-testid="stSidebar"] *,
-    [data-testid="stSidebar"] span,
-    [data-testid="stSidebar"] p,
-    [data-testid="stSidebar"] div,
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] .st-emotion-cache-1rtdyuf,
-    [data-testid="stSidebarNavItems"] span,
-    [data-testid="stSidebarNav"] span,
-    section[data-testid="stSidebar"] span {
-        color: #ffffff !important;
-        opacity: 1 !important;
+    @keyframes heroGradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
-    
-    [data-testid="stSidebar"] [data-testid="stLogo"] img {
-        border-radius: 12px !important;
-        padding: 8px !important;
-        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
-        transition: all 0.3s ease !important;
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        pointer-events: none;
     }
-    
-    [data-testid="stSidebar"] a {
-        color: #ffffff !important;
-        font-weight: 500 !important;
-        padding: 0.75rem 1rem !important;
-        border-radius: 10px !important;
-        margin: 0.25rem 0.5rem !important;
-        transition: all 0.3s ease !important;
-    }
-    
-    [data-testid="stSidebar"] a:hover {
-        background: linear-gradient(135deg, rgba(8, 145, 178, 0.2) 0%, rgba(30, 58, 95, 0.3) 100%) !important;
-        color: #ffffff !important;
-        transform: translateX(4px);
-    }
-    
-    /* =========================================
-       MAIN PAGE STYLES
-       ========================================= */
-    
-    .fusion-header {
-        background: linear-gradient(135deg, #1E3A5F 0%, #0891B2 100%);
-        padding: 2rem;
-        border-radius: 12px;
-        margin-bottom: 1.5rem;
-    }
-    .fusion-header h1 {
+    .hero-title {
         color: white;
         font-size: 2.5rem;
+        font-weight: 800;
         margin: 0;
-        font-weight: 700;
+        position: relative;
+        z-index: 1;
     }
-    .fusion-header p {
+    .hero-subtitle {
         color: rgba(255,255,255,0.9);
         font-size: 1.1rem;
-        margin: 0.5rem 0 0 0;
+        margin: 0.5rem 0 1rem 0;
+        position: relative;
+        z-index: 1;
     }
-    .partner-badge {
-        display: inline-block;
+    .hero-badges {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
+    }
+    .hero-badge {
         background: rgba(255,255,255,0.15);
-        padding: 0.3rem 0.8rem;
-        border-radius: 20px;
+        backdrop-filter: blur(10px);
         color: white;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
         font-size: 0.85rem;
-        margin: 0.3rem 0.3rem 0 0;
+        font-weight: 500;
+        border: 1px solid rgba(255,255,255,0.2);
     }
-    .offering-card {
-        background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+    .hero-badge.stc { background: rgba(30, 58, 95, 0.8); }
+    .hero-badge.mobily { background: rgba(8, 145, 178, 0.8); }
+    .hero-badge.zain { background: rgba(212, 175, 55, 0.8); }
+    
+    .product-card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
         border: 1px solid #e2e8f0;
-        border-radius: 10px;
-        padding: 1.2rem;
+        border-radius: 16px;
+        padding: 1.5rem;
         height: 100%;
-        transition: transform 0.2s, box-shadow 0.2s;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
     }
-    .offering-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    .product-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(180deg, #0891B2, #1E3A5F);
+        opacity: 0;
+        transition: opacity 0.3s ease;
     }
-    .offering-icon {
+    .product-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 16px 32px rgba(30, 58, 95, 0.12);
+        border-color: #0891B2;
+    }
+    .product-card:hover::before {
+        opacity: 1;
+    }
+    .product-icon {
         font-size: 2rem;
+        margin-bottom: 0.75rem;
+    }
+    .product-title {
+        color: #1E3A5F;
+        font-weight: 700;
+        font-size: 1.05rem;
         margin-bottom: 0.5rem;
     }
-    .offering-title {
-        color: #1E3A5F;
-        font-weight: 600;
-        font-size: 1rem;
-        margin-bottom: 0.3rem;
-    }
-    .offering-desc {
+    .product-desc {
         color: #64748b;
         font-size: 0.85rem;
-        line-height: 1.4;
+        line-height: 1.5;
+        margin-bottom: 1rem;
     }
-    .insight-table {
+    .product-tags {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+    }
+    .product-tag {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+    .product-tag.published { background: #d1fae5; color: #065f46; }
+    .product-tag.draft { background: #fef3c7; color: #92400e; }
+    .product-tag.type { background: #e0e7ff; color: #3730a3; }
+    
+    .spec-table {
         width: 100%;
         border-collapse: separate;
         border-spacing: 0;
+        margin-top: 1rem;
     }
-    .insight-table th {
-        background: #1E3A5F;
+    .spec-table th {
+        background: linear-gradient(135deg, #1E3A5F, #0891B2);
         color: white;
         padding: 0.8rem 1rem;
         text-align: left;
         font-weight: 500;
+        font-size: 0.85rem;
     }
-    .insight-table th:first-child { border-radius: 8px 0 0 0; }
-    .insight-table th:last-child { border-radius: 0 8px 0 0; }
-    .insight-table td {
-        padding: 0.8rem 1rem;
+    .spec-table th:first-child { border-radius: 8px 0 0 0; }
+    .spec-table th:last-child { border-radius: 0 8px 0 0; }
+    .spec-table td {
+        padding: 0.75rem 1rem;
         border-bottom: 1px solid #e2e8f0;
+        font-size: 0.85rem;
+        color: #475569;
     }
-    .insight-table tr:last-child td:first-child { border-radius: 0 0 0 8px; }
-    .insight-table tr:last-child td:last-child { border-radius: 0 0 8px 0; }
-    .insight-table tr:hover td { background: #f8fafc; }
+    .spec-table tr:last-child td:first-child { border-radius: 0 0 0 8px; }
+    .spec-table tr:last-child td:last-child { border-radius: 0 0 8px 0; }
+    .spec-table tr:hover td { background: #f8fafc; }
+    
+    .cta-section {
+        background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+        border: 2px solid #0891B2;
+        border-radius: 16px;
+        padding: 1.5rem 2rem;
+        text-align: center;
+        margin-top: 2rem;
+    }
+    .cta-section h3 {
+        color: #1E3A5F;
+        margin: 0 0 0.5rem 0;
+        font-size: 1.2rem;
+    }
+    .cta-section p {
+        color: #64748b;
+        margin: 0;
+        font-size: 0.9rem;
+    }
 </style>
 """)
 
 st.html("""
-<div style="padding-top: 0.5rem;">
-    <h1 style="color: #1E3A5F; margin: 0; font-size: 2.2rem;">Fusion</h1>
-    <p style="color: #64748b; margin: 0.2rem 0 0.5rem 0;">Saudi Arabia's Premier Mobility Intelligence Platform</p>
-    <span style="background: #1E3A5F; color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.75rem; margin-right: 0.3rem;">STC</span>
-    <span style="background: #0891B2; color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.75rem; margin-right: 0.3rem;">Mobily</span>
-    <span style="background: #D4AF37; color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.75rem;">Zain</span>
+<div class="hero-section">
+    <h1 class="hero-title">Fusion</h1>
+    <p class="hero-subtitle">Saudi Arabia's Premier Mobility Intelligence Platform</p>
+    <div class="hero-badges">
+        <span class="hero-badge stc">STC</span>
+        <span class="hero-badge mobily">Mobily</span>
+        <span class="hero-badge zain">Zain</span>
+        <span class="hero-badge">13 Cities</span>
+        <span class="hero-badge">4.2M+ Records</span>
+    </div>
 </div>
 """)
 
@@ -157,33 +199,46 @@ telecommunications providers, enabling powerful location-based analytics across 
 """)
 
 with st.container(horizontal=True):
-    st.metric("Total records", "4.2M+", border=True)
-    st.metric("Telco providers", "3", border=True)
-    st.metric("Cities covered", "13", border=True)
-    st.metric("Date range", "Jan 2026", border=True)
+    st.metric("Total Records", "4.2M+", border=True)
+    st.metric("Telco Partners", "3", border=True)
+    st.metric("Cities Covered", "13", border=True)
+    st.metric("Data Period", "Jan 2026", border=True)
 
-st.subheader("Data product offerings", anchor=False)
+st.subheader(":material/inventory_2: Data Product Catalog", anchor=False)
+st.caption("Aligned with TM Forum GB1086 Data Product Lifecycle Management (DPLM) v1.0")
 
 offerings = [
     {
         "icon": ":material/store:",
-        "title": "Retail & Commercial",
-        "desc": "Site selection, foot traffic analysis, competitor benchmarking"
+        "title": "Retail Mobility Insights",
+        "desc": "Site selection, foot traffic, competitor benchmarking",
+        "type": "Consumer-Aligned",
+        "status": "Published",
+        "page": "Analytics_Dashboard"
     },
     {
         "icon": ":material/account_balance:",
-        "title": "Government & Urban Planning", 
-        "desc": "Infrastructure planning, smart city initiatives, population density"
+        "title": "Urban Planning Analytics",
+        "desc": "Infrastructure planning, smart city, population density",
+        "type": "Consumer-Aligned",
+        "status": "Published",
+        "page": "Map_Visualization"
     },
     {
         "icon": ":material/flight:",
-        "title": "Tourism & Hospitality",
-        "desc": "Visitor flows, destination analytics, seasonal patterns"
+        "title": "Tourism Flow Data",
+        "desc": "Visitor flows, destination analytics, seasonal patterns",
+        "type": "Source-Aligned",
+        "status": "Published",
+        "page": "Analytics_Dashboard"
     },
     {
         "icon": ":material/directions_bus:",
-        "title": "Transportation",
-        "desc": "Commuter patterns, route optimization, peak hour analysis"
+        "title": "Transport Patterns",
+        "desc": "Commuter patterns, route optimization, peak hours",
+        "type": "Knowledge-Aligned",
+        "status": "Draft",
+        "page": "Data_Explorer"
     }
 ]
 
@@ -194,39 +249,66 @@ for i, offer in enumerate(offerings):
             st.markdown(f"### {offer['icon']}")
             st.markdown(f"**{offer['title']}**")
             st.caption(offer['desc'])
+            status_color = "#22c55e" if offer['status'] == "Published" else "#f59e0b"
+            st.html(f'''
+            <div class="product-tags">
+                <span class="product-tag {"published" if offer["status"] == "Published" else "draft"}">{offer["status"]}</span>
+                <span class="product-tag type">{offer["type"]}</span>
+            </div>
+            ''')
 
-st.subheader("Available insights", anchor=False)
+st.subheader(":material/description: Data Product Specification", anchor=False)
+st.caption("Following DATSIS principles: Discoverable, Addressable, Trustworthy, Self-describing, Interoperable, Secure")
 
 st.html("""
-<table class="insight-table">
+<table class="spec-table">
     <thead>
         <tr>
-            <th>Insight Category</th>
-            <th>Description</th>
+            <th style="width: 30%;">Attribute</th>
+            <th>Details</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td><strong>Foot Traffic Trends</strong></td>
-            <td>Hourly and daily traffic patterns across locations</td>
+            <td><strong>Domain Owner</strong></td>
+            <td>Telco Mobility Analytics Team</td>
         </tr>
         <tr>
-            <td><strong>Demographic Analysis</strong></td>
-            <td>Nationality, age, and gender breakdowns</td>
+            <td><strong>Data Contract</strong></td>
+            <td>SLA: 99.5% uptime | Freshness: Hourly refresh | Quality: >98% completeness</td>
         </tr>
         <tr>
-            <td><strong>Dwell Time Hotspots</strong></td>
-            <td>Areas with highest visitor engagement</td>
+            <td><strong>Access Patterns</strong></td>
+            <td>SQL (Snowflake), REST API, Streamlit Dashboard</td>
         </tr>
         <tr>
-            <td><strong>Origin-Destination Flows</strong></td>
-            <td>Cross-city movement patterns</td>
+            <td><strong>Lineage</strong></td>
+            <td>STC + Mobily + Zain raw feeds &rarr; Anonymization &rarr; Aggregation &rarr; H3 Hexagons</td>
+        </tr>
+        <tr>
+            <td><strong>Version</strong></td>
+            <td>v1.0.0 (Jan 2026) | Lifecycle: Published</td>
         </tr>
     </tbody>
 </table>
 """)
 
-st.caption("Navigate using the sidebar to explore data, view analytics, visualize maps, or export data packages.")
+with st.expander(":material/info: Data Product Types (TM Forum DPLM)"):
+    st.markdown("""
+    | Type | Description |
+    |------|-------------|
+    | **Source-Aligned** | Raw data with minimal transformation, preserves fidelity to source systems |
+    | **Consumer-Aligned** | Optimized for specific use cases, aggregated and enriched for direct consumption |
+    | **Knowledge-Aligned** | Semantic models and knowledge graphs for AI/ML reasoning |
+    | **Standard-Aligned** | Conforms to TM Forum SID/ODA standards for cross-operator interoperability |
+    """)
+
+st.html("""
+<div class="cta-section">
+    <h3>:material/rocket_launch: Ready to Explore?</h3>
+    <p>Navigate using the sidebar to explore data, view analytics, visualize maps, or export data packages.</p>
+</div>
+""")
 
 with st.sidebar:
     st.caption("Data sourced from STC, Mobily, and Zain mobility networks. All data is anonymized and aggregated.")
