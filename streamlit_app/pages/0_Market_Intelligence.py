@@ -544,12 +544,13 @@ st.html("""
 </div>
 """)
 
-tab_intro, tab_trends, tab_demand, tab_pricing, tab_distribution = st.tabs([
+tab_intro, tab_trends, tab_demand, tab_pricing, tab_distribution, tab_references = st.tabs([
     "📋 Intro",
     "📈 Data Product Trends",
     "🎯 Market Demand",
     "💰 Pricing Models",
-    "🌐 Data Distribution"
+    "🌐 Data Distribution",
+    "📚 References"
 ])
 
 # =============================================================================
@@ -2141,5 +2142,95 @@ with tab_distribution:
         <strong>Streamlit in Snowflake</strong>, integrated with ministry SSO via <strong>SAML/OAuth</strong>, 
         where each ministry only sees entitled data via <strong>Row Access Policies</strong>. 
         Snowflake stays invisible; Fusion delivers governed insights through a trusted, branded experience.</p>
+    </div>
+    """)
+
+# =============================================================================
+# TAB 6: REFERENCES
+# =============================================================================
+with tab_references:
+    st.html("""
+    <div class="section-header">
+        <h3>📚 Industry References & Case Studies</h3>
+        <div class="section-line"></div>
+    </div>
+    """)
+    
+    st.markdown("""
+    Below are examples of how telcos and satellite operators are monetizing their data through 
+    marketplace datasets. These serve as reference models for Fusion's data product strategy.
+    """)
+    
+    st.html("""
+    <style>
+        .reference-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        .reference-card h4 {
+            color: #1E3A5F;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+        .reference-card p {
+            color: #64748b;
+            margin: 0;
+            line-height: 1.6;
+        }
+        .reference-image-container {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            animation: fadeInUp 0.6s ease-out 0.2s backwards;
+        }
+        .reference-caption {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+    </style>
+    """)
+    
+    st.html("""
+    <div class="reference-card">
+        <h4>🌐 Telia & OneWeb - Snowflake Marketplace Case Study</h4>
+        <p>
+            This reference from Snowflake showcases how <strong>Telia</strong> (Nordic telco) and 
+            <strong>OneWeb/Eutelsat</strong> (satellite operator) are using the Snowflake Marketplace 
+            to distribute crowd insights and satellite operations data to partners. Key takeaways:
+        </p>
+        <ul style="color: #64748b; margin-top: 0.75rem; line-height: 1.8;">
+            <li><strong>Telia:</strong> Mobile crowd insights for real estate planning & retail optimization</li>
+            <li><strong>Revenue Model:</strong> Free sample datasets → Platform access → Enhanced data at cost</li>
+            <li><strong>OneWeb:</strong> Satellite fleet data for coverage analysis & outage prevention</li>
+            <li><strong>Partner Strategy:</strong> Free sharing with mutual benefit, leading to new contracts</li>
+        </ul>
+    </div>
+    """)
+    
+    st.image("telia_oneweb_reference.png", use_container_width=True)
+    
+    st.html("""
+    <div class="reference-caption">
+        <strong>Source:</strong> Snowflake Inc. © 2025 — Telia & OneWeb Marketplace Datasets for Crowd Insights & Partner Operations
+    </div>
+    """)
+    
+    st.html("""
+    <div class="key-insight">
+        <p>💡 <strong>Relevance to Fusion:</strong> Telia's approach of offering mobile crowd insights 
+        for real estate and retail planning directly parallels Fusion's mobility data product strategy. 
+        The "free sample → platform → premium" revenue model is a proven pattern that Fusion can adapt 
+        for the Saudi market, especially for government and giga-project clients.</p>
     </div>
     """)
