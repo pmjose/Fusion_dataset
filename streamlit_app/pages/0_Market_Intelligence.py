@@ -1000,6 +1000,184 @@ with tab_intro:
 with tab_trends:
     st.html("""
     <div class="section-header">
+        <h3>📦 What is a Data Product?</h3>
+        <div class="section-line"></div>
+    </div>
+    """)
+    
+    st.html("""
+    <style>
+        .definition-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdfa 100%);
+            border: 2px solid #0891B2;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .definition-box::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 6rem;
+            color: rgba(8, 145, 178, 0.1);
+            font-family: Georgia, serif;
+        }
+        .definition-box h4 {
+            color: #0891B2;
+            font-size: 1.1rem;
+            margin: 0 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .definition-box p {
+            color: #1E3A5F;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+        .definition-box .source {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(8, 145, 178, 0.2);
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        
+        .telco-interpretation {
+            background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
+            border-left: 4px solid #F59E0B;
+            border-radius: 0 12px 12px 0;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .telco-interpretation h4 {
+            color: #92400e;
+            font-size: 1rem;
+            margin: 0 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .telco-interpretation ul {
+            color: #78350f;
+            margin: 0;
+            padding-left: 1.5rem;
+            line-height: 1.9;
+        }
+        .telco-interpretation li {
+            margin-bottom: 0.5rem;
+        }
+        .telco-interpretation .highlight {
+            background: rgba(245, 158, 11, 0.2);
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        @media (max-width: 900px) {
+            .components-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        .component-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .component-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(30, 58, 95, 0.1);
+            border-color: #0891B2;
+        }
+        .component-card .icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        .component-card .title {
+            color: #1E3A5F;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+        .component-card .desc {
+            color: #64748b;
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+    </style>
+    """)
+    
+    st.html("""
+    <div class="definition-box">
+        <h4>❄️ Snowflake's Definition</h4>
+        <p>A <strong>Data Product</strong> is a curated, governed, and reusable collection of data assets 
+        designed to deliver specific value to a defined set of consumers. Unlike raw data exports, a data product 
+        is <strong>self-describing</strong> (with metadata, documentation, and quality metrics), 
+        <strong>access-controlled</strong> (with built-in governance and privacy), and 
+        <strong>consumption-ready</strong> (optimized for specific use cases, not general-purpose dumps).</p>
+        <p style="margin-top: 1rem;">Data products treat data as a <strong>product with a lifecycle</strong> — 
+        they are versioned, maintained, monitored, and improved over time based on consumer feedback and usage patterns.</p>
+        <div class="source">
+            📚 Source: Snowflake Data Cloud Concepts — <a href="https://www.snowflake.com/guides/what-is-a-data-product/" target="_blank" style="color: #0891B2;">snowflake.com/guides/what-is-a-data-product</a>
+        </div>
+    </div>
+    """)
+    
+    st.html("""
+    <div class="telco-interpretation">
+        <h4>📡 What This Means for Telcos</h4>
+        <ul>
+            <li><strong>NOT raw CDRs or network logs</strong> — Instead, <span class="highlight">aggregated, anonymized insights</span> derived from network data (mobility patterns, footfall counts, dwell times)</li>
+            <li><strong>NOT one-off data dumps</strong> — Instead, <span class="highlight">continuously refreshed feeds</span> with SLAs, freshness guarantees, and quality monitoring</li>
+            <li><strong>NOT "take it or leave it"</strong> — Instead, <span class="highlight">tiered products</span> by geography, granularity, history depth, and use case (e.g., Riyadh Daily vs. KSA Weekly)</li>
+            <li><strong>NOT uncontrolled sharing</strong> — Instead, <span class="highlight">privacy-safe delivery</span> via clean rooms, differential privacy, and k-anonymity thresholds</li>
+            <li><strong>NOT just data</strong> — Instead, <span class="highlight">data + AI models + APIs</span> (e.g., "Predict footfall for this location" as a service, not just historical counts)</li>
+        </ul>
+    </div>
+    """)
+    
+    st.html("""
+    <div class="components-grid">
+        <div class="component-card">
+            <div class="icon">📊</div>
+            <div class="title">Curated Data</div>
+            <div class="desc">Aggregated, cleaned, and validated — not raw network events</div>
+        </div>
+        <div class="component-card">
+            <div class="icon">🔒</div>
+            <div class="title">Built-in Governance</div>
+            <div class="desc">Access policies, audit trails, and privacy controls embedded</div>
+        </div>
+        <div class="component-card">
+            <div class="icon">📖</div>
+            <div class="title">Self-Documenting</div>
+            <div class="desc">Metadata, schemas, lineage, and quality metrics included</div>
+        </div>
+        <div class="component-card">
+            <div class="icon">🎯</div>
+            <div class="title">Use-Case Ready</div>
+            <div class="desc">Optimized for specific outcomes (retail, transport, government)</div>
+        </div>
+    </div>
+    """)
+    
+    st.markdown("---")
+    
+    st.html("""
+    <div class="section-header">
         <h3>🔄 Three Big Shifts in Telco Data Products</h3>
         <div class="section-line"></div>
     </div>
