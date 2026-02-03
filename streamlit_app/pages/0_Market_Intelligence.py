@@ -1138,7 +1138,7 @@ with tab_trends:
     
     st.html("""
     <div class="telco-interpretation">
-        <h4>📡 What This Means for Telcos</h4>
+        <h4>📡 What This Means in the Telco World</h4>
         <ul>
             <li><strong>NOT raw CDRs or network logs</strong> — Instead, <span class="highlight">aggregated, anonymized insights</span> derived from network data (mobility patterns, footfall counts, dwell times)</li>
             <li><strong>NOT one-off data dumps</strong> — Instead, <span class="highlight">continuously refreshed feeds</span> with SLAs, freshness guarantees, and quality monitoring</li>
