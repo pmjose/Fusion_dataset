@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 import pydeck as pdk
 import h3
 from snowflake.snowpark.context import get_active_session
@@ -6,6 +7,69 @@ from snowflake.snowpark.context import get_active_session
 st.set_page_config(page_title="Map Visualization | Fusion", page_icon="logo.jpg", layout="wide")
 
 st.logo("logo.jpg")
+
+if 'show_anomalies' not in st.session_state:
+    st.session_state.show_anomalies = False
+
+def detect_anomalies(df):
+    """Detect anomalies based on statistical thresholds - returns anomaly df with reasons"""
+    anomalies = []
+    
+    traffic_mean = df['TRAFFIC_COUNT'].mean()
+    traffic_std = df['TRAFFIC_COUNT'].std()
+    dwell_mean = df['AVG_DWELL'].mean()
+    dwell_std = df['AVG_DWELL'].std()
+    
+    traffic_high_thresh = traffic_mean + 2 * traffic_std
+    traffic_low_thresh = max(traffic_mean - 1.5 * traffic_std, df['TRAFFIC_COUNT'].quantile(0.05))
+    dwell_high_thresh = dwell_mean + 2 * dwell_std
+    dwell_low_thresh = max(dwell_mean - 1.5 * dwell_std, 1)
+    
+    for _, row in df.iterrows():
+        reasons = []
+        severity = 0
+        anomaly_type = None
+        
+        high_traffic = row['TRAFFIC_COUNT'] > traffic_high_thresh
+        low_traffic = row['TRAFFIC_COUNT'] < traffic_low_thresh
+        high_dwell = row['AVG_DWELL'] > dwell_high_thresh
+        low_dwell = row['AVG_DWELL'] < dwell_low_thresh
+        
+        if high_traffic and high_dwell:
+            anomaly_type = "Congestion Hotspot"
+            reasons.append(f"Traffic {row['TRAFFIC_COUNT']:,.0f} ({((row['TRAFFIC_COUNT']-traffic_mean)/traffic_std):.1f}σ above avg)")
+            reasons.append(f"Dwell {row['AVG_DWELL']:.1f}min ({((row['AVG_DWELL']-dwell_mean)/dwell_std):.1f}σ above avg)")
+            severity = 3
+        elif high_traffic and low_dwell:
+            anomaly_type = "Rapid Transit Zone"
+            reasons.append(f"High traffic ({row['TRAFFIC_COUNT']:,.0f}) but very short dwell ({row['AVG_DWELL']:.1f}min)")
+            severity = 2
+        elif low_traffic and high_dwell:
+            anomaly_type = "Unusual Gathering"
+            reasons.append(f"Low traffic ({row['TRAFFIC_COUNT']:,.0f}) but extended dwell ({row['AVG_DWELL']:.1f}min)")
+            severity = 2
+        elif high_traffic:
+            anomaly_type = "Traffic Spike"
+            reasons.append(f"Traffic {((row['TRAFFIC_COUNT']-traffic_mean)/traffic_std):.1f}σ above average")
+            severity = 1
+        elif high_dwell:
+            anomaly_type = "Extended Dwell"
+            reasons.append(f"Dwell time {((row['AVG_DWELL']-dwell_mean)/dwell_std):.1f}σ above average")
+            severity = 1
+        
+        if anomaly_type:
+            anomalies.append({
+                'HEXAGON_ID': row['HEXAGON_ID'],
+                'lat': row['lat'],
+                'lon': row['lon'],
+                'TRAFFIC_COUNT': row['TRAFFIC_COUNT'],
+                'AVG_DWELL': row['AVG_DWELL'],
+                'anomaly_type': anomaly_type,
+                'reasons': " | ".join(reasons),
+                'severity': severity
+            })
+    
+    return pd.DataFrame(anomalies) if anomalies else pd.DataFrame()
 
 st.html("""
 <style>
@@ -287,6 +351,27 @@ with st.sidebar:
         options=["Traffic Density", "Dwell Time"],
         index=0
     )
+    
+    st.divider()
+    
+    st.html("""
+    <div style="color: #DC2626; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span>🔍</span> Anomaly Detection
+    </div>
+    """)
+    
+    show_anomalies = st.toggle(
+        "Show Anomalies",
+        value=st.session_state.show_anomalies,
+        help="Highlight unusual traffic patterns in red"
+    )
+    
+    if show_anomalies != st.session_state.show_anomalies:
+        st.session_state.show_anomalies = show_anomalies
+        st.rerun()
+    
+    if st.session_state.show_anomalies:
+        st.caption("🚨 Red hexagons indicate anomalous patterns")
 
 with st.spinner("Loading hexagon data..."):
     hex_df = get_hexagon_data(selected_city, selected_hour)
@@ -341,6 +426,31 @@ if len(hex_df) > 0:
         line_width_min_pixels=1
     )
     
+    layers = [layer]
+    anomaly_df = pd.DataFrame()
+    
+    if st.session_state.show_anomalies:
+        anomaly_df = detect_anomalies(hex_df)
+        if len(anomaly_df) > 0:
+            anomaly_df['color_r'] = 220
+            anomaly_df['color_g'] = 38
+            anomaly_df['color_b'] = 38
+            anomaly_df['opacity'] = 230
+            
+            anomaly_layer = pdk.Layer(
+                "H3HexagonLayer",
+                anomaly_df,
+                pickable=True,
+                stroked=True,
+                filled=True,
+                extruded=False,
+                get_hexagon="HEXAGON_ID",
+                get_fill_color=["color_r", "color_g", "color_b", "opacity"],
+                get_line_color=[180, 20, 20, 200],
+                line_width_min_pixels=2
+            )
+            layers.append(anomaly_layer)
+    
     view_state = pdk.ViewState(
         latitude=view_lat,
         longitude=view_lon,
@@ -349,7 +459,7 @@ if len(hex_df) > 0:
     )
     
     deck = pdk.Deck(
-        layers=[layer],
+        layers=layers,
         initial_view_state=view_state,
         tooltip={
             "html": "<b>Traffic:</b> {TRAFFIC_COUNT}<br/><b>Avg Dwell:</b> {AVG_DWELL:.1f} min",
@@ -363,7 +473,10 @@ if len(hex_df) > 0:
     with col2:
         st.metric("Total Traffic", f"{hex_df['TRAFFIC_COUNT'].sum():,}", border=True)
     with col3:
-        st.metric("Avg Dwell Time", f"{hex_df['AVG_DWELL'].mean():.1f} min", border=True)
+        if st.session_state.show_anomalies and len(anomaly_df) > 0:
+            st.metric("Anomalies Detected", f"{len(anomaly_df)}", delta="⚠️", delta_color="inverse", border=True)
+        else:
+            st.metric("Avg Dwell Time", f"{hex_df['AVG_DWELL'].mean():.1f} min", border=True)
     
     with st.container(border=True):
         st.pydeck_chart(deck, use_container_width=True, height=550)
@@ -378,6 +491,28 @@ if len(hex_df) > 0:
         </div>
     </div>
     """)
+    
+    if st.session_state.show_anomalies and len(anomaly_df) > 0:
+        st.html("""
+        <div style="margin-top: 1.5rem; padding: 1rem; background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%); border: 1px solid #FECACA; border-radius: 12px;">
+            <div style="color: #DC2626; font-weight: 600; font-size: 1rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span>🚨</span> Anomaly Analysis
+            </div>
+        </div>
+        """)
+        
+        severity_icons = {3: "🔴", 2: "🟠", 1: "🟡"}
+        
+        for idx, row in anomaly_df.iterrows():
+            severity_icon = severity_icons.get(row['severity'], "⚪")
+            with st.expander(f"{severity_icon} {row['anomaly_type']} - Hex {row['HEXAGON_ID'][:12]}...", expanded=idx < 3):
+                col_a, col_b = st.columns(2)
+                with col_a:
+                    st.metric("Traffic Count", f"{row['TRAFFIC_COUNT']:,.0f}")
+                with col_b:
+                    st.metric("Avg Dwell", f"{row['AVG_DWELL']:.1f} min")
+                st.caption(f"📍 Location: {row['lat']:.4f}, {row['lon']:.4f}")
+                st.info(row['reasons'], icon="ℹ️")
     
     st.caption("H3 Resolution 9 hexagons (~174m edge length). Zoom and pan to explore different areas.")
     
