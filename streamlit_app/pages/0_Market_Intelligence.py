@@ -961,77 +961,158 @@ with tab_distribution:
     
     st.markdown("""
     All options use **Snowflake as Fusion's platform** but abstract it from the end consumer. 
-    Here's the menu of distribution options:
+    Here's the menu of distribution options with the specific Snowflake features that enable each:
     """)
     
-    col1, col2 = st.columns(2)
+    # Option 1: Reader Accounts
+    with st.container(border=True):
+        col_icon, col_content = st.columns([1, 11])
+        with col_icon:
+            st.html("""<div class="distribution-icon">👤</div>""")
+        with col_content:
+            st.markdown("### Reader-Style Access")
+            st.markdown("""
+            Fusion hosts the data in Snowflake and provisions governed, read-only endpoints for 
+            agencies or enterprises. The consumer doesn't need their own Snowflake contract; 
+            Fusion controls the account, roles, policies, and pays for compute.
+            """)
+        
+        st.html("""<div class="distribution-tag">Best for: Government entities who want dashboards/SQL</div>""")
+        
+        st.markdown("**Snowflake Features:**")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("""
+            - **Reader Accounts** — Managed accounts Fusion creates for consumers; no separate Snowflake contract needed
+            - **Resource Monitors** — Set compute budgets per consumer to control costs
+            - **Network Policies** — Restrict access by IP range for security
+            """)
+        with col2:
+            st.markdown("""
+            - **Role-Based Access Control (RBAC)** — Fine-grained permissions per user/group
+            - **Object Tagging** — Classify data sensitivity for governance
+            - **Query History & Access History** — Full audit trail of who accessed what
+            """)
     
-    with col1:
-        st.html("""
-        <div class="distribution-option" style="animation-delay: 0.1s; margin-bottom: 1rem;">
-            <div class="distribution-icon">👤</div>
-            <div class="distribution-title">Reader-Style Access</div>
-            <div class="distribution-desc">
-                Fusion hosts the data in Snowflake and provisions governed, read-only endpoints for 
-                agencies or enterprises. The consumer doesn't need their own Snowflake contract; 
-                Fusion controls the account, roles, policies, and pays for compute.
-            </div>
-            <div class="distribution-tag">Best for: Government entities who want dashboards/SQL</div>
-        </div>
-        """)
+    # Option 2: Streamlit Apps / Portals
+    with st.container(border=True):
+        col_icon, col_content = st.columns([1, 11])
+        with col_icon:
+            st.html("""<div class="distribution-icon">📱</div>""")
+        with col_content:
+            st.markdown("### \"Powered-by Fusion\" Applications & Portals")
+            st.markdown("""
+            Build web or mobile apps (e.g., city operations dashboard, tourism insights portal, 
+            government analytics cockpit) where Snowflake is the backend and the user only sees 
+            Fusion's UI. For KSA, this could be a "Fusion Data Exchange Portal" with SSO.
+            """)
         
-        st.html("""
-        <div class="distribution-option" style="animation-delay: 0.3s; margin-bottom: 1rem;">
-            <div class="distribution-icon">🔌</div>
-            <div class="distribution-title">APIs and Services on Top of Snowflake</div>
-            <div class="distribution-desc">
-                Expose REST/GraphQL APIs for queries like "give me today's footfall by district" or 
-                "score this list of locations", implemented via services that query Snowflake. 
-                API usage (pay-per-call) is a core revenue stream.
-            </div>
-            <div class="distribution-tag">Best for: Developers and system integrations</div>
-        </div>
-        """)
+        st.html("""<div class="distribution-tag">Best for: Business users and ministries</div>""")
         
-        st.html("""
-        <div class="distribution-option" style="animation-delay: 0.5s;">
-            <div class="distribution-icon">📁</div>
-            <div class="distribution-title">Files / Object-Store Exports</div>
-            <div class="distribution-desc">
-                If a specific agency can only consume files (CSV/Parquet in S3/Blob), Fusion can 
-                schedule governed exports from Snowflake. This is the least powerful option 
-                (no live data, harder to govern/audit).
-            </div>
-            <div class="distribution-tag warning">Fallback option — limited governance</div>
-        </div>
-        """)
+        st.markdown("**Snowflake Features:**")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("""
+            - **Streamlit in Snowflake** — Build and host Python apps directly in Snowflake; no external infra needed
+            - **Snowflake Native Apps** — Package apps + data as installable products consumers run in their account
+            - **Snowsight Dashboards** — No-code dashboards with filters, charts, and sharing
+            """)
+        with col2:
+            st.markdown("""
+            - **OAuth / SAML SSO** — Integrate with ministry identity providers (Azure AD, Okta, etc.)
+            - **Row Access Policies** — Each ministry sees only their entitled data automatically
+            - **Secure Views** — Expose curated datasets without revealing underlying tables
+            """)
     
-    with col2:
-        st.html("""
-        <div class="distribution-option" style="animation-delay: 0.2s; margin-bottom: 1rem;">
-            <div class="distribution-icon">📱</div>
-            <div class="distribution-title">"Powered-by Fusion" Applications & Portals</div>
-            <div class="distribution-desc">
-                Build web or mobile apps (e.g., city operations dashboard, tourism insights portal, 
-                government analytics cockpit) where Snowflake is the backend and the user only sees 
-                Fusion's UI. For KSA, this could be a "Fusion Data Exchange Portal" with SSO.
-            </div>
-            <div class="distribution-tag">Best for: Business users and ministries</div>
-        </div>
-        """)
+    # Option 3: APIs
+    with st.container(border=True):
+        col_icon, col_content = st.columns([1, 11])
+        with col_icon:
+            st.html("""<div class="distribution-icon">🔌</div>""")
+        with col_content:
+            st.markdown("### APIs and Services on Top of Snowflake")
+            st.markdown("""
+            Expose REST/GraphQL APIs for queries like "give me today's footfall by district" or 
+            "score this list of locations", implemented via services that query Snowflake. 
+            API usage (pay-per-call) is a core revenue stream.
+            """)
         
-        st.html("""
-        <div class="distribution-option" style="animation-delay: 0.4s;">
-            <div class="distribution-icon">🔒</div>
-            <div class="distribution-title">Clean Rooms for Joint Analysis</div>
-            <div class="distribution-desc">
-                Use Snowflake Clean Rooms so government agencies can run approved queries that join 
-                their data with Fusion's, without ever exchanging raw PII. Access can be via their 
-                tools or a simple front-end; governed products with row/masking policies attached.
-            </div>
-            <div class="distribution-tag">Best for: Privacy-sensitive joint analytics</div>
-        </div>
-        """)
+        st.html("""<div class="distribution-tag">Best for: Developers and system integrations</div>""")
+        
+        st.markdown("**Snowflake Features:**")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("""
+            - **Snowflake REST API** — Native SQL API for programmatic access with OAuth/key-pair auth
+            - **Snowpark Container Services** — Deploy custom API containers (FastAPI, Flask) inside Snowflake
+            - **External Functions** — Call external ML models or services from SQL
+            """)
+        with col2:
+            st.markdown("""
+            - **Snowflake Connector for Python/Java/.NET** — Native drivers for any backend
+            - **Usage Metering** — Track API calls per consumer for billing
+            - **Warehouse Auto-Suspend/Resume** — Pay only when queries run
+            """)
+    
+    # Option 4: Clean Rooms
+    with st.container(border=True):
+        col_icon, col_content = st.columns([1, 11])
+        with col_icon:
+            st.html("""<div class="distribution-icon">🔒</div>""")
+        with col_content:
+            st.markdown("### Clean Rooms for Joint Analysis")
+            st.markdown("""
+            Use Snowflake Clean Rooms so government agencies can run approved queries that join 
+            their data with Fusion's, without ever exchanging raw PII. Access can be via their 
+            tools or a simple front-end; governed products with row/masking policies attached.
+            """)
+        
+        st.html("""<div class="distribution-tag">Best for: Privacy-sensitive joint analytics</div>""")
+        
+        st.markdown("**Snowflake Features:**")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("""
+            - **Snowflake Data Clean Rooms** — Pre-built templates for secure overlap analysis, attribution, lookalikes
+            - **Secure Data Sharing** — Share live data without copying; consumer queries Fusion's tables in-place
+            - **Differential Privacy** — Add statistical noise to prevent re-identification
+            """)
+        with col2:
+            st.markdown("""
+            - **Dynamic Data Masking** — Mask PII columns based on consumer role (e.g., show city but hide exact lat/lon)
+            - **Aggregation Policies** — Enforce minimum group sizes (e.g., no results with <100 people)
+            - **Projection Policies** — Control which columns each consumer can select
+            """)
+    
+    # Option 5: File Exports
+    with st.container(border=True):
+        col_icon, col_content = st.columns([1, 11])
+        with col_icon:
+            st.html("""<div class="distribution-icon">📁</div>""")
+        with col_content:
+            st.markdown("### Files / Object-Store Exports")
+            st.markdown("""
+            If a specific agency can only consume files (CSV/Parquet in S3/Blob), Fusion can 
+            schedule governed exports from Snowflake. This is the least powerful option 
+            (no live data, harder to govern/audit).
+            """)
+        
+        st.html("""<div class="distribution-tag warning">Fallback option — limited governance</div>""")
+        
+        st.markdown("**Snowflake Features:**")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("""
+            - **COPY INTO (Unload)** — Export query results to S3, Azure Blob, or GCS in CSV/Parquet/JSON
+            - **Tasks & Streams** — Schedule automated exports on data changes or time intervals
+            - **External Stages** — Managed connection to cloud storage with encryption
+            """)
+        with col2:
+            st.markdown("""
+            - **Storage Integration** — Secure, credential-free access to cloud buckets
+            - **Data Retention Policies** — Auto-delete old exports after N days
+            - **File Format Options** — Compression (gzip, snappy), partitioning, headers
+            """)
     
     st.html("""
     <div class="section-header">
@@ -1041,11 +1122,11 @@ with tab_distribution:
     """)
     
     comparison_data = pd.DataFrame({
-        'Method': ['Reader-Style Access', 'Powered-by Fusion Portals', 'REST/GraphQL APIs', 'Clean Rooms', 'File Exports'],
+        'Method': ['Reader Accounts', 'Streamlit / Native Apps', 'REST APIs', 'Clean Rooms', 'File Exports'],
+        'Snowflake Feature': ['Reader Accounts + RBAC', 'Streamlit in Snowflake', 'Snowpark Container Services', 'Data Clean Rooms', 'COPY INTO + Tasks'],
         'Consumer Needs': ['Browser only', 'Browser + SSO', 'Developer skills', 'Analyst skills', 'File handling'],
         'Live Data': ['✓', '✓', '✓', '✓', '✗'],
         'Governance': ['High', 'High', 'High', 'Very High', 'Low'],
-        'Fusion Control': ['Full', 'Full', 'Full', 'Shared', 'Limited'],
         'Best For': ['Govt dashboards', 'Ministry portals', 'System integration', 'Joint analytics', 'Legacy systems']
     })
     
@@ -1055,19 +1136,57 @@ with tab_distribution:
             use_container_width=True,
             hide_index=True,
             column_config={
-                "Method": st.column_config.TextColumn("Distribution Method", width="large"),
+                "Method": st.column_config.TextColumn("Distribution Method", width="medium"),
+                "Snowflake Feature": st.column_config.TextColumn("Key Snowflake Feature", width="large"),
                 "Consumer Needs": st.column_config.TextColumn("Consumer Needs"),
-                "Live Data": st.column_config.TextColumn("Live Data"),
+                "Live Data": st.column_config.TextColumn("Live"),
                 "Governance": st.column_config.TextColumn("Governance"),
-                "Fusion Control": st.column_config.TextColumn("Fusion Control"),
                 "Best For": st.column_config.TextColumn("Best For", width="medium")
             }
         )
     
     st.html("""
+    <div class="section-header">
+        <h3>🏗️ Snowflake Governance Stack</h3>
+        <div class="section-line"></div>
+    </div>
+    """)
+    
+    st.markdown("These governance features apply across **all** distribution methods:")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        with st.container(border=True):
+            st.markdown("**🔐 Access Control**")
+            st.caption("• Role-Based Access Control (RBAC)")
+            st.caption("• Row Access Policies")
+            st.caption("• Column-Level Security")
+            st.caption("• Network Policies (IP allowlists)")
+            st.caption("• Multi-Factor Authentication")
+    
+    with col2:
+        with st.container(border=True):
+            st.markdown("**🛡️ Data Protection**")
+            st.caption("• Dynamic Data Masking")
+            st.caption("• Aggregation Policies")
+            st.caption("• Projection Policies")
+            st.caption("• Secure Views")
+            st.caption("• End-to-End Encryption")
+    
+    with col3:
+        with st.container(border=True):
+            st.markdown("**📊 Audit & Compliance**")
+            st.caption("• Query History (90 days)")
+            st.caption("• Access History")
+            st.caption("• Object Tagging & Classification")
+            st.caption("• Data Lineage (Horizon)")
+            st.caption("• SOC 2 / ISO 27001 / GDPR")
+    
+    st.html("""
     <div class="key-insight">
-        <p>💡 <strong>Recommendation:</strong> For maximum reach, combine <strong>Powered-by Fusion Portals</strong> 
-        (for government self-service), <strong>REST APIs</strong> (for developer integrations), and 
+        <p>💡 <strong>Recommendation:</strong> For maximum reach, combine <strong>Streamlit Apps</strong> 
+        (for government self-service), <strong>Snowpark Container Services APIs</strong> (for developer integrations), and 
         <strong>Clean Rooms</strong> (for privacy-sensitive joint analytics with ministries). 
         This covers 90%+ of potential KSA customer segments while maintaining full data governance.</p>
     </div>
@@ -1075,8 +1194,9 @@ with tab_distribution:
     
     st.html("""
     <div class="position-box">
-        <p><strong>For KSA Government:</strong> Position as a "Fusion Data Exchange Portal" with SSO, 
-        where each ministry only sees the products they're entitled to. Snowflake stays invisible; 
-        Fusion delivers the governed insights through a trusted, branded experience.</p>
+        <p><strong>For KSA Government:</strong> Position as a "Fusion Data Exchange Portal" built with 
+        <strong>Streamlit in Snowflake</strong>, integrated with ministry SSO via <strong>SAML/OAuth</strong>, 
+        where each ministry only sees entitled data via <strong>Row Access Policies</strong>. 
+        Snowflake stays invisible; Fusion delivers governed insights through a trusted, branded experience.</p>
     </div>
     """)
