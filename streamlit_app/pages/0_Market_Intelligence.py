@@ -650,48 +650,124 @@ with tab_trends:
     """)
     
     products_data = pd.DataFrame({
-        'Product Category': ['Mobility & Footfall', 'Network Quality', 'IoT / 5G Telemetry', 'Fraud & Risk Signals', 'Customer Intent', 'Audience Segments'],
-        'Maturity': [95, 80, 70, 75, 65, 85],
-        'Privacy Model': ['Aggregated', 'Aggregated', 'Device-level (anonymized)', 'Scored', 'Inferred', 'Cohort-based']
+        'Category': ['Mobility & Footfall', 'Audience Segments', 'Network Quality', 'Fraud & Risk Signals', 'IoT / 5G Telemetry', 'Customer Intent'],
+        'Maturity': [95, 85, 80, 75, 70, 65],
+        'Privacy': ['Aggregated', 'Cohort-based', 'Aggregated', 'Scored', 'Device-level', 'Inferred'],
+        'Icon': ['📍', '👥', '📶', '🛡️', '📡', '🎯']
     })
     
-    col1, col2 = st.columns([3, 2])
+    st.html("""
+    <style>
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        @media (max-width: 768px) {
+            .product-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        .product-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 1.25rem;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease-out backwards;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(30, 58, 95, 0.12);
+            border-color: #0891B2;
+        }
+        .product-card .card-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        .product-card .card-name {
+            color: #1E3A5F;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+        }
+        .product-card .card-privacy {
+            display: inline-block;
+            background: #f0fdfa;
+            color: #0891B2;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        .product-card .progress-bar {
+            background: #e2e8f0;
+            border-radius: 6px;
+            height: 8px;
+            overflow: hidden;
+        }
+        .product-card .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1E3A5F, #0891B2);
+            border-radius: 6px;
+            transition: width 1s ease-out;
+        }
+        .product-card .maturity-label {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.4rem;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+    </style>
     
-    with col1:
-        with st.container(border=True):
-            st.markdown("**Product Category Maturity**")
-            
-            products_chart = alt.Chart(products_data).mark_bar(
-                cornerRadiusTopRight=8,
-                cornerRadiusBottomRight=8
-            ).encode(
-                x=alt.X('Maturity:Q', 
-                       axis=alt.Axis(title='Market Maturity %', grid=True, gridOpacity=0.3),
-                       scale=alt.Scale(domain=[0, 100])),
-                y=alt.Y('Product Category:N', 
-                       axis=alt.Axis(title=None),
-                       sort='-x'),
-                color=alt.Color('Maturity:Q', 
-                               scale=alt.Scale(domain=[60, 100], range=[FUSION_BLUE, FUSION_TEAL]),
-                               legend=None),
-                tooltip=[
-                    alt.Tooltip('Product Category:N', title='Category'),
-                    alt.Tooltip('Maturity:Q', title='Maturity %'),
-                    alt.Tooltip('Privacy Model:N', title='Privacy Model')
-                ]
-            ).properties(height=280)
-            
-            st.altair_chart(products_chart, use_container_width=True)
-    
-    with col2:
-        with st.container(border=True):
-            st.markdown("**Privacy Models by Product**")
-            st.dataframe(
-                products_data[['Product Category', 'Privacy Model']],
-                use_container_width=True,
-                hide_index=True,
-                height=280
-            )
+    <div class="product-grid">
+        <div class="product-card" style="animation-delay: 0.1s;">
+            <div class="card-icon">📍</div>
+            <div class="card-name">Mobility & Footfall</div>
+            <div class="card-privacy">Aggregated</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 95%;"></div></div>
+            <div class="maturity-label"><span>Maturity</span><span>95%</span></div>
+        </div>
+        <div class="product-card" style="animation-delay: 0.15s;">
+            <div class="card-icon">👥</div>
+            <div class="card-name">Audience Segments</div>
+            <div class="card-privacy">Cohort-based</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 85%;"></div></div>
+            <div class="maturity-label"><span>Maturity</span><span>85%</span></div>
+        </div>
+        <div class="product-card" style="animation-delay: 0.2s;">
+            <div class="card-icon">📶</div>
+            <div class="card-name">Network Quality</div>
+            <div class="card-privacy">Aggregated</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 80%;"></div></div>
+            <div class="maturity-label"><span>Maturity</span><span>80%</span></div>
+        </div>
+        <div class="product-card" style="animation-delay: 0.25s;">
+            <div class="card-icon">🛡️</div>
+            <div class="card-name">Fraud & Risk Signals</div>
+            <div class="card-privacy">Scored</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 75%;"></div></div>
+            <div class="maturity-label"><span>Maturity</span><span>75%</span></div>
+        </div>
+        <div class="product-card" style="animation-delay: 0.3s;">
+            <div class="card-icon">📡</div>
+            <div class="card-name">IoT / 5G Telemetry</div>
+            <div class="card-privacy">Device-level</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 70%;"></div></div>
+            <div class="maturity-label"><span>Maturity</span><span>70%</span></div>
+        </div>
+        <div class="product-card" style="animation-delay: 0.35s;">
+            <div class="card-icon">🎯</div>
+            <div class="card-name">Customer Intent</div>
+            <div class="card-privacy">Inferred</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 65%;"></div></div>
+            <div class="maturity-label"><span>Maturity</span><span>65%</span></div>
+        </div>
+    </div>
+    """)
     
     st.html("""
     <div class="section-header">
