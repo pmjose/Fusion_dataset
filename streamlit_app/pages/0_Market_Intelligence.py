@@ -1059,55 +1059,329 @@ with tab_demand:
     </div>
     """)
     
-    st.markdown("Based on global telco examples and market patterns:")
+    st.html("""
+    <style>
+        .use-case-container {
+            margin: 1.5rem 0;
+        }
+        .industry-section {
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+        .industry-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .industry-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #1E3A5F, #0891B2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .industry-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1E3A5F;
+            margin: 0;
+        }
+        .industry-tag {
+            background: #f0fdfa;
+            color: #0891B2;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: auto;
+        }
+        .industry-tag.hot {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        .use-case-chip {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.875rem 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.4s ease-out backwards;
+        }
+        .use-case-chip:hover {
+            border-color: #0891B2;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 58, 95, 0.1);
+        }
+        .use-case-chip .chip-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .use-case-chip .chip-content {
+            flex: 1;
+        }
+        .use-case-chip .chip-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #1E3A5F;
+            margin-bottom: 0.2rem;
+        }
+        .use-case-chip .chip-desc {
+            font-size: 0.75rem;
+            color: #64748b;
+            line-height: 1.4;
+        }
+    </style>
     
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.html("""
-        <div class="buyer-card" style="animation-delay: 0.1s; margin-bottom: 1rem;">
-            <div class="buyer-icon">🏛️</div>
-            <div class="buyer-title">Public Sector / Smart Cities / Giga-Projects</div>
-            <div class="buyer-uses">Mobility & footfall insights, surge prediction, tourism flows, 
-            event management, infrastructure planning. <strong>Very relevant to KSA cities & giga-projects.</strong></div>
+    <div class="use-case-container">
+        <!-- Government & Smart Cities -->
+        <div class="industry-section" style="animation-delay: 0.1s;">
+            <div class="industry-header">
+                <div class="industry-icon">🏛️</div>
+                <h4 class="industry-name">Government & Smart Cities</h4>
+                <span class="industry-tag hot">High Priority for KSA</span>
+            </div>
+            <div class="use-cases-grid">
+                <div class="use-case-chip" style="animation-delay: 0.15s;">
+                    <span class="chip-icon">📊</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Population Analytics</div>
+                        <div class="chip-desc">Real-time density, demographic distribution</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.2s;">
+                    <span class="chip-icon">🚨</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Emergency Response</div>
+                        <div class="chip-desc">Crowd surge prediction, evacuation planning</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.25s;">
+                    <span class="chip-icon">🏗️</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Infrastructure Planning</div>
+                        <div class="chip-desc">Transport routes, utility demand forecasting</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.3s;">
+                    <span class="chip-icon">🎉</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Event Management</div>
+                        <div class="chip-desc">Crowd flow, capacity optimization</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        """)
-        st.html("""
-        <div class="buyer-card" style="animation-delay: 0.4s;">
-            <div class="buyer-icon">🏦</div>
-            <div class="buyer-title">Financial Services & Insurance</div>
-            <div class="buyer-uses">Fraud/risk scoring, geo-behavior signals as features in underwriting 
-            and collections models.</div>
+        
+        <!-- Retail & Real Estate -->
+        <div class="industry-section" style="animation-delay: 0.2s;">
+            <div class="industry-header">
+                <div class="industry-icon">🏪</div>
+                <h4 class="industry-name">Retail & Real Estate</h4>
+                <span class="industry-tag">High Demand</span>
+            </div>
+            <div class="use-cases-grid">
+                <div class="use-case-chip" style="animation-delay: 0.25s;">
+                    <span class="chip-icon">📍</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Site Selection</div>
+                        <div class="chip-desc">Optimal store/branch locations</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.3s;">
+                    <span class="chip-icon">👣</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Foot Traffic Analysis</div>
+                        <div class="chip-desc">Hourly/daily visitor patterns</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.35s;">
+                    <span class="chip-icon">🎯</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Catchment Analysis</div>
+                        <div class="chip-desc">Trade area, customer origin</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.4s;">
+                    <span class="chip-icon">⚔️</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Competitive Intel</div>
+                        <div class="chip-desc">Competitor foot traffic benchmarking</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        """)
-    
-    with col2:
-        st.html("""
-        <div class="buyer-card" style="animation-delay: 0.2s; margin-bottom: 1rem;">
-            <div class="buyer-icon">🏪</div>
-            <div class="buyer-title">Retail / Real Estate / OOH</div>
-            <div class="buyer-uses">Geospatial footfall, dwell time, catchment analysis to choose store 
-            locations, malls, outdoor advertising screens.</div>
+        
+        <!-- Tourism & Hospitality -->
+        <div class="industry-section" style="animation-delay: 0.3s;">
+            <div class="industry-header">
+                <div class="industry-icon">✈️</div>
+                <h4 class="industry-name">Tourism & Hospitality</h4>
+                <span class="industry-tag hot">Growing Fast</span>
+            </div>
+            <div class="use-cases-grid">
+                <div class="use-case-chip" style="animation-delay: 0.35s;">
+                    <span class="chip-icon">🗺️</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Visitor Flow Mapping</div>
+                        <div class="chip-desc">Tourist routes, attraction popularity</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.4s;">
+                    <span class="chip-icon">🌍</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Origin-Destination</div>
+                        <div class="chip-desc">Where visitors come from</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.45s;">
+                    <span class="chip-icon">📅</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Seasonal Patterns</div>
+                        <div class="chip-desc">Peak periods, trend forecasting</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.5s;">
+                    <span class="chip-icon">⏱️</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Dwell Time Hotspots</div>
+                        <div class="chip-desc">High-engagement areas</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        """)
-        st.html("""
-        <div class="buyer-card" style="animation-delay: 0.5s;">
-            <div class="buyer-icon">📣</div>
-            <div class="buyer-title">Advertising & Martech</div>
-            <div class="buyer-uses">Privacy-safe audience segments and measurement (B2B2X with agencies 
-            and brands).</div>
+        
+        <!-- Transport & Logistics -->
+        <div class="industry-section" style="animation-delay: 0.4s;">
+            <div class="industry-header">
+                <div class="industry-icon">🚌</div>
+                <h4 class="industry-name">Transport & Logistics</h4>
+                <span class="industry-tag">Steady Demand</span>
+            </div>
+            <div class="use-cases-grid">
+                <div class="use-case-chip" style="animation-delay: 0.45s;">
+                    <span class="chip-icon">🛤️</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Route Optimization</div>
+                        <div class="chip-desc">Delivery efficiency, traffic patterns</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.5s;">
+                    <span class="chip-icon">🚇</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Commuter Analysis</div>
+                        <div class="chip-desc">Peak hours, corridor demand</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.55s;">
+                    <span class="chip-icon">✈️</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Hub Capacity</div>
+                        <div class="chip-desc">Airport/station planning</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.6s;">
+                    <span class="chip-icon">📦</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Last-Mile Insights</div>
+                        <div class="chip-desc">Delivery zone optimization</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        """)
-    
-    with col3:
-        st.html("""
-        <div class="buyer-card" style="animation-delay: 0.3s; margin-bottom: 1rem;">
-            <div class="buyer-icon">🚌</div>
-            <div class="buyer-title">Transport & Logistics</div>
-            <div class="buyer-uses">Corridor demand, route optimization, airport/rail station capacity 
-            planning.</div>
+        
+        <!-- Financial Services -->
+        <div class="industry-section" style="animation-delay: 0.5s;">
+            <div class="industry-header">
+                <div class="industry-icon">🏦</div>
+                <h4 class="industry-name">Financial Services & Insurance</h4>
+                <span class="industry-tag">Emerging</span>
+            </div>
+            <div class="use-cases-grid">
+                <div class="use-case-chip" style="animation-delay: 0.55s;">
+                    <span class="chip-icon">🛡️</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Fraud Detection</div>
+                        <div class="chip-desc">Location-based anomaly signals</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.6s;">
+                    <span class="chip-icon">📋</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Risk Scoring</div>
+                        <div class="chip-desc">Geo-behavior for underwriting</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.65s;">
+                    <span class="chip-icon">🏧</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Branch Network</div>
+                        <div class="chip-desc">ATM/branch placement optimization</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.7s;">
+                    <span class="chip-icon">💳</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Credit Signals</div>
+                        <div class="chip-desc">Alternative data for thin-file customers</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        """)
+        
+        <!-- Advertising & Media -->
+        <div class="industry-section" style="animation-delay: 0.6s;">
+            <div class="industry-header">
+                <div class="industry-icon">📣</div>
+                <h4 class="industry-name">Advertising & Media</h4>
+                <span class="industry-tag">Privacy-First</span>
+            </div>
+            <div class="use-cases-grid">
+                <div class="use-case-chip" style="animation-delay: 0.65s;">
+                    <span class="chip-icon">👥</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Audience Segments</div>
+                        <div class="chip-desc">Privacy-safe cohorts for targeting</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.7s;">
+                    <span class="chip-icon">📺</span>
+                    <div class="chip-content">
+                        <div class="chip-title">OOH Measurement</div>
+                        <div class="chip-desc">Billboard/screen exposure analytics</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.75s;">
+                    <span class="chip-icon">📈</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Attribution</div>
+                        <div class="chip-desc">Ad exposure to store visit</div>
+                    </div>
+                </div>
+                <div class="use-case-chip" style="animation-delay: 0.8s;">
+                    <span class="chip-icon">🎯</span>
+                    <div class="chip-content">
+                        <div class="chip-title">Campaign Measurement</div>
+                        <div class="chip-desc">Reach, frequency, uplift</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    """)
     
     st.html("""
     <div class="section-header">
