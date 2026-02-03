@@ -24,8 +24,17 @@ st.html("""
         border-right: 1px solid rgba(8, 145, 178, 0.2) !important;
     }
     
-    [data-testid="stSidebar"] * {
+    [data-testid="stSidebar"] *,
+    [data-testid="stSidebar"] span,
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] div,
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] .st-emotion-cache-1rtdyuf,
+    [data-testid="stSidebarNavItems"] span,
+    [data-testid="stSidebarNav"] span,
+    section[data-testid="stSidebar"] span {
         color: #ffffff !important;
+        opacity: 1 !important;
     }
     
     [data-testid="stSidebar"] [data-testid="stLogo"] img {
