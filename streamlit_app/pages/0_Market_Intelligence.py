@@ -86,30 +86,80 @@ st.html("""
         transform: translateY(-2px);
     }
     
+    .questions-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+    @media (max-width: 768px) {
+        .questions-grid { grid-template-columns: 1fr; }
+    }
     .question-card {
-        background: white;
-        border-left: 4px solid #0891B2;
-        border-radius: 0 12px 12px 0;
-        padding: 1rem 1.25rem;
-        margin-bottom: 0.75rem;
-        animation: fadeInUp 0.5s ease-out backwards;
-        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 1.5rem;
+        animation: fadeInUp 0.6s ease-out backwards;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    .question-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(180deg, #0891B2, #1E3A5F);
+        border-radius: 4px 0 0 4px;
+        transition: width 0.3s ease;
     }
     .question-card:hover {
-        background: #f8fafc;
-        border-left-color: #1E3A5F;
+        transform: translateY(-4px) translateX(4px);
+        box-shadow: 0 12px 30px rgba(30, 58, 95, 0.12);
+        border-color: #0891B2;
+    }
+    .question-card:hover::before {
+        width: 6px;
+    }
+    .question-card .q-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.75rem;
+        display: inline-block;
+        animation: bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-4px); }
     }
     .question-card .q-title {
         color: #1E3A5F;
-        font-weight: 600;
-        font-size: 0.95rem;
-        margin: 0 0 0.3rem 0;
+        font-weight: 700;
+        font-size: 1rem;
+        margin: 0 0 0.5rem 0;
+        line-height: 1.4;
     }
     .question-card .q-desc {
         color: #64748b;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         margin: 0;
-        line-height: 1.5;
+        line-height: 1.6;
+    }
+    .question-card .q-arrow {
+        position: absolute;
+        bottom: 1rem;
+        right: 1rem;
+        color: #0891B2;
+        font-size: 1.2rem;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.3s ease;
+    }
+    .question-card:hover .q-arrow {
+        opacity: 1;
+        transform: translateX(0);
     }
     
     .stat-highlight {
@@ -406,28 +456,37 @@ with tab_intro:
     </div>
     """)
     
-    st.markdown("""
-    This Market Intelligence dashboard addresses **key strategic questions from Fusion** about telco data 
-    monetization. Each tab provides research, market data, and actionable insights to support Fusion's 
-    data product strategy.
-    """)
-    
     st.html("""
-    <div class="question-card" style="animation-delay: 0.1s;">
-        <p class="q-title">📈 What is the telco data product trend?</p>
-        <p class="q-desc">Three major shifts: from raw data to privacy-safe insights, from one-off deals to marketplaces, and AI-native use on governed products.</p>
-    </div>
-    <div class="question-card" style="animation-delay: 0.2s;">
-        <p class="q-title">🎯 What is the market demand for telco data products?</p>
-        <p class="q-desc">Multi-billion dollar market with strong demand from public sector, retail, transport, financial services, and advertising verticals.</p>
-    </div>
-    <div class="question-card" style="animation-delay: 0.3s;">
-        <p class="q-title">💰 Is there a reference pricing model?</p>
-        <p class="q-desc">A pricing toolbox: subscription/recurring licenses, usage-based/API-metered, flat licenses, freemium tiers, and outcome/revenue-share models.</p>
-    </div>
-    <div class="question-card" style="animation-delay: 0.4s;">
-        <p class="q-title">🌐 How to expose data to consumers without a Snowflake account?</p>
-        <p class="q-desc">Multiple options: Reader accounts, "Powered-by Fusion" portals, REST APIs, Clean Rooms, and file exports—all with Snowflake as the governed backend.</p>
+    <p style="color: #64748b; font-size: 1rem; line-height: 1.7; margin-bottom: 0.5rem;">
+        This Market Intelligence dashboard addresses <strong style="color: #1E3A5F;">key strategic questions from Fusion</strong> 
+        about telco data monetization. Each tab provides research, market data, and actionable insights.
+    </p>
+    
+    <div class="questions-grid">
+        <div class="question-card" style="animation-delay: 0.1s;">
+            <div class="q-icon">📈</div>
+            <p class="q-title">What is the telco data product trend?</p>
+            <p class="q-desc">Three major shifts: from raw data to privacy-safe insights, from one-off deals to marketplaces, and AI-native use on governed products.</p>
+            <span class="q-arrow">→</span>
+        </div>
+        <div class="question-card" style="animation-delay: 0.2s;">
+            <div class="q-icon">🎯</div>
+            <p class="q-title">What is the market demand for telco data products?</p>
+            <p class="q-desc">Multi-billion dollar market with strong demand from public sector, retail, transport, financial services, and advertising verticals.</p>
+            <span class="q-arrow">→</span>
+        </div>
+        <div class="question-card" style="animation-delay: 0.3s;">
+            <div class="q-icon">💰</div>
+            <p class="q-title">Is there a reference pricing model?</p>
+            <p class="q-desc">A pricing toolbox: subscription/recurring licenses, usage-based/API-metered, flat licenses, freemium tiers, and outcome/revenue-share models.</p>
+            <span class="q-arrow">→</span>
+        </div>
+        <div class="question-card" style="animation-delay: 0.4s;">
+            <div class="q-icon">🌐</div>
+            <p class="q-title">How to expose data to consumers without a Snowflake account?</p>
+            <p class="q-desc">Multiple options: Reader accounts, "Powered-by Fusion" portals, REST APIs, Clean Rooms, and file exports—all with Snowflake as the governed backend.</p>
+            <span class="q-arrow">→</span>
+        </div>
     </div>
     """)
     
