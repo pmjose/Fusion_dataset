@@ -122,10 +122,10 @@ st.html("""
     [data-testid="stSidebar"] .stCaption { color: #64748b !important; font-size: 0.75rem !important; }
     
     /* =========================================
-       ANIMATIONS
+       ANIMATIONS - PROFESSIONAL EDITION
        ========================================= */
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
+        from { opacity: 0; transform: translateY(30px); }
         to { opacity: 1; transform: translateY(0); }
     }
     @keyframes gradientFlow {
@@ -134,25 +134,84 @@ st.html("""
         100% { background-position: 0% 50%; }
     }
     @keyframes slideIn {
-        from { opacity: 0; transform: translateX(-20px); }
+        from { opacity: 0; transform: translateX(-30px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideInRight {
+        from { opacity: 0; transform: translateX(30px); }
         to { opacity: 1; transform: translateX(0); }
     }
     @keyframes countUp {
         from { opacity: 0; transform: scale(0.5); }
         to { opacity: 1; transform: scale(1); }
     }
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+    @keyframes glow {
+        0%, 100% { box-shadow: 0 0 20px rgba(8, 145, 178, 0.3); }
+        50% { box-shadow: 0 0 40px rgba(8, 145, 178, 0.6); }
+    }
+    @keyframes borderGlow {
+        0%, 100% { border-color: rgba(8, 145, 178, 0.3); }
+        50% { border-color: rgba(8, 145, 178, 0.8); }
+    }
+    @keyframes scaleIn {
+        from { opacity: 0; transform: scale(0.8); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes rotateIn {
+        from { opacity: 0; transform: rotate(-10deg) scale(0.9); }
+        to { opacity: 1; transform: rotate(0) scale(1); }
+    }
+    @keyframes typewriter {
+        from { width: 0; }
+        to { width: 100%; }
+    }
+    @keyframes blink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
+    }
+    @keyframes ripple {
+        0% { transform: scale(0.8); opacity: 1; }
+        100% { transform: scale(2.4); opacity: 0; }
+    }
+    @keyframes morphGradient {
+        0% { background-position: 0% 50%; filter: hue-rotate(0deg); }
+        50% { background-position: 100% 50%; filter: hue-rotate(15deg); }
+        100% { background-position: 0% 50%; filter: hue-rotate(0deg); }
+    }
+    @keyframes particleFloat {
+        0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+        25% { transform: translateY(-20px) rotate(90deg); opacity: 1; }
+        50% { transform: translateY(-40px) rotate(180deg); opacity: 0.6; }
+        75% { transform: translateY(-20px) rotate(270deg); opacity: 1; }
+    }
+    @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+    @keyframes breathe {
+        0%, 100% { transform: scale(1); opacity: 0.8; }
+        50% { transform: scale(1.02); opacity: 1; }
+    }
     
     .page-header {
         background: linear-gradient(135deg, #1E3A5F 0%, #0891B2 50%, #1E3A5F 100%);
         background-size: 200% 200%;
-        animation: gradientFlow 8s ease infinite, fadeInUp 0.6s ease-out;
-        padding: 2rem 2.5rem;
-        border-radius: 16px;
+        animation: morphGradient 8s ease infinite, fadeInUp 0.8s ease-out;
+        padding: 2.5rem 3rem;
+        border-radius: 20px;
         margin-bottom: 2rem;
         color: white;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 10px 40px rgba(30, 58, 95, 0.25);
+        box-shadow: 0 15px 50px rgba(30, 58, 95, 0.3);
     }
     .page-header::before {
         content: '';
@@ -160,8 +219,32 @@ st.html("""
         top: 0; left: 0; right: 0; bottom: 0;
         background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M20 20h20v20H20V20zM0 0h20v20H0V0z'/%3E%3C/g%3E%3C/svg%3E");
     }
-    .page-header h1 { margin: 0; font-size: 2rem; font-weight: 700; position: relative; z-index: 1; }
-    .page-header p { margin: 0.5rem 0 0 0; opacity: 0.9; font-size: 1rem; position: relative; z-index: 1; }
+    .page-header::after {
+        content: '';
+        position: absolute;
+        top: -50%; right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+        animation: float 6s ease-in-out infinite;
+    }
+    .page-header h1 { 
+        margin: 0; 
+        font-size: 2.4rem; 
+        font-weight: 800; 
+        position: relative; 
+        z-index: 1;
+        text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        animation: slideIn 0.6s ease-out 0.2s backwards;
+    }
+    .page-header p { 
+        margin: 0.75rem 0 0 0; 
+        opacity: 0.95; 
+        font-size: 1.1rem; 
+        position: relative; 
+        z-index: 1;
+        animation: slideIn 0.6s ease-out 0.4s backwards;
+    }
     
     .section-header {
         display: flex;
@@ -208,64 +291,84 @@ st.html("""
     .question-card {
         background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
         border: 1px solid #e2e8f0;
-        border-radius: 16px;
-        padding: 1.5rem;
-        animation: fadeInUp 0.6s ease-out backwards;
+        border-radius: 20px;
+        padding: 1.75rem;
+        animation: fadeInUp 0.7s ease-out backwards;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         overflow: hidden;
+        cursor: pointer;
     }
     .question-card::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
-        width: 4px;
+        width: 5px;
         height: 100%;
         background: linear-gradient(180deg, #0891B2, #1E3A5F);
-        border-radius: 4px 0 0 4px;
-        transition: width 0.3s ease;
+        border-radius: 5px 0 0 5px;
+        transition: width 0.4s ease, opacity 0.4s ease;
+        opacity: 0.7;
+    }
+    .question-card::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(135deg, rgba(8, 145, 178, 0) 0%, rgba(8, 145, 178, 0.05) 100%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
     }
     .question-card:hover {
-        transform: translateY(-4px) translateX(4px);
-        box-shadow: 0 12px 30px rgba(30, 58, 95, 0.12);
+        transform: translateY(-8px) translateX(8px);
+        box-shadow: 0 20px 40px rgba(30, 58, 95, 0.15);
         border-color: #0891B2;
     }
     .question-card:hover::before {
-        width: 6px;
+        width: 8px;
+        opacity: 1;
+    }
+    .question-card:hover::after {
+        opacity: 1;
     }
     .question-card .q-icon {
-        font-size: 1.5rem;
-        margin-bottom: 0.75rem;
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
         display: inline-block;
-        animation: bounce 2s ease-in-out infinite;
+        animation: float 3s ease-in-out infinite;
+        position: relative;
+        z-index: 1;
     }
     @keyframes bounce {
         0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-4px); }
+        50% { transform: translateY(-6px); }
     }
     .question-card .q-title {
         color: #1E3A5F;
         font-weight: 700;
-        font-size: 1rem;
-        margin: 0 0 0.5rem 0;
+        font-size: 1.05rem;
+        margin: 0 0 0.6rem 0;
         line-height: 1.4;
+        position: relative;
+        z-index: 1;
     }
     .question-card .q-desc {
         color: #64748b;
         font-size: 0.9rem;
         margin: 0;
-        line-height: 1.6;
+        line-height: 1.7;
+        position: relative;
+        z-index: 1;
     }
     .question-card .q-arrow {
         position: absolute;
-        bottom: 1rem;
-        right: 1rem;
+        bottom: 1.25rem;
+        right: 1.25rem;
         color: #0891B2;
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         opacity: 0;
-        transform: translateX(-10px);
-        transition: all 0.3s ease;
+        transform: translateX(-15px);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .question-card:hover .q-arrow {
         opacity: 1;
@@ -274,36 +377,52 @@ st.html("""
     
     .stat-highlight {
         background: linear-gradient(135deg, #1E3A5F 0%, #0891B2 100%);
-        border-radius: 16px;
-        padding: 1.5rem 2rem;
+        border-radius: 20px;
+        padding: 1.75rem 2rem;
         color: white;
         text-align: center;
-        animation: fadeInUp 0.6s ease-out, countUp 0.8s ease-out;
-        transition: all 0.3s ease;
+        animation: scaleIn 0.6s ease-out backwards, glow 3s ease-in-out infinite;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    .stat-highlight::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+        background-size: 200% 200%;
+        animation: shimmer 3s ease-in-out infinite;
     }
     .stat-highlight:hover {
-        transform: scale(1.02);
-        box-shadow: 0 15px 40px rgba(30, 58, 95, 0.3);
+        transform: scale(1.05) translateY(-5px);
+        box-shadow: 0 20px 50px rgba(30, 58, 95, 0.4);
     }
     .stat-highlight .value {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
         font-weight: 800;
         margin: 0;
+        position: relative;
+        z-index: 1;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        animation: countUp 1s ease-out backwards;
     }
     .stat-highlight .label {
-        font-size: 0.85rem;
-        opacity: 0.9;
-        margin-top: 0.3rem;
+        font-size: 0.9rem;
+        opacity: 0.95;
+        margin-top: 0.4rem;
+        position: relative;
+        z-index: 1;
     }
     
     .shift-card {
         background: white;
         border: 1px solid #e2e8f0;
-        border-radius: 16px;
-        padding: 1.5rem;
+        border-radius: 20px;
+        padding: 1.75rem;
         height: 100%;
-        animation: fadeInUp 0.6s ease-out backwards;
-        transition: all 0.3s ease;
+        animation: fadeInUp 0.7s ease-out backwards;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         overflow: hidden;
     }
@@ -313,46 +432,71 @@ st.html("""
         top: 0;
         left: 0;
         right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #1E3A5F, #0891B2);
+        height: 5px;
+        background: linear-gradient(90deg, #1E3A5F, #0891B2, #D4AF37);
+        background-size: 200% 100%;
+        animation: shimmer 3s ease-in-out infinite;
+    }
+    .shift-card::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0; top: 0;
+        background: radial-gradient(circle at bottom right, rgba(8, 145, 178, 0.05) 0%, transparent 50%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
     }
     .shift-card:hover {
         border-color: #0891B2;
-        box-shadow: 0 10px 30px rgba(30, 58, 95, 0.12);
-        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(30, 58, 95, 0.15);
+        transform: translateY(-6px);
+    }
+    .shift-card:hover::after {
+        opacity: 1;
     }
     .shift-number {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 32px;
-        height: 32px;
+        width: 40px;
+        height: 40px;
         background: linear-gradient(135deg, #1E3A5F, #0891B2);
         color: white;
         border-radius: 50%;
         font-weight: 700;
-        font-size: 0.9rem;
-        margin-bottom: 0.75rem;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        animation: scaleIn 0.5s ease-out backwards, pulse 2s ease-in-out infinite;
+        box-shadow: 0 4px 15px rgba(8, 145, 178, 0.3);
     }
     .shift-title {
         color: #1E3A5F;
         font-weight: 700;
-        font-size: 1.05rem;
-        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+        position: relative;
+        z-index: 1;
     }
     .shift-desc {
         color: #64748b;
         font-size: 0.9rem;
-        line-height: 1.6;
+        line-height: 1.7;
+        position: relative;
+        z-index: 1;
     }
     .shift-example {
-        background: #f8fafc;
-        border-radius: 8px;
-        padding: 0.75rem;
-        margin-top: 0.75rem;
-        font-size: 0.8rem;
+        background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-top: 1rem;
+        font-size: 0.85rem;
         color: #64748b;
-        border-left: 3px solid #D4AF37;
+        border-left: 4px solid #D4AF37;
+        position: relative;
+        z-index: 1;
+        transition: all 0.3s ease;
+    }
+    .shift-card:hover .shift-example {
+        background: linear-gradient(135deg, #fef9c3 0%, #fef3c7 100%);
     }
     
     .buyer-card {
@@ -489,30 +633,63 @@ st.html("""
     
     .key-insight {
         background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%);
-        border-left: 4px solid #D4AF37;
-        border-radius: 0 12px 12px 0;
-        padding: 1rem 1.25rem;
-        margin: 1rem 0;
+        border-left: 5px solid #D4AF37;
+        border-radius: 0 16px 16px 0;
+        padding: 1.25rem 1.5rem;
+        margin: 1.5rem 0;
+        animation: slideInRight 0.6s ease-out;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    .key-insight::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(90deg, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+        animation: shimmer 5s ease-in-out infinite;
+    }
+    .key-insight:hover {
+        transform: translateX(5px);
+        box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
     }
     .key-insight p {
         color: #92400e;
         margin: 0;
-        font-size: 0.9rem;
-        line-height: 1.5;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        position: relative;
+        z-index: 1;
     }
     
     .ksa-highlight {
         background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-        border-left: 4px solid #10B981;
-        border-radius: 0 12px 12px 0;
-        padding: 1rem 1.25rem;
-        margin: 1rem 0;
+        border-left: 5px solid #10B981;
+        border-radius: 0 16px 16px 0;
+        padding: 1.25rem 1.5rem;
+        margin: 1.5rem 0;
+        animation: slideInRight 0.6s ease-out;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    .ksa-highlight::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(90deg, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+    }
+    .ksa-highlight:hover {
+        transform: translateX(5px);
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
     }
     .ksa-highlight p {
         color: #065f46;
         margin: 0;
-        font-size: 0.9rem;
-        line-height: 1.5;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        position: relative;
+        z-index: 1;
     }
     
     .source-ref {
@@ -524,18 +701,34 @@ st.html("""
     
     .position-box {
         background: linear-gradient(135deg, #1E3A5F 0%, #0891B2 100%);
-        border-radius: 12px;
-        padding: 1.25rem;
+        background-size: 200% 200%;
+        animation: morphGradient 6s ease infinite, scaleIn 0.6s ease-out;
+        border-radius: 16px;
+        padding: 1.5rem 1.75rem;
         color: white;
-        margin-top: 1rem;
+        margin-top: 1.5rem;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(30, 58, 95, 0.3);
+    }
+    .position-box::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+        background-size: 200% 200%;
+        animation: shimmer 4s ease-in-out infinite;
     }
     .position-box p {
         margin: 0;
-        font-size: 0.9rem;
-        line-height: 1.6;
+        font-size: 0.95rem;
+        line-height: 1.7;
+        position: relative;
+        z-index: 1;
     }
     .position-box strong {
         color: #D4AF37;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 </style>
 """)
@@ -680,6 +873,126 @@ with tab_intro:
                 st.caption(proj['desc'])
     
     st.caption("Source: neom.com, pif.gov.sa")
+    
+    st.html("""
+    <div class="section-header">
+        <h3>🇸🇦 Additional Saudi Initiatives for Fusion Data</h3>
+        <div class="section-line"></div>
+    </div>
+    """)
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        with st.container(border=True):
+            st.markdown("**🏖️ Tourism & Hospitality**")
+            st.markdown("""
+            - 🇸🇦 **Red Sea Global** — Luxury eco-tourism requiring visitor flow & sustainability analytics
+            - 🇸🇦 **AMAALA** — Ultra-luxury wellness destination needing guest experience insights
+            - 🇸🇦 **Diriyah Gate** — $63B heritage destination requiring footfall & cultural tourism analytics
+            - 🇸🇦 **AlUla** — Ancient heritage site needing visitor density management
+            - 🇸🇦 **Soudah Development** — Mountain tourism requiring seasonal flow analytics
+            """)
+            st.caption("Source: pif.gov.sa, vision2030.gov.sa")
+        
+        with st.container(border=True):
+            st.markdown("**🕌 Religious Tourism & Crowd Safety**")
+            st.markdown("""
+            - 🇸🇦 **Hajj & Umrah Operations** — Real-time crowd density, flow prediction, safety alerts
+            - 🇸🇦 **Rua Almadinah** — Madinah development requiring pilgrim mobility analytics
+            - 🇸🇦 **Masjid Quba Expansion** — Visitor management and capacity planning
+            - 🇸🇦 **Makkah Metro** — Transit planning for religious seasons
+            """)
+            st.caption("Source: spa.gov.sa, arabnews.com")
+    
+    with col2:
+        with st.container(border=True):
+            st.markdown("**🏘️ Urban & Real Estate**")
+            st.markdown("""
+            - 🇸🇦 **ROSHN Group** — Human-centric communities requiring mobility & lifestyle analytics
+            - 🇸🇦 **New Murabba** — Riyadh downtown requiring urban flow & retail analytics
+            - 🇸🇦 **King Salman Park** — 16 km² urban park needing visitor analytics
+            - 🇸🇦 **Jeddah Central** — Waterfront development requiring footfall insights
+            - 🇸🇦 **Green Riyadh** — Environmental planning with mobility correlation
+            """)
+            st.caption("Source: pif.gov.sa, vision2030.gov.sa")
+        
+        with st.container(border=True):
+            st.markdown("**🎢 Entertainment & Sports**")
+            st.markdown("""
+            - 🇸🇦 **Qiddiya** — 376 km² entertainment city requiring visitor flow & experience analytics
+            - 🇸🇦 **Sports Boulevard** — 135 km Riyadh corridor needing activity & usage data
+            - 🇸🇦 **Riyadh Season / MDL Beast** — Event crowd management & experience optimization
+            - 🇸🇦 **THE RIG** — Offshore platform destination requiring logistics analytics
+            """)
+            st.caption("Source: qiddiya.com, pif.gov.sa")
+    
+    st.html("""
+    <div class="section-header">
+        <h3>🔐 Data & AI Governance Initiatives</h3>
+        <div class="section-line"></div>
+    </div>
+    """)
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        with st.container(border=True):
+            st.markdown("**🏛️ SDAIA / NDMO**")
+            st.markdown("""
+            National Data Management Office frameworks:
+            - Data Classification Policy
+            - Data Sharing Regulations
+            - Open Data Initiative
+            - AI Ethics Guidelines
+            """)
+            st.caption("Source: sdaia.gov.sa")
+    
+    with col2:
+        with st.container(border=True):
+            st.markdown("**📜 PDPL Compliance**")
+            st.markdown("""
+            Personal Data Protection Law:
+            - Consent management
+            - Cross-border transfer rules
+            - Data subject rights
+            - Privacy-by-design
+            """)
+            st.caption("Source: sdaia.gov.sa/ndmo")
+    
+    with col3:
+        with st.container(border=True):
+            st.markdown("**🤖 Humain / ALAT**")
+            st.markdown("""
+            Saudi AI infrastructure:
+            - AI compute infrastructure
+            - Sovereign AI capabilities
+            - AI model development
+            - Enterprise AI services
+            """)
+            st.caption("Source: vision2030.gov.sa")
+    
+    st.html("""
+    <div class="ksa-highlight">
+        <p>🇸🇦 <strong>Fusion Opportunity:</strong> All flagged initiatives (🇸🇦) have <strong>explicit data requirements</strong> 
+        that align with Fusion's mobility, footfall, and network analytics capabilities. The combination of 
+        giga-project development + SDAIA governance frameworks + PDPL compliance creates a unique opportunity 
+        for <strong>privacy-compliant telco data products</strong> at scale.</p>
+    </div>
+    """)
+    
+    st.markdown("---")
+    st.markdown("**📚 Saudi Initiative References:**")
+    st.markdown("""
+    - [PIF Giga-Projects](https://www.pif.gov.sa/en/our-investments/giga-projects/)
+    - [Vision 2030 Projects](https://www.vision2030.gov.sa/en/explore/projects)
+    - [SDAIA - National Data Management Office](https://sdaia.gov.sa/en/Sectors/NDMO/Pages/default.aspx)
+    - [Saudi Open Data Platform](https://www.my.gov.sa/en/content/open-data)
+    - [Hajj Smart City Technology](https://www.arabnews.com/node/2603512/middleeast)
+    - [Red Sea Global](https://www.redseaglobal.com/)
+    - [Qiddiya Investment Company](https://www.qiddiya.com/)
+    - [Diriyah Gate Development](https://www.dgda.gov.sa/)
+    """)
 
 # =============================================================================
 # TAB 2: TELCO DATA PRODUCT TRENDS
@@ -1010,6 +1323,99 @@ with tab_trends:
         )
     
     st.caption("Source: TM Forum IG1138 — Introductory Guide to External Data Monetization")
+    
+    # GSMA Section
+    st.html("""
+    <div class="section-header">
+        <h3>🌐 GSMA Data Monetization Insights</h3>
+        <div class="section-line"></div>
+    </div>
+    """)
+    
+    st.markdown("""
+    **GSMA Intelligence**, the research arm of the global mobile industry association representing 
+    operators worldwide, provides critical market intelligence on telco data monetization opportunities.
+    """)
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        with st.container(border=True):
+            st.markdown("**📊 B2B Market Opportunity**")
+            st.markdown("""
+            GSMA identifies a **$400B addressable market** for B2B services beyond connectivity:
+            
+            - 🇸🇦 **Enterprise Digital Transformation:** 10% of operator revenue (2024-2030) 
+            - 🇸🇦 **IoT Connections:** 26 billion globally by 2025
+            - 🇸🇦 **AI Monetization:** 74% of operators testing generative AI
+            - **Open Gateway:** 74% of operators committed to API exposure
+            """)
+            st.caption("Source: GSMA Mobile Economy 2025")
+        
+        with st.container(border=True):
+            st.markdown("**🔑 Open Gateway Initiative**")
+            st.markdown("""
+            GSMA's Open Gateway enables telcos to monetize network capabilities via APIs:
+            
+            - 🇸🇦 **Number Verify** — SIM-based authentication *(Absher/Nafath integration)*
+            - 🇸🇦 **Device Location** — Verified geolocation *(NEOM/Hajj crowd mgmt)*
+            - 🇸🇦 **SIM Swap** — Fraud prevention signals *(Banking/fintech security)*
+            - 🇸🇦 **Network Quality** — QoS on demand *(Enterprise 5G services)*
+            """)
+            st.caption("Reference: GSMA Open Gateway")
+    
+    with col2:
+        with st.container(border=True):
+            st.markdown("**🚀 2025 Monetization Themes**")
+            st.markdown("""
+            Key GSMA research themes for operator monetization:
+            
+            1. 🇸🇦 **Data-as-a-Service** — Packaging telco signals for enterprise *(Fusion core)*
+            2. 🇸🇦 **AI/ML Integration** — Intelligent network monetization *(SDAIA alignment)*
+            3. 🇸🇦 **B2B2X Models** — Platform plays beyond connectivity *(Giga-project demand)*
+            4. 🇸🇦 **Privacy-First Analytics** — Compliant data products *(PDPL compliance)*
+            """)
+            st.caption("Source: GSMA Intelligence Research Themes")
+        
+        with st.container(border=True):
+            st.markdown("**📈 Revenue Diversification Imperative**")
+            st.markdown("""
+            GSMA emphasizes the shift from pure connectivity revenue:
+            
+            - **Legacy:** Voice + Data subscriptions declining
+            - 🇸🇦 **Growth:** B2B digital services, IoT, enterprise solutions
+            - 🇸🇦 **Future:** Network APIs, AI services, data products
+            
+            Operators must become **digital service providers** not just connectivity pipes.
+            """)
+            st.caption("Source: GSMA Operator Strategies Report")
+    
+    st.html("""
+    <div class="key-insight">
+        <p>💡 <strong>GSMA Key Finding:</strong> The <strong>$400B B2B services opportunity</strong> represents 
+        telcos' best path to revenue growth beyond saturating connectivity markets. Operators with mature 
+        <strong>data product strategies</strong> and <strong>API monetization</strong> capabilities will 
+        capture disproportionate value in this transition.</p>
+    </div>
+    """)
+    
+    st.html("""
+    <div class="ksa-highlight">
+        <p>🇸🇦 <strong>Saudi Feature Alignment:</strong> Nearly all GSMA monetization themes are <strong>highly relevant</strong> 
+        for Saudi Arabia. Key drivers: Vision 2030 digital transformation mandates, NEOM/Red Sea/Qiddiya giga-projects 
+        requiring real-time analytics, SDAIA AI initiatives, PDPL privacy compliance requirements, and the 
+        STC/Mobily/Zain push toward B2B enterprise services. Fusion is positioned to deliver on all flagged (🇸🇦) use cases.</p>
+    </div>
+    """)
+    
+    st.markdown("---")
+    st.markdown("**📚 GSMA Reference Materials:**")
+    st.markdown("""
+    - [GSMA: The Mobile Economy 2025](https://www.gsma.com/solutions-and-impact/connectivity-for-good/mobile-economy/wp-content/uploads/2025/02/030325-The-Mobile-Economy-2025.pdf)
+    - [GSMA: Operator Strategies for Monetization](https://telecomlead.com/telecom-services/gsma-on-operator-strategies-for-monetization-and-customer-experience-119176)
+    - [GSMA Open Gateway](https://www.gsma.com/solutions-and-impact/gsma-open-gateway/)
+    - [GSMA Intelligence](https://www.gsmaintelligence.com/)
+    """)
 
 # =============================================================================
 # TAB 3: MARKET DEMAND
@@ -1025,34 +1431,40 @@ with tab_demand:
     st.html("""
     <style>
         @keyframes numberPop {
-            0% { transform: scale(0.5); opacity: 0; }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); opacity: 1; }
+            0% { transform: scale(0.3) rotateY(-90deg); opacity: 0; }
+            50% { transform: scale(1.1) rotateY(10deg); }
+            100% { transform: scale(1) rotateY(0); opacity: 1; }
         }
         @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
+            from { transform: translateY(40px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
         @keyframes shimmer {
             0% { background-position: -200% 0; }
             100% { background-position: 200% 0; }
         }
+        @keyframes borderPulse {
+            0%, 100% { border-color: rgba(255,255,255,0.2); }
+            50% { border-color: rgba(255,255,255,0.5); }
+        }
         .market-stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1.25rem;
-            margin-bottom: 1rem;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
         }
         @media (max-width: 768px) {
             .market-stats-grid { grid-template-columns: 1fr; }
         }
         .market-stat-card {
-            border-radius: 16px;
-            padding: 1.75rem 1.5rem;
+            border-radius: 24px;
+            padding: 2rem 1.75rem;
             text-align: center;
             position: relative;
             overflow: hidden;
-            animation: slideUp 0.6s ease-out backwards;
+            animation: slideUp 0.8s ease-out backwards;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
         }
         .market-stat-card::before {
             content: '';
@@ -1061,43 +1473,66 @@ with tab_demand:
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
             background-size: 200% 100%;
-            animation: shimmer 3s ease-in-out infinite;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        .market-stat-card::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 40%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .market-stat-card:hover::after {
+            opacity: 1;
+        }
+        .market-stat-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
         }
         .market-stat-card.blue {
             background: linear-gradient(135deg, #1E3A5F 0%, #0891B2 100%);
+            box-shadow: 0 10px 30px rgba(30, 58, 95, 0.4);
         }
         .market-stat-card.teal {
             background: linear-gradient(135deg, #0891B2 0%, #10B981 100%);
+            box-shadow: 0 10px 30px rgba(8, 145, 178, 0.4);
         }
         .market-stat-card.gold {
             background: linear-gradient(135deg, #D4AF37 0%, #F59E0B 100%);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
         }
         .market-stat-card .stat-value {
-            font-size: 2.8rem;
+            font-size: 3.2rem;
             font-weight: 800;
             color: white;
             margin: 0;
             position: relative;
             z-index: 1;
-            animation: numberPop 0.8s ease-out backwards;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            animation: numberPop 1s ease-out backwards;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            letter-spacing: -1px;
         }
         .market-stat-card .stat-label {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.9);
-            margin-top: 0.5rem;
-            position: relative;
-            z-index: 1;
-        }
-        .market-stat-card .stat-source {
-            font-size: 0.7rem;
-            color: rgba(255,255,255,0.6);
+            font-size: 1rem;
+            color: rgba(255,255,255,0.95);
             margin-top: 0.75rem;
             position: relative;
             z-index: 1;
+            font-weight: 500;
+        }
+        .market-stat-card .stat-source {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.7);
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
             font-style: italic;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
         }
     </style>
     
@@ -1107,13 +1542,13 @@ with tab_demand:
             <p class="stat-label">Global Market 2024</p>
             <p class="stat-source">Precedence Research, 2024</p>
         </div>
-        <div class="market-stat-card teal" style="animation-delay: 0.2s;">
-            <p class="stat-value" style="animation-delay: 0.4s;">$14.9B</p>
+        <div class="market-stat-card teal" style="animation-delay: 0.25s;">
+            <p class="stat-value" style="animation-delay: 0.45s;">$14.9B</p>
             <p class="stat-label">Projected by 2029</p>
             <p class="stat-source">Market Research Future</p>
         </div>
-        <div class="market-stat-card gold" style="animation-delay: 0.3s;">
-            <p class="stat-value" style="animation-delay: 0.5s;">~24%</p>
+        <div class="market-stat-card gold" style="animation-delay: 0.4s;">
+            <p class="stat-value" style="animation-delay: 0.6s;">~24%</p>
             <p class="stat-label">CAGR Growth Rate</p>
             <p class="stat-source">Industry Consensus</p>
         </div>
@@ -1373,28 +1808,28 @@ with tab_demand:
                 <div class="use-case-chip" style="animation-delay: 0.15s;">
                     <span class="chip-icon">📊</span>
                     <div class="chip-content">
-                        <div class="chip-title">Population Analytics</div>
+                        <div class="chip-title">🇸🇦 Population Analytics</div>
                         <div class="chip-desc">Real-time density, demographic distribution</div>
                     </div>
                 </div>
                 <div class="use-case-chip" style="animation-delay: 0.2s;">
                     <span class="chip-icon">🚨</span>
                     <div class="chip-content">
-                        <div class="chip-title">Emergency Response</div>
+                        <div class="chip-title">🇸🇦 Emergency Response</div>
                         <div class="chip-desc">Crowd surge prediction, evacuation planning</div>
                     </div>
                 </div>
                 <div class="use-case-chip" style="animation-delay: 0.25s;">
                     <span class="chip-icon">🏗️</span>
                     <div class="chip-content">
-                        <div class="chip-title">Infrastructure Planning</div>
+                        <div class="chip-title">🇸🇦 Infrastructure Planning</div>
                         <div class="chip-desc">Transport routes, utility demand forecasting</div>
                     </div>
                 </div>
                 <div class="use-case-chip" style="animation-delay: 0.3s;">
                     <span class="chip-icon">🎉</span>
                     <div class="chip-content">
-                        <div class="chip-title">Event Management</div>
+                        <div class="chip-title">🇸🇦 Event Management</div>
                         <div class="chip-desc">Crowd flow, capacity optimization</div>
                     </div>
                 </div>
@@ -1412,14 +1847,14 @@ with tab_demand:
                 <div class="use-case-chip" style="animation-delay: 0.25s;">
                     <span class="chip-icon">📍</span>
                     <div class="chip-content">
-                        <div class="chip-title">Site Selection</div>
+                        <div class="chip-title">🇸🇦 Site Selection</div>
                         <div class="chip-desc">Optimal store/branch locations</div>
                     </div>
                 </div>
                 <div class="use-case-chip" style="animation-delay: 0.3s;">
                     <span class="chip-icon">👣</span>
                     <div class="chip-content">
-                        <div class="chip-title">Foot Traffic Analysis</div>
+                        <div class="chip-title">🇸🇦 Foot Traffic Analysis</div>
                         <div class="chip-desc">Hourly/daily visitor patterns</div>
                     </div>
                 </div>
@@ -1451,21 +1886,21 @@ with tab_demand:
                 <div class="use-case-chip" style="animation-delay: 0.35s;">
                     <span class="chip-icon">🗺️</span>
                     <div class="chip-content">
-                        <div class="chip-title">Visitor Flow Mapping</div>
+                        <div class="chip-title">🇸🇦 Visitor Flow Mapping</div>
                         <div class="chip-desc">Tourist routes, attraction popularity</div>
                     </div>
                 </div>
                 <div class="use-case-chip" style="animation-delay: 0.4s;">
                     <span class="chip-icon">🌍</span>
                     <div class="chip-content">
-                        <div class="chip-title">Origin-Destination</div>
+                        <div class="chip-title">🇸🇦 Origin-Destination</div>
                         <div class="chip-desc">Where visitors come from</div>
                     </div>
                 </div>
                 <div class="use-case-chip" style="animation-delay: 0.45s;">
                     <span class="chip-icon">📅</span>
                     <div class="chip-content">
-                        <div class="chip-title">Seasonal Patterns</div>
+                        <div class="chip-title">🇸🇦 Seasonal Patterns</div>
                         <div class="chip-desc">Peak periods, trend forecasting</div>
                     </div>
                 </div>
@@ -1490,21 +1925,21 @@ with tab_demand:
                 <div class="use-case-chip" style="animation-delay: 0.45s;">
                     <span class="chip-icon">🛤️</span>
                     <div class="chip-content">
-                        <div class="chip-title">Route Optimization</div>
+                        <div class="chip-title">🇸🇦 Route Optimization</div>
                         <div class="chip-desc">Delivery efficiency, traffic patterns</div>
                     </div>
                 </div>
                 <div class="use-case-chip" style="animation-delay: 0.5s;">
                     <span class="chip-icon">🚇</span>
                     <div class="chip-content">
-                        <div class="chip-title">Commuter Analysis</div>
+                        <div class="chip-title">🇸🇦 Commuter Analysis</div>
                         <div class="chip-desc">Peak hours, corridor demand</div>
                     </div>
                 </div>
                 <div class="use-case-chip" style="animation-delay: 0.55s;">
                     <span class="chip-icon">✈️</span>
                     <div class="chip-content">
-                        <div class="chip-title">Hub Capacity</div>
+                        <div class="chip-title">🇸🇦 Hub Capacity</div>
                         <div class="chip-desc">Airport/station planning</div>
                     </div>
                 </div>
@@ -1893,6 +2328,79 @@ with tab_pricing:
             </div>
         </div>
     </div>
+    """)
+    
+    st.markdown("---")
+    st.markdown("##### Understanding Each Pricing Dimension")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        with st.container(border=True):
+            st.markdown("**🌍 Geography — Coverage Scope**")
+            st.markdown("""
+            Defines the spatial boundaries of the data product. Pricing typically increases with broader coverage:
+            
+            | Tier | Description | Use Case |
+            |------|-------------|----------|
+            | **City-level** | Single city (e.g., Riyadh only) | Local retailers, municipal planning |
+            | **National** | Full KSA coverage | National brands, government ministries |
+            | **Regional** | GCC or MENA region | Multi-country operators, regional banks |
+            | **Custom zones** | POI-specific or geofenced areas | Mall operators, event venues, industrial zones |
+            
+            *Premium: Custom geofences around specific assets (e.g., NEOM boundary, Qiddiya perimeter)*
+            """)
+        
+        with st.container(border=True):
+            st.markdown("**📊 Volume — Consumption Metrics**")
+            st.markdown("""
+            Controls how much data consumers can access. Common billing models:
+            
+            | Metric | Description | Typical Pricing |
+            |--------|-------------|-----------------|
+            | **Record count** | Number of rows/records delivered | Per 1M records |
+            | **Query limits** | Max queries per period | Per 1K queries |
+            | **API calls/month** | REST/GraphQL endpoint hits | Tiered brackets |
+            | **User seats** | Named users with access | Per seat/month |
+            
+            *Enterprise: Unlimited queries with fair-use policy + dedicated compute*
+            """)
+    
+    with col2:
+        with st.container(border=True):
+            st.markdown("**⚡ Freshness — Data Latency**")
+            st.markdown("""
+            How recent the data is when delivered. Lower latency = higher cost:
+            
+            | Tier | Latency | Premium | Use Case |
+            |------|---------|---------|----------|
+            | **Real-time** | < 5 min | 3-5x base | Emergency response, live events |
+            | **Hourly** | 1-2 hours | 2x base | Dynamic pricing, traffic ops |
+            | **Daily** | 24 hours | Base price | Retail analytics, reporting |
+            | **Weekly/Monthly** | 7-30 days | 0.5x base | Trend analysis, research |
+            
+            *Note: Real-time requires streaming infrastructure (Kafka/Kinesis) vs. batch*
+            """)
+        
+        with st.container(border=True):
+            st.markdown("**📅 History — Temporal Depth**")
+            st.markdown("""
+            How far back historical data extends. Deeper history enables trend analysis:
+            
+            | Tier | Retention | Use Case |
+            |------|-----------|----------|
+            | **30 days rolling** | Recent window only | Operational dashboards |
+            | **1 year archive** | Full year lookback | YoY comparisons, seasonality |
+            | **3+ years deep** | Multi-year archive | Long-term planning, ML training |
+            | **Custom range** | Specific periods | Event analysis, audits |
+            
+            *Storage costs increase with history depth; consider tiered storage (hot/cold)*
+            """)
+    
+    st.info("""
+    💡 **Pricing Strategy Tip**: Most data products use a **matrix pricing model** combining 2-3 dimensions. 
+    For example: *"National coverage + Daily freshness + 1 year history"* as a standard tier, 
+    with upcharges for real-time access or regional expansion.
     """)
 
 # =============================================================================
@@ -2343,6 +2851,9 @@ with tab_references:
         </ul>
         <a href="https://business.bt.com/iot/active-intelligence/" target="_blank" class="featured-link">
             🔗 Visit BT Active Intelligence
+        </a>
+        <a href="https://app.snowflake.com/marketplace/providers/GZ2FRZE33RP/BT%20Active%20Intelligence?search=BT" target="_blank" class="featured-link" style="margin-left: 10px;">
+            🏪 Visit Marketplace
         </a>
     </div>
     """)
