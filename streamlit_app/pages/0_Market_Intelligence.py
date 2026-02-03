@@ -2163,6 +2163,109 @@ with tab_references:
     
     st.html("""
     <style>
+        .featured-card {
+            background: linear-gradient(135deg, #1E3A5F 0%, #0891B2 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease-out;
+            box-shadow: 0 10px 40px rgba(30, 58, 95, 0.3);
+        }
+        .featured-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+        .featured-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: linear-gradient(135deg, #D4AF37, #F59E0B);
+            color: #1E3A5F;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .featured-card h4 {
+            color: white;
+            margin: 0 0 0.75rem 0;
+            font-size: 1.4rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+        .featured-card p {
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+        .featured-card ul {
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 1rem;
+            line-height: 1.9;
+            position: relative;
+            z-index: 1;
+        }
+        .featured-card li strong {
+            color: #D4AF37;
+        }
+        .featured-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+        .featured-stat {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .featured-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #D4AF37;
+        }
+        .featured-stat-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 0.25rem;
+        }
+        .featured-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            color: #1E3A5F;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        .featured-link:hover {
+            background: #D4AF37;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
         .reference-card {
             background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
             border: 1px solid #e2e8f0;
@@ -2199,6 +2302,73 @@ with tab_references:
             border-top: 1px solid #e2e8f0;
         }
     </style>
+    """)
+    
+    # FEATURED: BT Active Intelligence
+    st.html("""
+    <div class="featured-card">
+        <div class="featured-badge">⭐ Featured Reference</div>
+        <h4>🇬🇧 BT Active Intelligence - Snowflake Marketplace</h4>
+        <p>
+            <strong>BT Active Intelligence</strong> (UK) is a leading example of how a major telco monetizes 
+            mobility data through the Snowflake Marketplace. They offer 4 distinct data products serving 
+            transportation, geospatial, and media sectors — directly relevant to Fusion's strategy.
+        </p>
+        <div class="featured-stats">
+            <div class="featured-stat">
+                <div class="featured-stat-value">24M</div>
+                <div class="featured-stat-label">Mobile Devices</div>
+            </div>
+            <div class="featured-stat">
+                <div class="featured-stat-value">25B</div>
+                <div class="featured-stat-label">Daily Events</div>
+            </div>
+            <div class="featured-stat">
+                <div class="featured-stat-value">1/3</div>
+                <div class="featured-stat-label">UK Adult Population</div>
+            </div>
+            <div class="featured-stat">
+                <div class="featured-stat-value">4</div>
+                <div class="featured-stat-label">Data Products</div>
+            </div>
+        </div>
+        <ul>
+            <li><strong>Road Insights:</strong> Traffic flow and speed along specific road networks</li>
+            <li><strong>Location Insights:</strong> Footfall data to optimize business strategies</li>
+            <li><strong>On Demand Journeys:</strong> Origin-destination insights at LSOA level</li>
+            <li><strong>Audience Insights:</strong> Geo personas for campaign planning</li>
+        </ul>
+        <a href="https://business.bt.com/iot/active-intelligence/" target="_blank" class="featured-link">
+            🔗 Visit BT Active Intelligence
+        </a>
+    </div>
+    """)
+    
+    st.image("bt_active_intelligence_reference.png", use_container_width=True)
+    
+    st.html("""
+    <div class="reference-caption">
+        <strong>Source:</strong> BT Active Intelligence on Snowflake Marketplace — 
+        <a href="https://business.bt.com/iot/active-intelligence/" target="_blank" style="color: #0891B2;">business.bt.com/iot/active-intelligence</a>
+    </div>
+    """)
+    
+    st.html("""
+    <div class="key-insight">
+        <p>💡 <strong>Why BT Matters for Fusion:</strong> BT's "Active Intelligence" is the closest 
+        comparable to Fusion's vision — a major telco selling <strong>anonymized mobility insights</strong> 
+        through a marketplace with "Free to try" options. Their product catalog (Road, Location, Journeys, 
+        Audience) maps directly to what Fusion can offer Saudi government and enterprise clients.</p>
+    </div>
+    """)
+    
+    st.divider()
+    
+    st.html("""
+    <div class="section-header">
+        <h3>📊 Additional Industry Case Studies</h3>
+        <div class="section-line"></div>
+    </div>
     """)
     
     st.html("""
