@@ -2234,3 +2234,124 @@ with tab_references:
         for the Saudi market, especially for government and giga-project clients.</p>
     </div>
     """)
+    
+    st.divider()
+    
+    # T-Mobile Reference
+    st.html("""
+    <div class="reference-card">
+        <h4>📱 T-Mobile: Magenta Advertising Platform</h4>
+        <p>
+            T-Mobile's <strong>Magenta Advertising Platform</strong> demonstrates how telcos can monetize 
+            subscriber data for advertising while generating significant new revenue streams.
+        </p>
+        <ul style="color: #64748b; margin-top: 0.75rem; line-height: 1.8;">
+            <li><strong>Scale:</strong> 240M subscribers reach for targeted advertising</li>
+            <li><strong>Revenue:</strong> $80M in new organic advertising revenue</li>
+            <li><strong>ROI:</strong> 40X realized return on $2M Snowflake investment</li>
+            <li><strong>Capabilities:</strong> Campaign planning, prediction, self-service reporting</li>
+            <li><strong>Evolution:</strong> From insights → reporting → secure sharing → advanced AI</li>
+        </ul>
+    </div>
+    """)
+    
+    st.image("tmobile_magenta_reference.png", use_container_width=True)
+    
+    st.html("""
+    <div class="reference-caption">
+        <strong>Source:</strong> Snowflake Inc. © 2025 — T-Mobile Magenta Advertising Platform powered by Snowflake & Pushspring
+    </div>
+    """)
+    
+    st.divider()
+    
+    # AT&T/DirecTV Reference
+    st.html("""
+    <div class="reference-card">
+        <h4>📺 AT&T/DirecTV: Secure Data Monetization with Clean Rooms</h4>
+        <p>
+            AT&T and DirecTV showcase how <strong>Data Clean Rooms</strong> enable secure data monetization 
+            for advertising across live and VoD content while maintaining privacy compliance.
+        </p>
+        <ul style="color: #64748b; margin-top: 0.75rem; line-height: 1.8;">
+            <li><strong>Focus:</strong> Advanced streaming solutions & insight-based advertising</li>
+            <li><strong>Capabilities:</strong> Contextual & targeted audience advertising, subscriber insights</li>
+            <li><strong>Clean Rooms:</strong> Secure data sharing with guaranteed incremental reach</li>
+            <li><strong>Results:</strong> +86% brand awareness, +51% ad awareness for auto campaigns</li>
+            <li><strong>Revenue Model:</strong> Fee-based targeted ads, live events, VoD, digital signage</li>
+        </ul>
+    </div>
+    """)
+    
+    st.image("att_directv_reference.png", use_container_width=True)
+    
+    st.html("""
+    <div class="reference-caption">
+        <strong>Source:</strong> Snowflake Inc. © 2025 — AT&T/DirecTV Secure Data Monetization with Data Clean Rooms
+    </div>
+    """)
+    
+    st.divider()
+    
+    # AT&T + CARTO Reference
+    st.html("""
+    <div class="reference-card">
+        <h4>🗺️ AT&T + CARTO: Geospatial Data & App Innovation</h4>
+        <p>
+            AT&T's partnership with <strong>CARTO</strong> demonstrates how telcos can combine event analytics 
+            with geospatial enrichment to create high-value data products for multiple industries.
+        </p>
+        <ul style="color: #64748b; margin-top: 0.75rem; line-height: 1.8;">
+            <li><strong>AT&T Data Patterns:</strong> Event insights, subscriber insights, geospatial enrichment</li>
+            <li><strong>CARTO Use Cases:</strong> Marketing, fraud detection, IoT density planning</li>
+            <li><strong>Applications:</strong> Disaster impact modeling, digital twin enrichment</li>
+            <li><strong>Visualization:</strong> Advanced geospatial dashboards and heatmaps</li>
+        </ul>
+    </div>
+    """)
+    
+    st.image("att_carto_reference.png", use_container_width=True)
+    
+    st.html("""
+    <div class="reference-caption">
+        <strong>Source:</strong> Snowflake Inc. © 2023 — AT&T & CARTO Geospatial Data Innovation
+    </div>
+    """)
+    
+    st.divider()
+    
+    # NTT Docomo Reference
+    st.html("""
+    <div class="reference-card">
+        <h4>🇯🇵 NTT Docomo & aiQ: AI-Powered Data Products</h4>
+        <p>
+            Japan's <strong>NTT Docomo</strong> partnered with <strong>aiQ</strong> to create AI-powered 
+            data products serving operators and enterprise companies with geolocation and consumer insights.
+        </p>
+        <ul style="color: #64748b; margin-top: 0.75rem; line-height: 1.8;">
+            <li><strong>Scale:</strong> 80M+ mobile phones covered across Japan</li>
+            <li><strong>Geolocation Products:</strong> Tokyo Stock Exchange company foot traffic analysis</li>
+            <li><strong>REIT Analytics:</strong> Real estate location insights for 79+ Japanese REITs</li>
+            <li><strong>Consumer Data:</strong> 50K+ monthly respondents tracking purchases across retailers</li>
+            <li><strong>Revenue Model:</strong> Datasets at cost + free sample datasets available</li>
+        </ul>
+    </div>
+    """)
+    
+    st.image("ntt_docomo_reference.png", use_container_width=True)
+    
+    st.html("""
+    <div class="reference-caption">
+        <strong>Source:</strong> Snowflake Inc. © 2025 — NTT Docomo & aiQ AI-Powered Data Collaboration
+    </div>
+    """)
+    
+    st.html("""
+    <div class="key-insight" style="margin-top: 2rem;">
+        <p>💡 <strong>Key Takeaway for Fusion:</strong> These global telco examples demonstrate proven patterns: 
+        <strong>T-Mobile</strong> shows advertising monetization at scale, <strong>AT&T</strong> proves clean rooms 
+        enable privacy-safe partnerships, <strong>CARTO</strong> illustrates geospatial value creation, and 
+        <strong>NTT Docomo</strong> validates the AI + mobility data combination. Fusion can adapt these models 
+        for the Saudi market, particularly for Vision 2030 giga-projects and government smart city initiatives.</p>
+    </div>
+    """)
