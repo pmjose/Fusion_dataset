@@ -181,12 +181,6 @@ with st.sidebar:
         options=["Traffic Density", "Dwell Time"],
         index=0
     )
-    
-    map_style = st.selectbox(
-        "Map style",
-        options=["Dark", "Light", "Satellite"],
-        index=0
-    )
 
 with st.spinner("Loading hexagon data..."):
     hex_df = get_hexagon_data(selected_city, selected_hour)
@@ -228,12 +222,6 @@ if len(hex_df) > 0:
         view_lon = hex_df['lon'].mean()
         zoom = 6
     
-    map_styles = {
-        "Dark": "mapbox://styles/mapbox/dark-v10",
-        "Light": "mapbox://styles/mapbox/light-v10",
-        "Satellite": "mapbox://styles/mapbox/satellite-streets-v11"
-    }
-    
     layer = pdk.Layer(
         "H3HexagonLayer",
         hex_df,
@@ -243,7 +231,7 @@ if len(hex_df) > 0:
         extruded=False,
         get_hexagon="HEXAGON_ID",
         get_fill_color=["color_r", "color_g", "color_b", "opacity"],
-        get_line_color=[255, 255, 255, 50],
+        get_line_color=[30, 58, 95, 100],
         line_width_min_pixels=1
     )
     
@@ -257,22 +245,9 @@ if len(hex_df) > 0:
     deck = pdk.Deck(
         layers=[layer],
         initial_view_state=view_state,
-        map_style=map_styles[map_style],
         tooltip={
-            "html": """
-                <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding: 8px;">
-                    <div style="font-weight: 600; margin-bottom: 4px;">📍 Hexagon Details</div>
-                    <div><b>Traffic:</b> {TRAFFIC_COUNT}</div>
-                    <div><b>Avg Dwell:</b> {AVG_DWELL:.1f} min</div>
-                </div>
-            """,
-            "style": {
-                "backgroundColor": "#1E3A5F",
-                "color": "white",
-                "borderRadius": "12px",
-                "padding": "0",
-                "boxShadow": "0 4px 20px rgba(0,0,0,0.3)"
-            }
+            "html": "<b>Traffic:</b> {TRAFFIC_COUNT}<br/><b>Avg Dwell:</b> {AVG_DWELL:.1f} min",
+            "style": {"backgroundColor": "#1E3A5F", "color": "white", "borderRadius": "8px", "padding": "8px"}
         }
     )
     
