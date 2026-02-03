@@ -1022,35 +1022,139 @@ with tab_demand:
         'Type': ['Actual'] + ['Projected'] * 5
     })
     
-    with st.container(border=True):
-        st.markdown("**Global Telco Data Monetization Market Trajectory**")
-        
-        market_chart = alt.Chart(market_data).mark_area(
-            line={'color': FUSION_BLUE, 'strokeWidth': 3},
-            color=alt.Gradient(
-                gradient='linear',
-                stops=[
-                    alt.GradientStop(color='rgba(30, 58, 95, 0.4)', offset=0),
-                    alt.GradientStop(color='rgba(30, 58, 95, 0.05)', offset=1)
-                ],
-                x1=1, x2=1, y1=1, y2=0
-            )
-        ).encode(
-            x=alt.X('Year:O', axis=alt.Axis(title='Year', labelAngle=0)),
-            y=alt.Y('Market Size ($B):Q', axis=alt.Axis(title='Market Size ($ Billion)', grid=True, gridOpacity=0.3)),
-            tooltip=[
-                alt.Tooltip('Year:O', title='Year'),
-                alt.Tooltip('Market Size ($B):Q', title='Market Size', format='$,.1f')
-            ]
-        ).properties(height=300)
-        
-        points = alt.Chart(market_data).mark_circle(size=100, color=FUSION_TEAL).encode(
-            x='Year:O',
-            y='Market Size ($B):Q'
+    st.html("""
+    <style>
+        @keyframes chartReveal {
+            from { 
+                clip-path: inset(0 100% 0 0);
+                opacity: 0.5;
+            }
+            to { 
+                clip-path: inset(0 0 0 0);
+                opacity: 1;
+            }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 4px 20px rgba(8, 145, 178, 0.1); }
+            50% { box-shadow: 0 4px 30px rgba(8, 145, 178, 0.25); }
+        }
+        .chart-container {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            animation: fadeInUp 0.6s ease-out, pulseGlow 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        .chart-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #1E3A5F, #0891B2, #D4AF37);
+            border-radius: 16px 16px 0 0;
+        }
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1E3A5F;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .chart-title-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #0891B2, #1E3A5F);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        .chart-subtitle {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+        }
+        .chart-wrapper {
+            animation: chartReveal 1.5s ease-out 0.3s backwards;
+        }
+        .chart-sources {
+            margin-top: 1rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .chart-sources::before {
+            content: '📊';
+        }
+        .growth-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            background: linear-gradient(135deg, #10B981, #34D399);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: auto;
+            animation: pulse 2s ease-in-out infinite;
+        }
+    </style>
+    <div class="chart-container">
+        <div style="display: flex; align-items: center;">
+            <div class="chart-title">
+                <div class="chart-title-icon">📈</div>
+                Global Telco Data Monetization Market Trajectory
+            </div>
+            <span class="growth-badge">↑ ~24% CAGR</span>
+        </div>
+        <div class="chart-subtitle">Projected growth from $5.3B (2024) to $14.9B (2029)</div>
+    </div>
+    """)
+    
+    market_chart = alt.Chart(market_data).mark_area(
+        line={'color': FUSION_BLUE, 'strokeWidth': 3},
+        color=alt.Gradient(
+            gradient='linear',
+            stops=[
+                alt.GradientStop(color='rgba(30, 58, 95, 0.4)', offset=0),
+                alt.GradientStop(color='rgba(30, 58, 95, 0.05)', offset=1)
+            ],
+            x1=1, x2=1, y1=1, y2=0
         )
-        
-        st.altair_chart(market_chart + points, use_container_width=True)
-        st.caption("Sources: Precedence Research, Market Research Future, Mordor Intelligence — Telecom Data Monetization Market Reports 2024")
+    ).encode(
+        x=alt.X('Year:O', axis=alt.Axis(title='Year', labelAngle=0)),
+        y=alt.Y('Market Size ($B):Q', axis=alt.Axis(title='Market Size ($ Billion)', grid=True, gridOpacity=0.3)),
+        tooltip=[
+            alt.Tooltip('Year:O', title='Year'),
+            alt.Tooltip('Market Size ($B):Q', title='Market Size', format='$,.1f')
+        ]
+    ).properties(height=300)
+    
+    points = alt.Chart(market_data).mark_circle(size=100, color=FUSION_TEAL).encode(
+        x='Year:O',
+        y='Market Size ($B):Q'
+    )
+    
+    st.altair_chart(market_chart + points, use_container_width=True)
+    
+    st.html("""
+    <div class="chart-sources">
+        Sources: Precedence Research, Market Research Future, Mordor Intelligence — Telecom Data Monetization Market Reports 2024
+    </div>
+    """)
     
     st.html("""
     <div class="section-header">
