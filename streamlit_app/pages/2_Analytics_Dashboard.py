@@ -203,11 +203,12 @@ with st.container(horizontal=True):
     st.metric("Avg Dwell Time", f"{metrics_df['AVG_DWELL'].iloc[0]:.1f} min", border=True)
     st.metric("Nationalities", f"{metrics_df['NATIONALITIES'].iloc[0]}", border=True)
 
-tab_overview, tab_demographics, tab_insights, tab_ai = st.tabs([
+tab_overview, tab_demographics, tab_insights, tab_ai, tab_intelligence = st.tabs([
     ":material/monitoring: Overview",
     ":material/groups: Demographics", 
     ":material/lightbulb: Industry Insights",
-    ":material/smart_toy: AI Predictions"
+    ":material/smart_toy: AI Predictions",
+    ":material/psychology: Snowflake Intelligence"
 ])
 
 with tab_overview:
@@ -1413,3 +1414,156 @@ with tab_ai:
         real business outcomes. <strong>Vision 2030 aligned</strong> and ready for giga-project deployment.</p>
     </div>
     """)
+
+with tab_intelligence:
+    st.html("""
+    <style>
+        .featured-card {
+            background: linear-gradient(135deg, #1E3A5F 0%, #0891B2 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            color: white;
+            box-shadow: 0 20px 40px rgba(30, 58, 95, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .featured-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .featured-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+        .featured-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 0.75rem 0;
+        }
+        .featured-card p {
+            font-size: 1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+            margin: 0 0 1.5rem 0;
+        }
+        .featured-stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .featured-stat {
+            text-align: center;
+        }
+        .featured-stat .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+        .featured-stat .stat-label {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+        }
+        .featured-link {
+            display: inline-block;
+            background: white;
+            color: #1E3A5F;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .featured-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+    </style>
+    """)
+    
+    st.subheader(":material/psychology: Snowflake Intelligence", anchor=False)
+    st.markdown("Ask natural language questions about Fusion mobility data using AI-powered analytics.")
+    
+    st.html("""
+    <div class="featured-card">
+        <span class="featured-badge">AI-Powered Analytics</span>
+        <h3>Fusion Mobility Intelligence Agent</h3>
+        <p>Ask questions in plain English and get instant insights from Saudi telco mobility data. 
+        Powered by Snowflake Cortex with semantic understanding of foot traffic, demographics, and location patterns.</p>
+        <div class="featured-stats">
+            <div class="featured-stat">
+                <div class="stat-value">2.4M+</div>
+                <div class="stat-label">Daily Events</div>
+            </div>
+            <div class="featured-stat">
+                <div class="stat-value">15+</div>
+                <div class="stat-label">Cities</div>
+            </div>
+            <div class="featured-stat">
+                <div class="stat-value">50+</div>
+                <div class="stat-label">Nationalities</div>
+            </div>
+        </div>
+        <a href="https://ai.snowflake.com/sfseeurope/pjose_aws3/#/homepage" target="_blank" class="featured-link">
+            Open Snowflake Intelligence →
+        </a>
+    </div>
+    """)
+    
+    st.markdown("### Example Questions")
+    st.info("Copy any question below and paste it into Snowflake Intelligence to get instant AI-generated insights and visualizations.", icon=":material/lightbulb:")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        with st.container(border=True):
+            st.markdown("**Traffic Analysis**")
+            st.code("What are the peak hours for foot traffic across all cities?", language=None)
+            st.code("Show me daily traffic trends for the past week", language=None)
+            st.code("Which hexagons have the highest visitor counts?", language=None)
+        
+        with st.container(border=True):
+            st.markdown("**Demographics**")
+            st.code("What is the breakdown of visitors by nationality?", language=None)
+            st.code("Show age group distribution across different cities", language=None)
+            st.code("Compare male vs female visitor patterns by hour", language=None)
+    
+    with col2:
+        with st.container(border=True):
+            st.markdown("**Dwell Time & Engagement**")
+            st.code("What is the average dwell time by city?", language=None)
+            st.code("Which locations have the longest staying duration?", language=None)
+            st.code("Show dwell time patterns throughout the day", language=None)
+        
+        with st.container(border=True):
+            st.markdown("**Location Intelligence**")
+            st.code("Which cities have the most diverse visitor nationalities?", language=None)
+            st.code("Show visitor flow between home cities and destinations", language=None)
+            st.code("What are the top 10 busiest locations by traffic?", language=None)
+    
+    st.markdown("---")
+    st.markdown("### How It Works")
+    
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown(":material/chat: **Ask in Plain English**")
+        st.caption("Type your question naturally - no SQL required")
+    with col2:
+        st.markdown(":material/psychology: **AI Understands Context**")
+        st.caption("Cortex Analyst interprets your intent using semantic models")
+    with col3:
+        st.markdown(":material/bar_chart: **Get Visual Insights**")
+        st.caption("Receive charts, tables, and actionable recommendations")
