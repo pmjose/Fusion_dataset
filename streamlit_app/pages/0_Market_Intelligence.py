@@ -34,6 +34,9 @@ st.html("""
         background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%) !important;
         border-right: 1px solid rgba(8, 145, 178, 0.2) !important;
     }
+    [data-testid="stSidebar"] * {
+        color: #ffffff !important;
+    }
     [data-testid="stSidebar"]::before {
         content: '';
         position: absolute;
@@ -58,7 +61,7 @@ st.html("""
         box-shadow: 0 8px 30px rgba(8, 145, 178, 0.4), 0 0 0 2px rgba(8, 145, 178, 0.3) !important;
     }
     [data-testid="stSidebar"] a {
-        color: #e2e8f0 !important;
+        color: #ffffff !important;
         font-weight: 500 !important;
         padding: 0.75rem 1rem !important;
         border-radius: 10px !important;
@@ -1233,12 +1236,12 @@ with tab_demand:
     """)
     
     market_chart = alt.Chart(market_data).mark_area(
-        line={'color': FUSION_BLUE, 'strokeWidth': 3},
+        line={'color': '#DC2626', 'strokeWidth': 3},
         color=alt.Gradient(
             gradient='linear',
             stops=[
-                alt.GradientStop(color='rgba(30, 58, 95, 0.4)', offset=0),
-                alt.GradientStop(color='rgba(30, 58, 95, 0.05)', offset=1)
+                alt.GradientStop(color='rgba(220, 38, 38, 0.4)', offset=0),
+                alt.GradientStop(color='rgba(220, 38, 38, 0.05)', offset=1)
             ],
             x1=1, x2=1, y1=1, y2=0
         )
@@ -1251,7 +1254,7 @@ with tab_demand:
         ]
     ).properties(height=300)
     
-    points = alt.Chart(market_data).mark_circle(size=100, color=FUSION_TEAL).encode(
+    points = alt.Chart(market_data).mark_circle(size=100, color='#DC2626').encode(
         x='Year:O',
         y='Market Size ($B):Q'
     )
@@ -2344,7 +2347,8 @@ with tab_references:
     </div>
     """)
     
-    st.image("bt_active_intelligence_reference.png", use_container_width=True)
+    # Note: Images from local files not supported in Streamlit in Snowflake
+    # Reference: bt_active_intelligence_reference.png
     
     st.html("""
     <div class="reference-caption">
@@ -2388,7 +2392,8 @@ with tab_references:
     </div>
     """)
     
-    st.image("telia_oneweb_reference.png", use_container_width=True)
+    # Note: Images from local files not supported in Streamlit in Snowflake
+    # Reference: telia_oneweb_reference.png
     
     st.html("""
     <div class="reference-caption">
@@ -2425,7 +2430,8 @@ with tab_references:
     </div>
     """)
     
-    st.image("tmobile_magenta_reference.png", use_container_width=True)
+    # Note: Images from local files not supported in Streamlit in Snowflake
+    # Reference: tmobile_magenta_reference.png
     
     st.html("""
     <div class="reference-caption">
@@ -2453,7 +2459,8 @@ with tab_references:
     </div>
     """)
     
-    st.image("att_directv_reference.png", use_container_width=True)
+    # Note: Images from local files not supported in Streamlit in Snowflake
+    # Reference: att_directv_reference.png
     
     st.html("""
     <div class="reference-caption">
@@ -2480,7 +2487,8 @@ with tab_references:
     </div>
     """)
     
-    st.image("att_carto_reference.png", use_container_width=True)
+    # Note: Images from local files not supported in Streamlit in Snowflake
+    # Reference: att_carto_reference.png
     
     st.html("""
     <div class="reference-caption">
@@ -2508,7 +2516,8 @@ with tab_references:
     </div>
     """)
     
-    st.image("ntt_docomo_reference.png", use_container_width=True)
+    # Note: Images from local files not supported in Streamlit in Snowflake
+    # Reference: ntt_docomo_reference.png
     
     st.html("""
     <div class="reference-caption">
